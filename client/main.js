@@ -2,6 +2,9 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Mongo } from "meteor/mongo"
 import { Session } from 'meteor/session'
+
+
+import {labels} from "./labels.js"
 import './main.html';
 
 var devices = new Mongo.Collection("devices");
@@ -59,6 +62,7 @@ function construct_query(){
   var lsam = Session.get("s_lsam");
   var type = Session.get("s_device_type");
   var agency = Session.get("s_agency");
+  var sw_status = Session.get("s_sw_status");
   var flag = false;
   var query = {};
   if (hardware){
@@ -84,6 +88,10 @@ function construct_query(){
   if (agency){
     flag = true;
     query.agency = {$regex: ".*" + agency + ".*"};
+  }
+  if (sw_status){
+    flag = true;
+    query.sw_status = {$regex: ".*" + sw_status + ".*"};
   }
   if (flag)return query;
 }
@@ -118,37 +126,37 @@ Template.search_results.events({
   },
 })
 
-Template.device.events({
+Template.side_panel.events({
   "click #back" : function(){
     Session.set("selected_device",null);
   },
   "click #save" : function(){
-    //console.log(this);
     var id = this._id;
     var flag = false;
     var fields = {};
-    $.each( this, function( key, value ) {
-      if (key === "_id")return;
-      if (value !== $("#edit_"+key).val() && $("#edit_"+key).val() != undefined){
+    var that = this;
+    $.each( $(".device-input"), function( key, value ) {
+      key = $(value).attr("id").substr(5,$(value).attr("id").length-1)
+      value = $(value).val();
+      if (value !== that[key] && value != undefined){
         flag = true;
-        fields[key] = $("#edit_"+key).val();
+        fields[key] = value;
       }
     });
     if (flag){
     //  console.log(id);
-      var result = Meteor.call("save",id,fields);
-      console.log(result);
-      if (result == 1){
-      //  console.log(result,id);
-        var str = "Succesfully updated : \n\n";
-        $.each(fields,function(key,value){
-          str += labels[key].name +'\n';
-        });
-        alert(str.substring(0,str.length-1));
-      }
-      else{
-        alert("An error has occured while updating");
-      }
+      var result = Meteor.call("save",id,fields,function(error,result){
+        if (result == 1){
+          var str = "Succesfully updated : \n\n";
+          $.each(fields,function(key,value){
+            str += labels[key].name +'\n';
+          });
+          alert(str.substring(0,str.length-1));
+        }
+        else{
+          alert("An error has occured while updating");
+        }
+      });
     }
     else{
       alert("Nothing to update");
@@ -162,10 +170,11 @@ Template.device.events({
   },
 })
 
-Template.device.helpers({
-  "device" : function(){
+console.log($.datepicker);
+
+
+Template.registerHelper("device",function(){
     return devices.findOne({_id : Session.get("selected_device")})
-  },
 })
 
 Template.registerHelper("evenrow",function(value){
@@ -210,215 +219,13 @@ Template.registerHelper('toObject',function(key,obj){
   return {name : key,value : obj[key]}
 });
 
+Template.registerHelper('toDate',function(obj){
+  if (!obj)return "";
+  var date = moment(obj,"YYYYMMDD");
+  if (date.isValid())  return date.format("dddd DD MMMM YYYY");
+  return "";//(new Date(obj)).toLocaleString("",date_options);
+})
 
-var labels = {
-  hw_comments : {
-    name : "Hardware Comments",
-    group : "comments",
-  },
-  sw_comments : {
-    name : "Software Comments",
-    group : "comments",
-  },
-  agency_comments : {
-    name : "Agency Comments",
-    group : "comments",
-  },
-  misc_comments : {
-    name : "Miscelaneous Comments",
-    group : "comments",
-  },
-  hw_id : {
-		name : "Hardware ID",
-    group : "hardware",
-	},
-  device_id : {
-		name : "Device ID",
-    group : "hardware",
-	},
-  agent_id : {
-		name : "Agent ID",
-    group : "agency",
-	},
-  service_id : {
-		name : "Service Account ID",
-    group : "software",
-	},
-  feeset_id : {
-		name : "Feeset ID",
-    group : "software",
-	},
-  lsam_id : {
-		name : "LSAM ID",
-    group : "hardware",
-	},
-  hw_status : {
-		name : "Hardware Installation Status",
-    type : "dropdown",
-    group : "hardware",
-    options : [
-      "",
-      "Not Done",
-      "Done",
-    ]
-	},
-  sw_status : {
-		name : "Software Installation Status",
-    type : "dropdown",
-    group : "software",
-    options : [
-      "",
-      "Operating System Update",
-      "Firmware Update",
-      "Testing",
-      "Done",
-    ]
-	},
-  label : {
-		name : "Hardware Label",
-    group : "hardware",
-	},
-  agency : {
-		name : "Agency",
-    group : "agency",
-    type : "dropdown",
-    options : [
-      "OASA",
-      "STASY",
-      "OSY",
-      "TRAINOSE",
-    ]
-	},
-  sub_agency : {
-		name : "Sub Agency",
-    group : "agency",
-    type : "dropdown",
-    options : [
-      "Tram",
-      "Metro",
-      "Suburban",
-      "Bus",
-    ]
-	},
-  device_type : {
-		name : "Device Type",
-    group : "hardware",
-    type : "dropdown",
-    options : [
-      "ACIM",
-      "TIT",
-      "CIT",
-      "PCRS",
-      "PSCCS",
-      "Gate",
-      "OVMC",
-    ]
-	},
-  firmware_type : {
-		name : "Firmware Type",
-    group : "software",
-	},
-  supervisor : {
-		name : "Supervisor",
-    group : "agency",
-	},
-  hp_number : {
-		name : "HP Number",
-    group : "agency",
-	},
-  station_id : {
-		name : "Station ID",
-    group : "location",
-    type : "dropdown",
-    options : []
-	},
-  station_name : {
-		name : "Station Name",
-    group : "location",
-    type : "dropdown",
-    options : []
-	},
-  line : {
-		name : "Line",
-    group : "location",
-	},
-  location : {
-		name : "Installation Location",
-    group : "location",
-	},
-  ip : {
-		name : "Device IP",
-    group : "network",
-	},
-  subnet : {
-		name : "Subnet",
-    group : "network",
-	},
-  ntp : {
-		name : "NTP Server",
-    group : "network",
-	},
-  gateway : {
-		name : "Gateway",
-    group : "network",
-	},
-  dns1 : {
-		name : "DNS 1",
-    group : "network",
-	},
-  dns2 : {
-		name : "DNS 2",
-    group : "network",
-	},
-  host1 : {
-		name : "Host 1 (OASA)",
-    group : "network",
-	},
-  host2 : {
-		name : "Host 2",
-    group : "network",
-	},
-  host3 : {
-		name : "Host 3",
-    group : "network",
-	},
-  swd : {
-		name : "Software Delivery Server (swd)",
-    group : "network",
-	},
-  operator_name : {
-		name : "Operator Name",
-    group : "",////////////////////////
-	},
-  operator_id : {
-		name : "Operator ID",
-    group : "",////////////////////////
-	},
-  operator_card : {
-		name : "Operator Card",
-    group : "",////////////////////////
-	},
-  status_of_installation : {
-		name : "Installation Status",
-    group : "comments",////////////////////////
-	},
-  sam_tracking : {
-		name : "SAM Location",
-    group : "comments",////////////////////////
-	},
-  sw_version : {
-		name : "Software Version",
-    group : "software",////////////////////////
-	},
-  install_date : {
-		name : "Installation Date",
-    group : "location",////////////////////////
-	},
-  schedule_date : {
-		name : "Schedule Date",
-    group : "location",////////////////////////
-	},
-}
 Meteor.subscribe("stations", function(){
   labels.station_id.options.push("");
   labels.station_name.options.push("");
@@ -431,3 +238,24 @@ Meteor.subscribe("stations", function(){
 Template.registerHelper('lower', function(str) {
   return str?str.toLowerCase().split(' ').join('_'):"";
 });
+
+Template.registerHelper('fromSession', function(id) {
+  return Session.get(id);
+});
+
+Template.registerHelper('selected_type', function(id) {
+  return Session.get("s_device_type")===id?"selected":"";
+});
+
+Template.registerHelper('selected_sw_status', function(id) {
+  return Session.get("s_sw_status")===id?"selected":"";
+});
+
+
+Template.registerHelper('selected_agency', function(id) {
+  return Session.get("s_agency")===id?"selected":"";
+});
+
+Template.date.onRendered(function(){
+  console.log(this.$('.datetimepicker').datetimepicker({format : "dddd DD MMM YYYY"}));
+})

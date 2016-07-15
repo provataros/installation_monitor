@@ -7,6 +7,8 @@ html,body{
   padding : 0px;
   margin : 0px;
   background-color: #f2f4f6;
+  width : 100%;
+  height : 100%;
 }
 *{
   font-family: 'Roboto', sans-serif;
@@ -38,7 +40,7 @@ tr:hover{
   margin : 0px;
 }
 
-.device-field input[type=text] {
+.device-field input[type=text] ,.device-field .device-label {
     padding: 5px 5px;
     font-size: 16px;
     box-sizing: border-box;
@@ -46,15 +48,15 @@ tr:hover{
     cursor : pointer;
     width : auto;
     font-style: italic;;
+    display : inline-block;
 }
 
-.device-field select {
+.device-field select{
     padding: 5px 5px;
     font-size: 16px;
     box-sizing: border-box;
     border-style : none !important;
     cursor : pointer;
-
     font-style: italic;;
 }
 .status{
@@ -102,4 +104,43 @@ h1 {
 }
 .firmware_update,.operating_system_update,.testing{
   color : #e0aa5d;
+}
+
+.search_div{
+  display : inline-block;
+  width : auto;
+  margin : 5px;
+  box-sizing: border-box;
+}
+
+.search_panel{
+  box-sizing: border-box;
+  padding : 15px;
+  margin : 15px;
+  box-shadow: 2px 2px 5px #888888;
+  background-color: #fff;
+}
+
+#side_panel,#content{
+    display : inline-block;
+    height : 100%;
+    top : 0px;
+    position: relative;
+}
+
+#side_panel{
+  width : 50px;
+  box-sizing: border-box;
+  position : fixed;
+  background-color : #444444;
+  padding : 5px;
+}
+#content{
+  margin-left : 50px;
+}
+
+#side_panel button{
+  width : 40px;
+  height : 40px;
+  margin-bottom: 5px;
 }

@@ -4,53 +4,82 @@
 </head>
 
 <body>
-  {{#if selected_device}}
-    {{> device}}
-  {{else}}
-    {{> search_bar}}
-    {{> search_results}}
-  {{/if}}
+  <div id = "side_panel">
+    {{> side_panel}}
+  </div>
+  <div id="content">
+    {{#if selected_device}}
+      {{> device}}
+    {{else}}
+      {{> search_bar}}
+      {{> search_results}}
+    {{/if}}
+  </div>
 </body>
+
+<template name = "side_panel">
+    {{#with device}}
+    {{debug this}}
+      <button id = "back">Back</button>
+      <button id = "save">Save</button>
+      <button id = "reset">Reset</button>
+    {{/with}}
+    <button>New</button>
+</template>
+
+<template name = "controls">
+  <div class = "control_bar"></div>
+</template>
 
 <template name = "search_bar">
 
-  <div>
-    <div>
+  <div class = "search_panel">
+    <div class = "search_div">
       <label>Hardware Id</label>
-      <input class = "search_input" type = "text" id = "s_hwid">
+      <input class = "search_input" type = "text" id = "s_hwid" value = "{{fromSession 's_hwid'}}">
     </div>
-    <div>
+    <div class = "search_div">
       <label>Device Id</label>
-      <input class = "search_input"  type = "text" id = "s_deid">
+      <input class = "search_input"  type = "text" id = "s_deid" value = "{{fromSession 's_deid'}}">
     </div>
-    <div>
+    <div class = "search_div">
       <label>Service Account Id</label>
-      <input class = "search_input"  type = "text" id = "s_said">
+      <input class = "search_input"  type = "text" id = "s_said" value = "{{fromSession 's_said'}}">
     </div>
-    <div>
+    <div class = "search_div">
       <label>LSAM Id</label>
-      <input class = "search_input"  type = "text" id = "s_lsam">
+      <input class = "search_input"  type = "text" id = "s_lsam" value = "{{fromSession 's_lsam'}}">
     </div>
-    <div>
+    <div class = "search_div">
       <label>Device Type</label>
       <select class = "search_input" id = "s_device_type">
         <option></option>
-        <option value = "ACIM">ACIM</option>
-        <option value = "TIT">TIT</option>
-        <option value = "CIT">CIT</option>
-        <option value = "PCRS">PCRS</option>
-        <option value = "PSCCS">PSCCS</option>
-        <option value = "OVMC">OVMC</option>
+        <option {{selected_type "ACIM" }} value  = "ACIM">ACIM</option>
+        <option {{selected_type "TIT" }} value = "TIT">TIT</option>
+        <option {{selected_type "CIT" }} value = "CIT">CIT</option>
+        <option {{selected_type "PCRS" }} value = "PCRS">PCRS</option>
+        <option {{selected_type "PSCCS" }} value = "PSCCS">PSCCS</option>
+        <option {{selected_type "OVMC" }} value = "OVMC">OVMC</option>
       </select>
     </div>
-    <div>
+    <div class = "search_div">
       <label>Agency</label>
       <select class = "search_input" id = "s_agency">
         <option></option>
-        <option value = "OASA">OASA</option>
-        <option value = "STASY">STASY</option>
-        <option value = "OSY">OSY</option>
-        <option value = "TRAINOSE">TRAINOSE</option>
+        <option {{selected_agency "OASA" }} value = "OASA">OASA</option>
+        <option {{selected_agency "STASY" }} value = "STASY">STASY</option>
+        <option {{selected_agency "OSY" }} value = "OSY">OSY</option>
+        <option {{selected_agency "TRAINOSE" }} value = "TRAINOSE">TRAINOSE</option>
+      </select>
+    </div>
+    <div class = "search_div">
+      <label>Installation Status</label>
+      <select class = "search_input" id = "s_sw_status">
+        <option></option>
+        <option {{selected_sw_status "Operating System Update" }} value = "Operating System Update">Operating System Update</option>
+        <option {{selected_sw_status "Firmware Update" }} value = "Firmware Update">Firmware Update</option>
+        <option {{selected_sw_status "Testing" }} value = "Testing">Testing</option>
+        <option {{selected_sw_status "Done" }} value = "Done">Done</option>
       </select>
     </div>
     <button id="search_button">Search</button>
@@ -90,11 +119,9 @@
 </template>
 
 
+
 <template name = "device">
-  <button id = "back">Back</button>
   {{#with device}}
-    <button id = "save">Save</button>
-    <button id = "reset">Reset</button>
     <br>
     <div class = "section">
       <h1>Hardware</h1>
@@ -166,7 +193,7 @@
 
 <template name = "dropdown">
   <label>{{field_label name}}:</label>
-  <select class = "{{lower value}}" id = "edit_{{name}}" value="{{value}}">
+  <select class = "device-input {{lower value}}" id = "edit_{{name}}" value="{{value}}">
     {{#each field_options name}}
       <option class = "{{lower this}}" {{selected_option this ../value}}> {{this}} </option>
     {{/each}}
@@ -174,5 +201,14 @@
 </template>
 
 <template name = "text">
-  <label>{{field_label name}}:</label> <input type = "text" id = "edit_{{name}}" value = "{{value}}">
+  <label>{{field_label name}}:</label> <input class = "device-input" type = "text" id = "edit_{{name}}" value = "{{value}}">
+</template>
+
+<template name = "date">
+
+  <label>{{field_label name}}:</label>
+  <div class="input-group datetimepicker">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+    <input class="set-due-date form-control" type="text" value="{{toDate value}}"/>
+  </div>
 </template>
