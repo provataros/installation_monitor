@@ -1,0 +1,105 @@
+/* CSS declarations go here */
+
+tr {
+  cursor : pointer;
+}
+html,body{
+  padding : 0px;
+  margin : 0px;
+  background-color: #f2f4f6;
+}
+*{
+  font-family: 'Roboto', sans-serif;
+}
+
+tr.odd{
+  background-color: #e8f1f9;
+}
+
+tr:hover{
+  background-color: #03a9f4;
+}
+
+.section{
+  box-shadow: 2px 2px 5px #888888;
+  margin : 20px 50px;
+  box-sizing: border-box;
+  padding : 15px;
+  background-color: #fff
+}
+
+.device-field{
+  box-sizing: border-box;
+  padding : 5px;
+  font-size: 16px;
+  min-width : 32.7%;
+  /*box-shadow: 2px 2px 5px #888888;*/
+  display : inline-block;
+  margin : 0px;
+}
+
+.device-field input[type=text] {
+    padding: 5px 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    border-style : none !important;
+    cursor : pointer;
+    width : auto;
+    font-style: italic;;
+}
+
+.device-field select {
+    padding: 5px 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    border-style : none !important;
+    cursor : pointer;
+
+    font-style: italic;;
+}
+.status{
+  width  : 100%;
+}
+
+.device-field input[type=text]:hover{
+  outline: none;
+  background-color: #e8f1f9;
+}
+.device-field input[type=text]:focus{
+  outline: none;
+  background-color: #eeeeee;
+}
+h1 {
+  margin : 5px 0px;
+}
+
+#swd{
+  width : 65.8%;
+}
+#swd > input{
+  width : 65.8%;
+}
+
+#location{
+  width : 65.8%;
+}
+#location > input{
+  width : 65.8%;
+}
+
+#hw_comments,#sw_comments{
+  width : 100%;
+}
+#hw_comments >input ,#sw_comments>input {
+  width : 75%;
+}
+
+.done{
+  color : #4db351;
+}
+.not_done{
+  color : red;
+}
+.firmware_update,.operating_system_update,.testing{
+  color : #e0aa5d;
+}

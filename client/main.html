@@ -1,0 +1,175 @@
+<head>
+  <title>Installation_Status</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,greek' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  {{#if selected_device}}
+    {{> device}}
+  {{else}}
+    {{> search_bar}}
+    {{> search_results}}
+  {{/if}}
+</body>
+
+<template name = "search_bar">
+
+  <div>
+    <div>
+      <label>Hardware Id</label>
+      <input class = "search_input" type = "text" id = "s_hwid">
+    </div>
+    <div>
+      <label>Device Id</label>
+      <input class = "search_input"  type = "text" id = "s_deid">
+    </div>
+    <div>
+      <label>Service Account Id</label>
+      <input class = "search_input"  type = "text" id = "s_said">
+    </div>
+    <div>
+      <label>LSAM Id</label>
+      <input class = "search_input"  type = "text" id = "s_lsam">
+    </div>
+    <div>
+      <label>Device Type</label>
+      <select class = "search_input" id = "s_device_type">
+        <option></option>
+        <option value = "ACIM">ACIM</option>
+        <option value = "TIT">TIT</option>
+        <option value = "CIT">CIT</option>
+        <option value = "PCRS">PCRS</option>
+        <option value = "PSCCS">PSCCS</option>
+        <option value = "OVMC">OVMC</option>
+      </select>
+    </div>
+    <div>
+      <label>Agency</label>
+      <select class = "search_input" id = "s_agency">
+        <option></option>
+        <option value = "OASA">OASA</option>
+        <option value = "STASY">STASY</option>
+        <option value = "OSY">OSY</option>
+        <option value = "TRAINOSE">TRAINOSE</option>
+      </select>
+    </div>
+    <button id="search_button">Search</button>
+  </div>
+
+</template>
+
+<template name = "search_results">
+  <table width = "100%">
+    <tr>
+      <th>Device Type</th>
+      <th>Agency</th>
+      <th>Hardware ID</th>
+      <th>Device ID</th>
+      <th>Service Account ID</th>
+      <th>LSAM ID</th>
+      <th>Location</th>
+      <th>SAM Location</th>
+      <th>H/W Status</th>
+      <th>S/W Status</th>
+    </tr>
+    {{#each results}}
+      <tr class = "device_item {{evenrow @index}}" >
+        <td>{{device_type}}</td>
+        <td>{{agency}}</td>
+        <td>{{hw_id}}</td>
+        <td>{{device_id}}</td>
+        <td>{{service_id}}</td>
+        <td>{{lsam_id}}</td>
+        <td>{{location}}</td>
+        <td>{{sam_tracking}}</td>
+        <td>{{hw_status}}</td>
+        <td>{{sw_status}}</td>
+      </tr>
+    {{/each}}
+  </table>
+</template>
+
+
+<template name = "device">
+  <button id = "back">Back</button>
+  {{#with device}}
+    <button id = "save">Save</button>
+    <button id = "reset">Reset</button>
+    <br>
+    <div class = "section">
+      <h1>Hardware</h1>
+      {{> device_field toObject "hw_status" this}}
+      <br>
+      {{> device_field toObject "device_type" this}}
+      {{> device_field toObject "hw_id" this}}
+      {{> device_field toObject "device_id" this}}
+      {{> device_field toObject "lsam_id" this}}
+      {{> device_field toObject "label" this}}
+      {{> device_field toObject "sam_tracking" this}}
+      <br>
+      {{> device_field toObject "hw_comments" this}}
+    </div>
+    <div class = "section">
+      <h1>Software</h1>
+      {{> device_field toObject "sw_status" this}}
+      <br>
+      {{> device_field toObject "service_id" this}}
+      {{> device_field toObject "feeset_id" this}}
+      {{> device_field toObject "firmware_type" this}}
+      <br>
+      {{> device_field toObject "sw_comments" this}}
+      {{> device_field toObject "status_of_installation" this}}
+    </div>
+
+    <div class = "section">
+      <h1>Agency</h1>
+      {{> device_field toObject "agent_id" this}}
+      {{> device_field toObject "agency" this}}
+      {{> device_field toObject "sub_agency" this}}
+      {{> device_field toObject "supervisor" this}}
+      {{> device_field toObject "hp_number" this}}
+      {{> device_field toObject "operator_name" this}}
+      {{> device_field toObject "operator_id" this}}
+      {{> device_field toObject "operator_card" this}}
+    </div>
+    <div class = "section">
+      <h1>Location</h1>
+      {{> device_field toObject "station_id" this}}
+      {{> device_field toObject "station_name" this}}
+      {{> device_field toObject "line" this}}
+      {{> device_field toObject "location" this}}
+    </div>
+    <div class = "section">
+      <h1>Network</h1>
+      {{> device_field toObject "ip" this}}
+      {{> device_field toObject "subnet" this}}
+      {{> device_field toObject "gateway" this}}
+      {{> device_field toObject "ntp" this}}
+      {{> device_field toObject "dns1" this}}
+      {{> device_field toObject "dns2" this}}
+      {{> device_field toObject "host1" this}}
+      {{> device_field toObject "host2" this}}
+      {{> device_field toObject "host3" this}}
+      {{> device_field toObject "swd" this}}
+    </div>
+  {{/with}}
+</template>
+
+<template name = "device_field">
+  <div class = "device-field" id="{{name}}">
+    {{> Template.dynamic template=(field_type name) }}
+  </div>
+</template>
+
+<template name = "dropdown">
+  <label>{{field_label name}}:</label>
+  <select class = "{{lower value}}" id = "edit_{{name}}" value="{{value}}">
+    {{#each field_options name}}
+      <option class = "{{lower this}}" {{selected_option this ../value}}> {{this}} </option>
+    {{/each}}
+  </select>
+</template>
+
+<template name = "text">
+  <label>{{field_label name}}:</label> <input type = "text" id = "edit_{{name}}" value = "{{value}}">
+</template>
