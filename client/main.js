@@ -6,7 +6,7 @@ import './main.html';
 
 var devices = new Mongo.Collection("devices");
 var stations = new Mongo.Collection("stations");
-
+Mongo._devices = devices;
 
 var status = {};
 
@@ -93,7 +93,7 @@ Template.search_results.helpers({
   results : function(){
     var query = construct_query();
     if (query){
-      console.log(devices.find(query).fetch());
+    //  console.log(devices.find(query).fetch());
       return devices.find(query);
     }
   },
@@ -123,6 +123,7 @@ Template.device.events({
     Session.set("selected_device",null);
   },
   "click #save" : function(){
+    //console.log(this);
     var id = this._id;
     var flag = false;
     var fields = {};
@@ -134,8 +135,10 @@ Template.device.events({
       }
     });
     if (flag){
-      var result = devices.update( {_id : id },{$set : fields});
+    //  console.log(id);
+      var result = Meteor.call("save",id,fields);
       if (result == 1){
+      //  console.log(result,id);
         var str = "Succesfully updated : \n\n";
         $.each(fields,function(key,value){
           str += labels[key].name +'\n';
@@ -401,6 +404,10 @@ var labels = {
   sam_tracking : {
 		name : "SAM Location",
     group : "comments",////////////////////////
+	},
+  sw_version : {
+		name : "Software Version",
+    group : "software",////////////////////////
 	},
 }
 Meteor.subscribe("stations", function(){

@@ -215,6 +215,9 @@ Meteor.methods({
   },
   find : function(){
     console.log(devices.find({}).fetch());
+  },
+  save : function(id,data){
+    return devices.update( {_id : id },{$set : data});
   }
 })
 
