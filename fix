@@ -1,0 +1,1 @@
+db.devices.update({},{$set : {hw_comments : "", sw_comments : "",agency_comments:"",location_comments:"",network_comments : "",misc_comments : "",hw_status : "",sw_status : ""}},{multi : true})
