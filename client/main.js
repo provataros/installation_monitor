@@ -137,6 +137,7 @@ Template.device.events({
     if (flag){
     //  console.log(id);
       var result = Meteor.call("save",id,fields);
+      console.log(result);
       if (result == 1){
       //  console.log(result,id);
         var str = "Succesfully updated : \n\n";
@@ -408,6 +409,14 @@ var labels = {
   sw_version : {
 		name : "Software Version",
     group : "software",////////////////////////
+	},
+  install_date : {
+		name : "Installation Date",
+    group : "location",////////////////////////
+	},
+  schedule_date : {
+		name : "Schedule Date",
+    group : "location",////////////////////////
 	},
 }
 Meteor.subscribe("stations", function(){
