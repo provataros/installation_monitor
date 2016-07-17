@@ -105,6 +105,7 @@
         <th >H/W Status</th>
         <th >S/W Status</th>
       </tr>
+      <br>
       {{#each results}}
         <tr class = "device_item {{evenrow @index}}" >
           <td>{{device_type}}</td>
@@ -117,8 +118,8 @@
           <td>{{lsam_id}}</td>
           <td>{{station_name}} {{line}}</td>
           <td>{{sam_tracking}}</td>
-          <td>{{hw_status}}</td>
-          <td>{{sw_status}}</td>
+          <td class = "{{lower hw_status}}">{{hw_status}}</td>
+          <td class = "{{lower sw_status}}">{{sw_status}}</td>
         </tr>
       {{/each}}
     </table>
