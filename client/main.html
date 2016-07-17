@@ -15,6 +15,7 @@
       {{> search_results}}
     {{/if}}
   </div>
+
 </body>
 
 <template name = "side_panel">
@@ -88,34 +89,40 @@
 </template>
 
 <template name = "search_results">
-  <table width = "100%">
-    <tr>
-      <th>Device Type</th>
-      <th>Agency</th>
-      <th>Hardware ID</th>
-      <th>Device ID</th>
-      <th>Service Account ID</th>
-      <th>LSAM ID</th>
-      <th>Location</th>
-      <th>SAM Location</th>
-      <th>H/W Status</th>
-      <th>S/W Status</th>
-    </tr>
-    {{#each results}}
-      <tr class = "device_item {{evenrow @index}}" >
-        <td>{{device_type}}</td>
-        <td>{{agency}}</td>
-        <td>{{hw_id}}</td>
-        <td>{{device_id}}</td>
-        <td>{{service_id}}</td>
-        <td>{{lsam_id}}</td>
-        <td>{{location}}</td>
-        <td>{{sam_tracking}}</td>
-        <td>{{hw_status}}</td>
-        <td>{{sw_status}}</td>
+  <div class = "search_panel">
+    <table id = "search_results" width = "100%">
+      <tr>
+        <th class = "sort" id = "sort_device_type">Device Type</th>
+        <th class = "sort" id = "sort_install_date">Install Date</th>
+        <th class = "sort" id = "sort_schedule_date">Schedule Date</th>
+        <th >Agency</th>
+        <th >Hardware ID</th>
+        <th >Device ID</th>
+        <th >Service Account ID</th>
+        <th >LSAM ID</th>
+        <th >Location</th>
+        <th >SAM Location</th>
+        <th >H/W Status</th>
+        <th >S/W Status</th>
       </tr>
-    {{/each}}
-  </table>
+      {{#each results}}
+        <tr class = "device_item {{evenrow @index}}" >
+          <td>{{device_type}}</td>
+          <td>{{toDate install_date}}</td>
+          <td>{{toDate schedule_date}}</td>
+          <td>{{agency}}</td>
+          <td>{{hw_id}}</td>
+          <td>{{device_id}}</td>
+          <td>{{service_id}}</td>
+          <td>{{lsam_id}}</td>
+          <td>{{station_name}} {{line}}</td>
+          <td>{{sam_tracking}}</td>
+          <td>{{hw_status}}</td>
+          <td>{{sw_status}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
 </template>
 
 
@@ -162,11 +169,11 @@
     </div>
     <div class = "section">
       <h1>Location</h1>
-      {{> device_field toObject "station_id" this}}
-      {{> device_field toObject "station_name" this}}
-      {{> device_field toObject "line" this}}
       {{> device_field toObject "install_date" this}}
       {{> device_field toObject "schedule_date" this}}
+      {{> device_field toObject "line" this}}
+      {{> device_field toObject "station_id" this}}
+      {{> device_field toObject "station_name" this}}
       {{> device_field toObject "location" this}}
     </div>
     <div class = "section">
@@ -205,10 +212,8 @@
 </template>
 
 <template name = "date">
-
   <label>{{field_label name}}:</label>
-  <div class="input-group datetimepicker">
-    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-    <input class="set-due-date form-control" type="text" value="{{toDate value}}"/>
-  </div>
+  <input type="hidden" id = "edit_{{name}}" class = "device-input" value="{{value}}"/>
+  <input class="datepicker" id = "date_{{name}}" type="text"/>
+
 </template>

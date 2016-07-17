@@ -27,7 +27,6 @@ Meteor.startup(() => {
 
 });
 
-
 Template.search_bar.events({
   "keypress .search_input" : function(event,target){
     var id = $(event.target).attr("id");
@@ -100,9 +99,18 @@ function construct_query(){
 Template.search_results.helpers({
   results : function(){
     var query = construct_query();
+    var sort = Session.get("sort");
+    if (sort){
+      obj = {};
+      obj[sort] = Session.get("sort_order");
+      sort = {sort : obj}
+    }
+    else{
+      sort = null;
+    }
+    console.log(sort);
     if (query){
-    //  console.log(devices.find(query).fetch());
-      return devices.find(query);
+      return sort?devices.find(query,sort):devices.find(query);
     }
   },
 })
@@ -123,6 +131,17 @@ Template.search_results.events({
   "click .device_item" : function(){
     Session.set("selected_device",this._id);
     status = {};
+  },
+  "click .sort" : function(e){
+    var sort = Session.get("sort");
+    var id = e.target.id.substr(5,e.target.id.length-1);
+    if (sort === id){
+      Session.set("sort_order",Session.get("sort_order")*(-1));
+    }
+    else{
+      Session.set("sort",id);
+      Session.set("sort_order",-1);
+    }
   },
 })
 
@@ -163,14 +182,21 @@ Template.side_panel.events({
     }
   },
   "click #reset" : function(){
-    $.each( this, function( key, value ) {
-      if (key === "_id")return;
-        $("#edit_"+key).val(value);
+    var that = this;
+    $(".device-input").each(function( key,value) {
+        $(value).val(that[$(value).attr("id").substr(5,$(value).attr("id").length-1)])
+    });
+    $(".datepicker").each(function(key,value){
+      var id = $(value).attr("id").substr(5,$(value).attr("id").length-1);
+      if ($("#edit_"+id).val()){
+        $(value).val(moment($("#edit_"+id).val(),"YYYYMMDD").format("dddd DD MMM YYYY"));
+      }
+      else{
+        $(value).val("");
+      }
     });
   },
 })
-
-console.log($.datepicker);
 
 
 Template.registerHelper("device",function(){
@@ -219,13 +245,6 @@ Template.registerHelper('toObject',function(key,obj){
   return {name : key,value : obj[key]}
 });
 
-Template.registerHelper('toDate',function(obj){
-  if (!obj)return "";
-  var date = moment(obj,"YYYYMMDD");
-  if (date.isValid())  return date.format("dddd DD MMMM YYYY");
-  return "";//(new Date(obj)).toLocaleString("",date_options);
-})
-
 Meteor.subscribe("stations", function(){
   labels.station_id.options.push("");
   labels.station_name.options.push("");
@@ -256,6 +275,17 @@ Template.registerHelper('selected_agency', function(id) {
   return Session.get("s_agency")===id?"selected":"";
 });
 
+Template.registerHelper('toDate', function(id) {
+  return id?moment(id,"YYYYMMDD").format("DD/MM/YY"):""
+});
+
+
 Template.date.onRendered(function(){
-  console.log(this.$('.datetimepicker').datetimepicker({format : "dddd DD MMM YYYY"}));
+  var that = this;
+  this.$('.datepicker').datepicker({
+    value : $(this.find(".device-input")).val() ,
+    format : "dddd DD MMM YYYY"
+  },function(date){
+    $(that.find(".device-input")).val(date);
+  });
 })

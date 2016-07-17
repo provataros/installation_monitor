@@ -1,5 +1,3 @@
-/* CSS declarations go here */
-
 tr {
   cursor : pointer;
 }
@@ -13,15 +11,23 @@ html,body{
 *{
   font-family: 'Roboto', sans-serif;
 }
+#search_results tr{
+  padding : 3px 0px;
+}
+#search_results{
+  font-size: 16px
+}
 
-tr.odd{
+#search_results tr.odd{
   background-color: #e8f1f9;
 }
 
-tr:hover{
+#search_results tr:hover{
   background-color: #03a9f4;
 }
-
+.device-item{
+  box-shadow: 2px 2px 5px #888888;
+}
 .section{
   box-shadow: 2px 2px 5px #888888;
   margin : 20px 50px;
@@ -143,4 +149,50 @@ h1 {
   width : 40px;
   height : 40px;
   margin-bottom: 5px;
+}
+
+.calendar{
+  width : 250px;
+  border-style: solid;
+  border-width: 1px;
+  position : absolute;
+  background-color : white;
+}
+
+
+.calendar table{
+  width : 100%;
+  height : 100%;
+  table-layout: fixed;
+  text-align: center;
+  vertical-align: middle;
+  margin : 0px;
+}
+.calendar th,.calendar td{
+  text-align: center;
+  box-sizing: border-box;
+  margin : 0px;
+  width : 30px;
+  height : 30px;
+}
+.calendar td:hover{
+  background-color: green;
+  margin : 0px;
+}
+
+.calendar #controls{
+  text-align: center;
+  padding : 0px auto;
+}
+.calendar .today{
+  background-color: orange;
+}
+.calendar .selected{
+  background-color: blue;
+}
+.calendar .today:hover{
+  background-color: yellow;
+}
+.calendar .selected:hover{
+  background-color: brown;
 }
