@@ -15,8 +15,13 @@ html,body{
   padding : 3px 0px;
 }
 #search_results{
-  font-size: 16px
+  font-size: 16px;
 }
+
+#search_results td{
+  padding-right :10px;
+}
+
 
 #search_results tr.odd{
   background-color: #e8f1f9;
