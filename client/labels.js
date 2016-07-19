@@ -207,4 +207,19 @@ export const labels = {
     type : "date",
     group : "location",////////////////////////
 	},
+  urgent : {
+		name : "Urgent",
+    type : "checkbox",
+    group : "misc",////////////////////////
+	},
+  hw_error : {
+		name : "Hardware Error",
+    type : "checkbox",
+    group : "misc",////////////////////////
+	},
+  sw_error : {
+		name : "Software Error",
+    type : "checkbox",
+    group : "misc",////////////////////////
+	},
 }

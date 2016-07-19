@@ -24,6 +24,9 @@
       <button id = "back">Back</button>
       <button id = "save">Save</button>
       <button id = "reset">Reset</button>
+      <button id = "copy">Copy</button>
+      <button id = "delete">Delete</button>
+
     {{/with}}
     <button>New</button>
 </template>
@@ -83,9 +86,55 @@
         <option {{selected_sw_status "Done" }} value = "Done">Done</option>
       </select>
     </div>
-    <button id="search_button">Search</button>
+    <div class = "search_div">
+      <label>Urgent</label>
+      <input class = "search_input"  type = "checkbox" id = "s_urgent" {{isCheckedSession 's_urgent'}}>
+    </div>
+    <div class = "search_div">
+      <label>Error</label>
+      <input class = "search_input"  type = "checkbox" id = "s_error" {{isCheckedSession 's_error'}}>
+    </div>
+    <br>
+    <div class = "search_div">
+      <label>Install Date</label>
+      <input id = "search_install_date" class = "showbox" type = "checkbox" {{isCheckedSession 'search_install_date'}}>
+      <div id = "install_date_div" class = "checkboxDiv">
+        {{debug isCheckedSessionB "search_install_date"}}
+        {{#if isCheckedSessionB "search_install_date"}}
+          {{> searchDate "from_install_date"}}
+          {{> searchDate "untl_install_date"}}
+        {{/if}}
+      </div>
+    </div>
+    <br>
+    <div class = "search_div">
+      <label>Schedule Date</label>
+      <input id = "search_schedule_date" class = "showbox" type = "checkbox" {{isCheckedSession 'search_schedule_date'}}>
+      <div id = "schedule_date_div" class = "checkboxDiv">
+        {{#if isCheckedSessionB "search_schedule_date"}}
+          {{> searchDate "from_schedule_date"}}
+          {{> searchDate "untl_schedule_date"}}
+        {{/if}}
+      </div>
+    </div>
+    <br>
+    <!-- <div class = "search_div">
+      <label>Register Date</label>
+      <input id = "search_register_date" class = "showbox" type = "checkbox">
+      <div id = "register_date_div" class = "checkboxDiv">
+        {{> searchDate "from_register_date"}}
+        {{> searchDate "untl_register_date"}}
+      </div>
+    </div>
+  -->
+    <!-- <button id="search_button">Search</button> -->
   </div>
 
+</template>
+
+<template name="searchDate">
+  <input type="hidden" id = "s_{{this}}" class = "search_input" value="{{fromSessionP this}}"/>
+  <input class="datepicker" id = "date_{{this}}" type="text"/>
 </template>
 
 <template name = "search_results">
@@ -107,7 +156,7 @@
       </tr>
       <br>
       {{#each results}}
-        <tr class = "device_item {{evenrow @index}}" >
+        <tr class = "device_item {{evenrow @index}} {{isUrgent}}" >
           <td>{{device_type}}</td>
           <td>{{toDate install_date}}</td>
           <td>{{toDate schedule_date}}</td>
@@ -135,6 +184,7 @@
       <h1>Hardware</h1>
       {{> device_field toObject "hw_status" this}}
       <br>
+      {{> device_field toObject "urgent" this}}
       {{> device_field toObject "device_type" this}}
       {{> device_field toObject "hw_id" this}}
       {{> device_field toObject "device_id" this}}
@@ -143,6 +193,7 @@
       {{> device_field toObject "sam_tracking" this}}
       <br>
       {{> device_field toObject "hw_comments" this}}
+      {{> device_field toObject "hw_error" this}}
     </div>
     <div class = "section">
       <h1>Software</h1>
@@ -155,6 +206,7 @@
       {{> device_field toObject "status_of_installation" this}}
       <br>
       {{> device_field toObject "sw_comments" this}}
+      {{> device_field toObject "sw_error" this}}
     </div>
 
     <div class = "section">
@@ -216,5 +268,9 @@
   <label>{{field_label name}}:</label>
   <input type="hidden" id = "edit_{{name}}" class = "device-input" value="{{value}}"/>
   <input class="datepicker" id = "date_{{name}}" type="text"/>
+</template>
 
+<template name = "checkbox">
+  <label>{{field_label name}}:</label>
+  <input type="checkbox" id = "edit_{{name}}" class = "device-input" {{isChecked}}/>
 </template>

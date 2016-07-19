@@ -13,14 +13,22 @@ Mongo._devices = devices;
 
 var status = {};
 
-Meteor.startup(() => {
-  Session.set("s_hwid","");
-  Session.set("s_deid","");
-  Session.set("s_said","");
-  Session.set("s_lsam","");
-  Session.set("s_device_type","");
-  Session.set("s_agency","");
 
+$.fn.extend({
+  getVal : function(){
+    var value;
+    if (this.is("input[type='checkbox")){
+      return ""+this.is(':checked')
+    }
+    else{
+      return ""+this.val();
+    }
+  }
+});
+
+Meteor.startup(() => {
+  Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
+  Session.keys = {}
 
   Meteor.subscribe("devices")
   Meteor.subscribe("stations")
@@ -44,9 +52,19 @@ Template.search_bar.events({
     var value = $(event.target).val();
     Session.set(id,value);
   },
+  "change input[type='checkbox']" : function(event,target){
+    var id = $(event.target).attr("id");
+    var value = $(event.target).getVal();
+    Session.set(id,value);
+  },
   "click #search_button" : function(){
     //Meteor.call("test","test");
-  }
+  },
+  "change .showbox:not(:checked)" : function(event,target){
+    $(event.target).siblings(".checkboxDiv").find("input[type='hidden']").each(function(){
+      Session.set(this.id,undefined)
+    });
+  },
 });
 
 function get_hwid(){
@@ -62,6 +80,18 @@ function construct_query(){
   var type = Session.get("s_device_type");
   var agency = Session.get("s_agency");
   var sw_status = Session.get("s_sw_status");
+  var urgent = Session.get("s_urgent");
+  var error = Session.get("s_error");
+
+  var from_install = Session.get("s_from_install_date")
+  var until_install = Session.get("s_untl_install_date")
+
+  var from_schedule = Session.get("s_from_schedule_date")
+  var until_schedule = Session.get("s_untl_schedule_date")
+
+  var from_register = Session.get("s_from_register_date")
+  var until_register = Session.get("s_untl_register_date")
+
   var flag = false;
   var query = {};
   if (hardware){
@@ -92,6 +122,37 @@ function construct_query(){
     flag = true;
     query.sw_status = {$regex: ".*" + sw_status + ".*"};
   }
+  if (urgent=="true"){
+    flag = true;
+    query.urgent = "true";
+  }
+  if (error=="true"){
+    flag = true;
+    if (!(query.$or))query.$or = [];
+      query.$or.push(
+        { hw_error : "true"},
+        { sw_error : "true"},
+      );
+  }
+  if (from_install != undefined && until_install != undefined){
+    query.install_date = {
+      $gte : from_install,
+      $lte : until_install
+    }
+  }
+  if (from_schedule != undefined && until_schedule != undefined){
+    query.schedule_date = {
+      $gte : from_schedule,
+      $lte : until_schedule
+    }
+  }
+  if (from_register != undefined && until_register != undefined){
+    query.register_date = {
+      $gte : from_register,
+      $lte : until_register
+    }
+  }
+  console.log(query);
   if (flag)return query;
 }
 
@@ -108,11 +169,13 @@ Template.search_results.helpers({
     else{
       sort = null;
     }
-    console.log(sort);
     if (query){
       return sort?devices.find(query,sort):devices.find(query);
     }
   },
+  isUrgent : function(){
+    return this.urgent=="true"?"urgent":"";
+  }
 })
 
 Template.dropdown.events({
@@ -156,7 +219,7 @@ Template.side_panel.events({
     var that = this;
     $.each( $(".device-input"), function( key, value ) {
       key = $(value).attr("id").substr(5,$(value).attr("id").length-1)
-      value = $(value).val();
+      value = $(value).getVal();
       if (value !== that[key] && value != undefined){
         flag = true;
         fields[key] = value;
@@ -230,6 +293,18 @@ Template.registerHelper('field_label',function(obj){
     return labels[obj]?labels[obj].name:obj;
 });
 
+Template.registerHelper('isChecked',function(obj){
+    return this.value=="true"?"checked":""
+});
+
+Template.registerHelper('isCheckedSessionB',function(obj){
+    return Session.get(obj)=="true"?true:false
+});
+
+Template.registerHelper('isCheckedSession',function(obj){
+    return Session.get(obj)=="true"?"checked":""
+});
+
 Template.registerHelper('field_type',function(obj){
     return labels[obj].type?labels[obj].type : "text";
 });
@@ -262,6 +337,10 @@ Template.registerHelper('fromSession', function(id) {
   return Session.get(id);
 });
 
+Template.registerHelper('fromSessionP', function(id) {
+  return Session.get("s_"+id);
+});
+
 Template.registerHelper('selected_type', function(id) {
   return Session.get("s_device_type")===id?"selected":"";
 });
@@ -279,6 +358,10 @@ Template.registerHelper('toDate', function(id) {
   return id?moment(id,"YYYYMMDD").format("DD/MM/YY"):""
 });
 
+Template.registerHelper('args', function(a,b,c,d,e) {
+  return arguments
+});
+
 
 Template.date.onRendered(function(){
   var that = this;
@@ -287,5 +370,18 @@ Template.date.onRendered(function(){
     format : "dddd DD MMM YYYY"
   },function(date){
     $(that.find(".device-input")).val(date);
+  });
+})
+
+
+Template.searchDate.onRendered(function(){
+  var that = this;
+  this.$('.datepicker').datepicker({
+    value : $(that.find(".search_input")).val() ,
+    format : "dddd DD MMM YYYY"
+  },function(date){
+    $(that.find(".search_input")).val(date);
+    var id = $(that.find(".search_input")).attr("id");
+    Session.set(id,date);
   });
 })

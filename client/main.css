@@ -11,6 +11,10 @@ html,body{
 *{
   font-family: 'Roboto', sans-serif;
 }
+
+#search_results {
+  border-collapse: collapse;
+}
 #search_results tr{
   padding : 3px 0px;
 }
@@ -117,6 +121,15 @@ h1 {
   color : #e0aa5d;
 }
 
+.checkboxDiv{
+  display : inline-block;
+}
+
+
+.urgent{
+  color : red;
+  background-color : black !important;
+}
 .search_div{
   display : inline-block;
   width : auto;
