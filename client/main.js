@@ -343,7 +343,7 @@ function populateStations(agency){
   labels.station_name.options.push("");
   _.each(stations.find({sub_agency : agency},{sort : {id : 1}}).fetch(),function(key, value){
       labels.station_id.options.push(key.id);
-      labels.station_name.options.push(key.name);
+      labels.station_name.options.push(key.eng);
   });
 }
 

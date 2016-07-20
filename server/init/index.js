@@ -9,8 +9,7 @@ function pad(num){
   var s = "00"+num;
   return s.substr(s.length-2)
 }
-
-function reset(){
+function resetStations(){
   Mongo._stations.remove({});
   _.each(stations,function(a){
     try{
@@ -21,7 +20,9 @@ function reset(){
       return
     }
   })
+}
 
+function resetLSAM(){
   Mongo._lsams.remove({});
   _.each(lsams,function(a){
     try{
@@ -32,7 +33,9 @@ function reset(){
       return
     }
   })
+}
 
+function resetDevices(){
   Mongo._devices.remove({});
   var error_flag = false;
   console.log("IMPORTING START-------------")
@@ -61,4 +64,8 @@ function reset(){
   console.log("ERRORS : " + error_flag)
 }
 
-export const Initialize = reset;
+function resetAll(){
+  resetStations();
+}
+
+export const Initialize = resetAll;

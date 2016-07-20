@@ -67,6 +67,6 @@ Meteor.methods({
     }
   },
   resetAll : function(){
-    //Initialize();
-  }
+    Initialize();
+  },
 })
