@@ -9,6 +9,8 @@ import './main.html';
 
 var devices = new Mongo.Collection("devices");
 var stations = new Mongo.Collection("stations");
+var usb = new Mongo.Collection("usb");
+
 Mongo._devices = devices;
 
 var status = {};
@@ -30,8 +32,10 @@ Meteor.startup(() => {
   Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
   Session.keys = {}
 
-  Meteor.subscribe("devices")
-  Meteor.subscribe("stations")
+  Meteor.subscribe("devices");
+  Meteor.subscribe("stations");
+
+  Session.set("menu","search");
 
 });
 
@@ -139,20 +143,22 @@ function construct_query(){
       $gte : from_install,
       $lte : until_install
     }
+    flag = true;
   }
   if (from_schedule != undefined && until_schedule != undefined){
     query.schedule_date = {
       $gte : from_schedule,
       $lte : until_schedule
     }
+    flag = true;
   }
   if (from_register != undefined && until_register != undefined){
     query.register_date = {
       $gte : from_register,
       $lte : until_register
     }
+    flag = true;
   }
-  console.log(query);
   if (flag)return query;
 }
 
@@ -187,7 +193,21 @@ Template.dropdown.events({
   },
   "change select" : function(e,t){
     $(e.target).css("color",$(e.target.options[e.target.selectedIndex]).css("color"))
-  }
+  },
+  "change #edit_sub_agency" : function(event,target){
+    populateStations(event.target.value);
+    $("#edit_station_id").empty();
+    $("#edit_station_name").empty();
+
+    $.each(labels.station_id.options,function(key,value){
+      $("#edit_station_id").append($("<option></option>").attr("value", value).text(value));
+    })
+    $.each(labels.station_name.options,function(key,value){
+      $("#edit_station_name").append($("<option></option>").attr("value", value).text(value));
+    })
+    $("#edit_station_id")[0].selectedIndex = 0;
+    $("#edit_station_name")[0].selectedIndex = 0;
+  },
 });
 
 Template.search_results.events({
@@ -220,25 +240,49 @@ Template.side_panel.events({
     $.each( $(".device-input"), function( key, value ) {
       key = $(value).attr("id").substr(5,$(value).attr("id").length-1)
       value = $(value).getVal();
-      if (value !== that[key] && value != undefined){
+      if ((value !== that[key] || !id) && value != undefined){
         flag = true;
         fields[key] = value;
       }
     });
+    console.log(flag,fields);
     if (flag){
     //  console.log(id);
-      var result = Meteor.call("save",id,fields,function(error,result){
-        if (result == 1){
-          var str = "Succesfully updated : \n\n";
-          $.each(fields,function(key,value){
-            str += labels[key].name +'\n';
-          });
-          alert(str.substring(0,str.length-1));
+      if (this.new){
+        if (!fields.hw_id || !fields.device_type){
+          alert("Please fill the mandatory fields :\nHardware ID\nDevice Type");
         }
         else{
-          alert("An error has occured while updating");
+          if (confirm('Are you sure you want to save?')) {
+            var result = Meteor.call("create",fields,function(error,result){
+              if (!result.error){
+                var str = "Succesfully created with _id : " + result;
+                alert(str);
+                Session.set("selected_device",result);
+              }
+              else{
+                alert("An error has occured while creating : " + result.error.err);
+              }
+            });
+          }
         }
-      });
+      }
+      else{
+        if (confirm('Are you sure you want to save?')) {
+          var result = Meteor.call("save",id,fields,function(error,result){
+            if (result == 1){
+              var str = "Succesfully updated : \n\n";
+              $.each(fields,function(key,value){
+                str += labels[key].name +'\n';
+              });
+              alert(str.substring(0,str.length-1));
+            }
+            else{
+              alert("An error has occured while updating : " + result.error.err);
+            }
+          });
+        }
+      }
     }
     else{
       alert("Nothing to update");
@@ -259,11 +303,80 @@ Template.side_panel.events({
       }
     });
   },
+  "click #new_acim" : function(){
+    Session.set("selected_device","__new__")
+
+  },
+  "click #delete" : function(){
+    if (confirm('Are you sure you want to delete this device? Hardware ID : '+this.hw_id)) {
+      Meteor.call("delete",this,function(result,error){
+        alert(error.error.err)
+      });
+    }
+    else{
+
+    }
+  },
+  "click #copy" : function(){
+    for (var key in this) {
+       if (this.hasOwnProperty(key)) {
+         delete this[key];
+       }
+    }
+    this.new = true;
+    $("#edit_hw_id").val(undefined);
+    $("#edit_lsam_id").val(undefined);
+    $("#edit_device_id").val(undefined);
+  },
+  "click #usb" : function(){
+    Session.set("menu","usb");
+  },
+  "click #search" : function(){
+    Session.set("menu","search");
+  }
 })
+
+function populateStations(agency){
+  labels.station_id.options = [];
+  labels.station_name.options = [];
+  labels.station_id.options.push("");
+  labels.station_name.options.push("");
+  _.each(stations.find({sub_agency : agency},{sort : {id : 1}}).fetch(),function(key, value){
+      labels.station_id.options.push(key.id);
+      labels.station_name.options.push(key.name);
+  });
+}
 
 
 Template.registerHelper("device",function(){
-    return devices.findOne({_id : Session.get("selected_device")})
+  var id = Session.get("selected_device");
+  if (id == "__new__"){
+    //console.log("hahe");
+    return {new : true}
+  }
+  else{
+    var f = devices.findOne({_id : id});
+    if (!f){
+      Session.set("selected_device",null);
+    }
+    else{
+      return f;
+    }
+  }
+
+})
+
+
+Template.registerHelper("menu",function(){
+  return Session.get("menu");
+})
+
+Template.registerHelper("usb_list",function(){
+  return usb.find({})
+})
+
+Template.registerHelper("isMenu",function(value){
+  return this == value;
 })
 
 Template.registerHelper("evenrow",function(value){
@@ -273,12 +386,20 @@ Template.registerHelper("save_status",function(value){
   status[value.name] = value.value;
 })
 
+Template.registerHelper("dateTime",function(value){
+  if (value)return moment(value,"YYYYMMDDHHmmss").format("DD MMMM YYYY  HH:mm:ss")
+})
+
 Template.registerHelper("selected_device",function(value){
   return Session.get("selected_device");
 })
 
 Template.registerHelper("debug",function(value){
   console.log(value);
+})
+
+Template.registerHelper("count",function(value){
+  return value.count();
 })
 Template.registerHelper('toArray',function(obj,group){
     var result = [];
@@ -320,13 +441,9 @@ Template.registerHelper('toObject',function(key,obj){
   return {name : key,value : obj[key]}
 });
 
-Meteor.subscribe("stations", function(){
-  labels.station_id.options.push("");
-  labels.station_name.options.push("");
-  _.each(stations.find({},{sort : {id : 1},fields: {_id : 0}}).fetch(),function(key, value){
-      labels.station_id.options.push(key.id);
-      labels.station_name.options.push(key.name);
-    });
+
+Template.registerHelper('populateStations',function(){
+  populateStations(this.sub_agency);
 });
 
 Template.registerHelper('lower', function(str) {

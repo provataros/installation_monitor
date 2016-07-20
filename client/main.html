@@ -8,27 +8,80 @@
     {{> side_panel}}
   </div>
   <div id="content">
+    {{#with menu}}
+      {{> search}}
+      {{> usb}}
+    {{/with}}
+  </div>
+
+</body>
+
+<template name = "search">
+  {{#if isMenu "search"}}
     {{#if selected_device}}
       {{> device}}
     {{else}}
       {{> search_bar}}
       {{> search_results}}
     {{/if}}
-  </div>
+  {{/if}}
+</template>
 
-</body>
-
-<template name = "side_panel">
+<template name = "search_side_panel">
+  {{#if isMenu "search"}}
     {{#with device}}
-    {{debug this}}
       <button id = "back">Back</button>
       <button id = "save">Save</button>
       <button id = "reset">Reset</button>
-      <button id = "copy">Copy</button>
-      <button id = "delete">Delete</button>
-
+      {{#unless this.new}}
+        <button id = "copy">Copy</button>
+      {{/unless}}
+      {{#unless this.new}}
+        <button id = "delete">Delete</button>
+      {{/unless}}
     {{/with}}
-    <button>New</button>
+    {{#unless device}}
+      <button id = "new_acim">New</button>
+    {{/unless}}
+  {{/if}}
+</template>
+
+<template name = "usb_side_panel">
+  {{#if isMenu "usb"}}
+    <button>Return</button>
+  {{/if}}
+</template>
+
+<template name = "side_panel">
+  {{#with menu}}
+
+    {{#unless isMenu "search"}}
+      <button id = "search">Search</button>
+    {{/unless}}
+    {{#unless isMenu "usb"}}
+      <button id = "usb">USB</button>
+    {{/unless}}
+
+    <div class = "button-separator"></div>
+
+    {{> search_side_panel}}
+    {{> usb_side_panel}}
+
+  {{/with}}
+</template>
+
+<template name = "usb">
+  {{#if isMenu "usb"}}
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  {{#each usb_list}}
+  {{/each}}
+  {{/if}}
 </template>
 
 <template name = "controls">
@@ -99,7 +152,6 @@
       <label>Install Date</label>
       <input id = "search_install_date" class = "showbox" type = "checkbox" {{isCheckedSession 'search_install_date'}}>
       <div id = "install_date_div" class = "checkboxDiv">
-        {{debug isCheckedSessionB "search_install_date"}}
         {{#if isCheckedSessionB "search_install_date"}}
           {{> searchDate "from_install_date"}}
           {{> searchDate "untl_install_date"}}
@@ -118,15 +170,17 @@
       </div>
     </div>
     <br>
-    <!-- <div class = "search_div">
+    <div class = "search_div">
       <label>Register Date</label>
-      <input id = "search_register_date" class = "showbox" type = "checkbox">
+      <input id = "search_register_date" class = "showbox" type = "checkbox" {{isCheckedSession 'search_register_date'}}>
       <div id = "register_date_div" class = "checkboxDiv">
-        {{> searchDate "from_register_date"}}
-        {{> searchDate "untl_register_date"}}
+        {{#if isCheckedSessionB "search_register_date"}}
+          {{> searchDate "from_register_date"}}
+          {{> searchDate "untl_register_date"}}
+        {{/if}}
       </div>
     </div>
-  -->
+
     <!-- <button id="search_button">Search</button> -->
   </div>
 
@@ -138,48 +192,57 @@
 </template>
 
 <template name = "search_results">
-  <div class = "search_panel">
-    <table id = "search_results" width = "100%">
-      <tr>
-        <th class = "sort" id = "sort_device_type">Device Type</th>
-        <th class = "sort" id = "sort_install_date">Install Date</th>
-        <th class = "sort" id = "sort_schedule_date">Schedule Date</th>
-        <th class = "sort" id = "sort_agency">Agency</th>
-        <th class = "sort" id = "sort_hw_id">Hardware ID</th>
-        <th class = "sort" id = "sort_device_id">Device ID</th>
-        <th class = "sort" id = "sort_service_id">Service Account ID</th>
-        <th class = "sort" id = "sort_lsam_id">LSAM ID</th>
-        <th class = "sort" id = "sort_station_name">Location</th>
-        <th class = "sort" id = "sort_sam_tracking">SAM Location</th>
-        <th class = "sort" id = "sort_hw_status">H/W Status</th>
-        <th class = "sort" id = "sort_sw_status">S/W Status</th>
-      </tr>
-      <br>
-      {{#each results}}
-        <tr class = "device_item {{evenrow @index}} {{isUrgent}}" >
-          <td>{{device_type}}</td>
-          <td>{{toDate install_date}}</td>
-          <td>{{toDate schedule_date}}</td>
-          <td>{{agency}}</td>
-          <td>{{hw_id}}</td>
-          <td>{{device_id}}</td>
-          <td>{{service_id}}</td>
-          <td>{{lsam_id}}</td>
-          <td>{{station_name}} {{line}}</td>
-          <td>{{sam_tracking}}</td>
-          <td class = "{{lower hw_status}}">{{hw_status}}</td>
-          <td class = "{{lower sw_status}}">{{sw_status}}</td>
+
+  {{#with results}}
+    <div class = "docInfo">Count : {{count this}}</div>
+    <div class = "search_panel">
+      <table id = "search_results" width = "100%">
+        <tr>
+          <th class = "sort" id = "sort_no">No</th>
+          <th class = "sort" id = "sort_device_type">Device Type</th>
+          <th class = "sort" id = "sort_install_date">Install Date</th>
+          <th class = "sort" id = "sort_schedule_date">Schedule Date</th>
+          <th class = "sort" id = "sort_register_date">Register Date</th>
+          <th class = "sort" id = "sort_agency">Agency</th>
+          <th class = "sort" id = "sort_hw_id">Hardware ID</th>
+          <th class = "sort" id = "sort_device_id">Device ID</th>
+          <th class = "sort" id = "sort_service_id">Service Account ID</th>
+          <th class = "sort" id = "sort_lsam_id">LSAM ID</th>
+          <th class = "sort" id = "sort_station_name">Location</th>
+          <th class = "sort" id = "sort_sam_tracking">SAM Location</th>
+          <th class = "sort" id = "sort_hw_status">H/W Status</th>
+          <th class = "sort" id = "sort_sw_status">S/W Status</th>
         </tr>
-      {{/each}}
-    </table>
-  </div>
+        <br>
+        {{#each this}}
+          <tr class = "device_item {{evenrow @index}} {{isUrgent}}" >
+            <td>{{@index}}</td>
+            <td>{{device_type}}</td>
+            <td>{{toDate install_date}}</td>
+            <td>{{toDate schedule_date}}</td>
+            <td>{{toDate register_date}}</td>
+            <td>{{agency}}</td>
+            <td>{{hw_id}}</td>
+            <td>{{device_id}}</td>
+            <td>{{service_id}}</td>
+            <td>{{lsam_id}}</td>
+            <td>{{station_name}} {{line}}</td>
+            <td>{{sam_tracking}}</td>
+            <td class = "{{lower hw_status}}">{{hw_status}}</td>
+            <td class = "{{lower sw_status}}">{{sw_status}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+  {{/with}}
 </template>
 
 
 
 <template name = "device">
   {{#with device}}
-    <br>
+    {{debug this}}
+    <div class = "docInfo">Created : {{dateTime createdAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edited : {{dateTime updatedAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registered : {{dateTime register_date}}</div>
     <div class = "section">
       <h1>Hardware</h1>
       {{> device_field toObject "hw_status" this}}
@@ -225,6 +288,7 @@
       {{> device_field toObject "install_date" this}}
       {{> device_field toObject "schedule_date" this}}
       {{> device_field toObject "line" this}}
+      {{populateStations}}
       {{> device_field toObject "station_id" this}}
       {{> device_field toObject "station_name" this}}
       {{> device_field toObject "location" this}}

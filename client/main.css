@@ -163,7 +163,7 @@ h1 {
   margin-left : 50px;
 }
 
-#side_panel button{
+#side_panel button,.button-separator{
   width : 40px;
   height : 40px;
   margin-bottom: 5px;
@@ -213,4 +213,12 @@ h1 {
 }
 .calendar .selected:hover{
   background-color: brown;
+}
+.docInfo{
+  width : 100%;
+  height : auto;
+  margin : 5px 50px;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-style: italic;
 }

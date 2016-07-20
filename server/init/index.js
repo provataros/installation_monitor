@@ -13,24 +13,52 @@ function pad(num){
 function reset(){
   Mongo._stations.remove({});
   _.each(stations,function(a){
-    Mongo._stations.insert(a);
+    try{
+      Mongo._stations.update(a,{$set : a},{upsert : true});
+    }
+    catch(e){
+      console.log(e.err);
+      return
+    }
   })
 
   Mongo._lsams.remove({});
   _.each(lsams,function(a){
-    Mongo._lsams.insert(a);
+    try{
+      Mongo._lsams.insert(a);
+    }
+    catch(e){
+      console.log(e.err)
+      return
+    }
   })
 
   Mongo._devices.remove({});
+  var error_flag = false;
+  console.log("IMPORTING START-------------")
   _.each(devices,function(a){
-    if(a.schedule_date){
-      a.schedule_date = ""+moment(a.schedule_date,"DD-MMM-YY").format("YYYYMMDD");
+    try{
+      console.log(a.schedule_date,a.install_date,a.register_date);
+      if(a.schedule_date){
+        a.schedule_date = ""+moment(a.schedule_date,"MM/DD/YYYY").format("YYYYMMDD");
+      }
+      if(a.install_date){
+        a.install_date = ""+moment(a.install_date,"MM/DD/YYYY").format("YYYYMMDD");
+      }
+      if(a.register_date){
+        a.register_date = ""+moment(a.register_date,"MM/DD/YYYY").format("YYYYMMDD");
+      }
+      a.createdAt = moment().format("YYYYMMDDHHmmss");
+      Mongo._devices.insert(a);
     }
-    if(a.install_date){
-      a.install_date = ""+moment(a.install_date,"DD-MMM-YY").format("YYYYMMDD");
+    catch(e){
+      console.log(e.err);
+      error_flag = true;
+      return
     }
-    Mongo._devices.insert(a);
   })
+  console.log("IMPORTING END-------------")
+  console.log("ERRORS : " + error_flag)
 }
 
 export const Initialize = reset;

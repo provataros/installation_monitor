@@ -1,1 +1,4 @@
-db.devices.update({},{$set : {hw_comments : "", sw_comments : "",agency_comments:"",location_comments:"",network_comments : "",misc_comments : "",hw_status : "",sw_status : ""}},{multi : true})
+// db.devices.update({sam_tracking : {$regex: ".*OS Update.*"}},{$set : { sam_tracking : "OS Update" }},{multi : true});
+db.devices.distinct("hw_id").length;
+db.devices.find().count();
+db.devices.createIndex({hw_id : 1},{unique : true});

@@ -70,6 +70,7 @@ export const labels = {
     group : "agency",
     type : "dropdown",
     options : [
+      "",
       "OASA",
       "STASY",
       "OSY",
@@ -81,6 +82,7 @@ export const labels = {
     group : "agency",
     type : "dropdown",
     options : [
+      "",
       "Tram",
       "Metro",
       "Suburban",
@@ -92,6 +94,7 @@ export const labels = {
     group : "hardware",
     type : "dropdown",
     options : [
+      "",
       "ACIM",
       "TIT",
       "CIT",
@@ -192,6 +195,17 @@ export const labels = {
   sam_tracking : {
 		name : "SAM Location",
     group : "comments",////////////////////////
+    type : "dropdown",
+    options : [
+      "",
+      "Office",
+      "Installed inside ACIM",
+      "Installed inside TIT",
+      "Installed inside PCRS",
+      "Installed inside Card Printer",
+      "OS Update",
+      "Installation"
+    ]
 	},
   sw_version : {
 		name : "Software Version",

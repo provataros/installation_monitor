@@ -23,9 +23,48 @@ Meteor.methods({
     //console.log(Mongo._devices.find({}).fetch());
   },
   save : function(id,data){
-    var f = Mongo._devices.update( {_id : id },{$set : data},{upsert : true});
-    //console.log(f);
-    return f;
+    try {
+      if (data.lsam_id){
+        var f = Mongo._lsams.find({id : data.lsam_id}).count();
+        if (f!=1){
+          return {error : {err : "LSAM does not exist!"}}
+        }
+
+      }
+      data.updatedAt = moment().format("YYYYMMDDHHmmss");
+      return Mongo._devices.update( {_id : id },{$set : data},{upsert : true});
+    }
+    catch(err) {
+      return {error : err}
+    }
+  },
+  create : function(data){
+    try {
+      if (data.lsam_id != ""){
+        var f = Mongo._lsams.find({id : data.lsam_id}).count();
+        console.log(f);
+        if (f!=1){
+          return {error : {err : "LSAM does not exist!"}}
+        }
+      }
+      data.createdAt = moment().format("YYYYMMDDHHmmss");
+      return Mongo._devices.insert(data);
+    }
+    catch(err) {
+      return {error : err}
+    }
+  },
+  delete : function(data){
+    try {
+      if (!data._id){
+        return {error : {err : "No _id!"}}
+      }
+      console.log(data);
+      return Mongo._devices.remove(data);
+    }
+    catch(err) {
+      return {error : err}
+    }
   },
   resetAll : function(){
     Initialize();

@@ -11,7 +11,6 @@ $.fn.extend({
 
       val?$(this).val(this.date.format(options.format?options.format:"YYYYMMDD")):null;
 
-      console.log(this);
       $(this).on("click",function(e){
         e.preventDefault();
         e.stopPropagation();
@@ -77,6 +76,8 @@ $.fn.extend({
         calendar.css({top : $(that).position().top + $(that).outerHeight(true) + 10, left : $(that).position().left})
 
         calendar.on("click",function(e,t){
+          e.preventDefault();
+          e.stopPropagation();
         });
 
         $(document).unbind("click",unfocus)
