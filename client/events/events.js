@@ -214,9 +214,7 @@ Template.settings.events({
     var id = (e.target.id);
     var value = e.target.checked;
     var settings = JSON.parse(localStorage.getItem("displayColumns"));
-    console.log(settings);
     settings[id]=value;
-    console.log(settings);
     localStorage.setItem("displayColumns",
       JSON.stringify(settings)
     )
