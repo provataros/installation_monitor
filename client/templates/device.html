@@ -1,0 +1,107 @@
+
+<template name = "device">
+  {{#with modal}}
+    {{> confirm}}
+  {{/with}}
+  {{#with alert}}
+    {{> alert}}
+  {{/with}}
+  {{#with device}}
+    <div class = "docInfo">Created : {{dateTime createdAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edited : {{dateTime updatedAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registered : {{dateTime register_date}}</div>
+    <div class = "section">
+      <h1>Hardware</h1>
+      {{> device_field toObject "hw_status" this}}
+      <br>
+      {{> device_field toObject "urgent" this}}
+      {{> device_field toObject "device_type" this}}
+      {{> device_field toObject "hw_id" this}}
+      {{> device_field toObject "device_id" this}}
+      {{> device_field toObject "lsam_id" this}}
+      {{> device_field toObject "label" this}}
+      {{> device_field toObject "sam_tracking" this}}
+      <br>
+      {{> device_field toObject "hw_comments" this}}
+      {{> device_field toObject "hw_error" this}}
+    </div>
+    <div class = "section">
+      <h1>Software</h1>
+      {{> device_field toObject "sw_status" this}}
+      <br>
+      {{> device_field toObject "sw_version" this}}
+      {{> device_field toObject "service_id" this}}
+      {{> device_field toObject "feeset_id" this}}
+      {{> device_field toObject "firmware_type" this}}
+      {{> device_field toObject "status_of_installation" this}}
+      <br>
+      {{> device_field toObject "sw_comments" this}}
+      {{> device_field toObject "sw_error" this}}
+    </div>
+
+    <div class = "section">
+      <h1>Agency</h1>
+      {{> device_field toObject "agent_id" this}}
+      {{> device_field toObject "agency" this}}
+      {{> device_field toObject "sub_agency" this}}
+      {{> device_field toObject "supervisor" this}}
+      {{> device_field toObject "hp_number" this}}
+      {{> device_field toObject "operator_name" this}}
+      {{> device_field toObject "operator_id" this}}
+      {{> device_field toObject "operator_card" this}}
+    </div>
+    <div class = "section">
+      <h1>Location</h1>
+      {{> device_field toObject "install_date" this}}
+      {{> device_field toObject "schedule_date" this}}
+      {{> device_field toObject "line" this}}
+      {{populateStations}}
+      {{> device_field toObject "station_id" this}}
+      {{> device_field toObject "station_name" this}}
+      {{> device_field toObject "location" this}}
+    </div>
+    <div class = "section">
+      <h1>Network</h1>
+      {{> device_field toObject "ip" this}}
+      {{> device_field toObject "subnet" this}}
+      {{> device_field toObject "gateway" this}}
+      {{> device_field toObject "ntp" this}}
+      {{> device_field toObject "dns1" this}}
+      {{> device_field toObject "dns2" this}}
+      {{> device_field toObject "host1" this}}
+      {{> device_field toObject "host2" this}}
+      {{> device_field toObject "host3" this}}
+      {{> device_field toObject "swd" this}}
+    </div>
+  {{/with}}
+</template>
+
+<template name = "device_field">
+  <div class = "device-field" id="{{name}}">
+    {{> Template.dynamic template=(field_type name) }}
+  </div>
+</template>
+
+<template name = "confirm">
+  <div class = "modal">
+    <div class ="modal-content">
+      <label>{{{message}}}</label>
+
+      <div id = "button-group">
+        <button id = "yes">Yes</button>
+        <button id = "no">No</button>
+      </div>
+    </div>
+  </div>
+  {{focus}}
+</template>
+
+<template name = "alert">
+  <div class = "alert">
+    <div class ="alert-content">
+      <div>{{{message}}}</div>
+      <div id = "button-group">
+        <button id = "ok">OK</button>
+      </div>
+    </div>
+  </div>
+  {{focus}}
+</template>

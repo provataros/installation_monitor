@@ -1,0 +1,29 @@
+DEVM_9=PSTMT.EQ Laptime : 24
+DEVM_9=Statement-Id : /smartafc/reload/internetreload/InquiryInternetReloadAjax/inquiryCardStatusInfo
+DEVM_9=     SELECT
+DEVM_9=              A.CARD_NUM
+DEVM_9=            , DECODE(B.REGIST_RELEAS_CLASS_CD , '1', 'Y', 'N') AS BLOCKED_YN
+DEVM_9=            , DECODE(A.CARD_CLASS_CD,'04','Y','N') AS DISUSE_YN
+DEVM_9=            , DECODE(F.CARD_NUM, NULL, 'N', 'Y') AS PERSON_YN
+DEVM_9=     FROM TBGZM100 A  /*Card MASTER*/
+DEVM_9=     LEFT JOIN TBADD750 B ON A.CARD_NUM  = B.CARD_NUM  /*AD_BL */
+DEVM_9=     LEFT JOIN TBADM730 F ON A.CARD_NUM  = F.CARD_NUM /*AD_PersonalizationCardInfo*/
+DEVM_9=     WHERE 1=1
+DEVM_9=    AND    A.CARD_NUM = '3001010000010935'
+DEVM_9=
+DEVM_9=Result : select completed.
+
+DEVM_8=PSTMT.EQ Laptime : 0
+DEVM_8=Statement-Id : /smartafc/reload/internetreload/InquiryInternetReloadAjax/inquiryCardStatusInfo
+DEVM_8=     SELECT
+DEVM_8=              A.CARD_NUM
+DEVM_8=            , DECODE(B.REGIST_RELEAS_CLASS_CD , '1', 'Y', 'N') AS BLOCKED_YN
+DEVM_8=            , DECODE(A.CARD_CLASS_CD,'04','Y','N') AS DISUSE_YN
+DEVM_8=            , DECODE(F.CARD_NUM, NULL, 'N', 'Y') AS PERSON_YN
+DEVM_8=     FROM TBGZM100 A  /*Card MASTER*/
+DEVM_8=     LEFT JOIN TBADD750 B ON A.CARD_NUM  = B.CARD_NUM  /*AD_BL */
+DEVM_8=     LEFT JOIN TBADM730 F ON A.CARD_NUM  = F.CARD_NUM /*AD_PersonalizationCardInfo*/
+DEVM_8=     WHERE 1=1
+DEVM_8=    AND    A.CARD_NUM = '3001010000010935'
+DEVM_8=
+DEVM_8=Result : select completed.

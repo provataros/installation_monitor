@@ -1,0 +1,210 @@
+
+<template name = "search_bar">
+
+  <div class = "search_panel">
+    <div class = "search_div">
+      <label>Hardware Id</label>
+      <input class = "search_input" type = "text" id = "s_hwid" value = "{{fromSession 's_hwid'}}">
+    </div>
+    <div class = "search_div">
+      <label>Device Id</label>
+      <input class = "search_input"  type = "text" id = "s_deid" value = "{{fromSession 's_deid'}}">
+    </div>
+    <div class = "search_div">
+      <label>Service Account Id</label>
+      <input class = "search_input"  type = "text" id = "s_said" value = "{{fromSession 's_said'}}">
+    </div>
+    <div class = "search_div">
+      <label>LSAM Id</label>
+      <input class = "search_input"  type = "text" id = "s_lsam" value = "{{fromSession 's_lsam'}}">
+    </div>
+    <div class = "search_div">
+      <label>Device Type</label>
+      <select class = "search_input" id = "s_device_type">
+        <option></option>
+        <option {{selected_type "ACIM" }} value  = "ACIM">ACIM</option>
+        <option {{selected_type "TIT" }} value = "TIT">TIT</option>
+        <option {{selected_type "CIT" }} value = "CIT">CIT</option>
+        <option {{selected_type "PCRS" }} value = "PCRS">PCRS</option>
+        <option {{selected_type "PSCCS" }} value = "PSCCS">PSCCS</option>
+        <option {{selected_type "OVMC" }} value = "OVMC">OVMC</option>
+      </select>
+    </div>
+    <div class = "search_div">
+      <label>Agency</label>
+      <select class = "search_input" id = "s_agency">
+        <option></option>
+        <option {{selected_agency "OASA" }} value = "OASA">OASA</option>
+        <option {{selected_agency "STASY" }} value = "STASY">STASY</option>
+        <option {{selected_agency "OSY" }} value = "OSY">OSY</option>
+        <option {{selected_agency "TRAINOSE" }} value = "TRAINOSE">TRAINOSE</option>
+      </select>
+    </div>
+    <div class = "search_div">
+      <label>Installation Status</label>
+      <select class = "search_input" id = "s_sw_status">
+        <option></option>
+        <option {{selected_sw_status "Operating System Update" }} value = "Operating System Update">Operating System Update</option>
+        <option {{selected_sw_status "Firmware Update" }} value = "Firmware Update">Firmware Update</option>
+        <option {{selected_sw_status "Testing" }} value = "Testing">Testing</option>
+        <option {{selected_sw_status "Done" }} value = "Done">Done</option>
+      </select>
+    </div>
+    <div class = "search_div">
+      <label>Urgent</label>
+      <input class = "search_input"  type = "checkbox" id = "s_urgent" {{isCheckedSession 's_urgent'}}>
+    </div>
+    <div class = "search_div">
+      <label>Error</label>
+      <input class = "search_input"  type = "checkbox" id = "s_error" {{isCheckedSession 's_error'}}>
+    </div>
+    <br>
+    <div class = "search_div">
+      <label>Install Date</label>
+      <input id = "search_install_date" class = "showbox" type = "checkbox" {{isCheckedSession 'search_install_date'}}>
+      <div id = "install_date_div" class = "checkboxDiv">
+        {{#if isCheckedSessionB "search_install_date"}}
+          {{> searchDate "from_install_date"}}
+          {{> searchDate "untl_install_date"}}
+        {{/if}}
+      </div>
+    </div>
+    <br>
+    <div class = "search_div">
+      <label>Schedule Date</label>
+      <input id = "search_schedule_date" class = "showbox" type = "checkbox" {{isCheckedSession 'search_schedule_date'}}>
+      <div id = "schedule_date_div" class = "checkboxDiv">
+        {{#if isCheckedSessionB "search_schedule_date"}}
+          {{> searchDate "from_schedule_date"}}
+          {{> searchDate "untl_schedule_date"}}
+        {{/if}}
+      </div>
+    </div>
+    <br>
+    <div class = "search_div">
+      <label>Register Date</label>
+      <input id = "search_register_date" class = "showbox" type = "checkbox" {{isCheckedSession 'search_register_date'}}>
+      <div id = "register_date_div" class = "checkboxDiv">
+        {{#if isCheckedSessionB "search_register_date"}}
+          {{> searchDate "from_register_date"}}
+          {{> searchDate "untl_register_date"}}
+        {{/if}}
+      </div>
+    </div>
+    <!-- <button id="search_button">Search</button> -->
+  </div>
+</template>
+
+
+<template name = "search_results">
+  {{#with results}}
+    <div class = "docInfo">Count : {{count this}}</div>
+    <div class = "search_panel">
+      <table id = "search_results" width = "100%">
+        <tr>
+          {{#if displayColumn "no"}}<th class = "sort" id = "sort_no">No</th>{{/if}}
+          {{#if displayColumn "device_type"}}<th class = "sort" id = "sort_device_type">Device Type</th>{{/if}}
+          {{#if displayColumn "install_date"}}<th class = "sort" id = "sort_install_date">Install Date</th>{{/if}}
+          {{#if displayColumn "schedule_date"}}<th class = "sort" id = "sort_schedule_date">Schedule Date</th>{{/if}}
+          {{#if displayColumn "register_date"}}<th class = "sort" id = "sort_register_date">Register Date</th>{{/if}}
+          {{#if displayColumn "agency"}}<th class = "sort" id = "sort_agency">Agency</th>{{/if}}
+          {{#if displayColumn "hw_id"}}<th class = "sort" id = "sort_hw_id">Hardware ID</th>{{/if}}
+          {{#if displayColumn "device_id"}}<th class = "sort" id = "sort_device_id">Device ID</th>{{/if}}
+          {{#if displayColumn "service_id"}}<th class = "sort" id = "sort_service_id">Service Account ID</th>{{/if}}
+          {{#if displayColumn "lsam_id"}}<th class = "sort" id = "sort_lsam_id">LSAM ID</th>{{/if}}
+          {{#if displayColumn "station_name"}}<th class = "sort" id = "sort_station_name">Location</th>{{/if}}
+          {{#if displayColumn "sam_tracking"}}<th class = "sort" id = "sort_sam_tracking">SAM Location</th>{{/if}}
+          {{#if displayColumn "hw_status"}}<th class = "sort" id = "sort_hw_status">H/W Status</th>{{/if}}
+          {{#if displayColumn "sw_status"}}<th class = "sort" id = "sort_sw_status">S/W Status</th>{{/if}}
+        </tr>
+        <br>
+        {{#each this}}
+          <tr class = "device_item {{evenrow @index}} {{isUrgent}}" >
+            {{#if displayColumn "no"}}<td>{{@index}}</td>{{/if}}
+            {{#if displayColumn "device_type"}}<td>{{device_type}}</td>{{/if}}
+            {{#if displayColumn "install_date"}}<td>{{toDate install_date}}</td>{{/if}}
+            {{#if displayColumn "schedule_date"}}<td>{{toDate schedule_date}}</td>{{/if}}
+            {{#if displayColumn "register_date"}}<td>{{toDate register_date}}</td>{{/if}}
+            {{#if displayColumn "agency"}}<td>{{agency}}</td>{{/if}}
+            {{#if displayColumn "hw_id"}}<td>{{hw_id}}</td>{{/if}}
+            {{#if displayColumn "device_id"}}<td>{{device_id}}</td>{{/if}}
+            {{#if displayColumn "service_id"}}<td>{{service_id}}</td>{{/if}}
+            {{#if displayColumn "lsam_id"}}<td>{{lsam_id}}</td>{{/if}}
+            {{#if displayColumn "station_name"}}<td>{{station_name}} {{line}}</td>{{/if}}
+            {{#if displayColumn "sam_tracking"}}<td>{{sam_tracking}}</td>{{/if}}
+            {{#if displayColumn "hw_status"}}<td class = "{{lower hw_status}}">{{hw_status}}</td>{{/if}}
+            {{#if displayColumn "sw_status"}}<td class = "{{lower sw_status}}">{{sw_status}}</td>{{/if}}
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+  {{/with}}
+</template>
+
+<template name = "search_side_panel">
+  {{#if isMenu "search"}}
+    {{#with device}}
+      <button id = "back">Back</button>
+      <button id = "save">Save</button>
+      <button id = "reset">Reset</button>
+      {{#unless this.new}}
+        <button id = "copy">Copy</button>
+      {{/unless}}
+      {{#unless this.new}}
+        <button id = "delete">Delete</button>
+      {{/unless}}
+    {{/with}}
+    {{#unless device}}
+      <button id = "new_acim">New</button>
+    {{/unless}}
+  {{/if}}
+</template>
+
+<template name = "search">
+  {{#if isMenu "search"}}
+    {{#if selected_device}}
+      {{> device}}
+    {{else}}
+      {{> search_bar}}
+      {{> search_results}}
+    {{/if}}
+  {{/if}}
+</template>
+
+<template name="searchDate">
+  <input type="hidden" id = "s_{{this}}" class = "search_input" value="{{fromSessionP this}}"/>
+  <input class="datepicker" id = "date_{{this}}" type="text"/>
+</template>
+
+<template name = "settings">
+  {{#if isMenu "settings"}}
+    <div class = "pane">
+      No : <input type = "checkbox" id="no" {{isVisible "no"}}/>
+      <br />
+      Device Type : <input type = "checkbox" id="device_type" {{isVisible "device_type"}}/>
+      <br />
+      install_date : <input type = "checkbox" id="install_date" {{isVisible "install_date"}}/>
+      <br />
+      schedule_date : <input type = "checkbox" id="schedule_date" {{isVisible "schedule_date"}}/>
+      <br />
+      register_date : <input type = "checkbox" id="register_date" {{isVisible "register_date"}}/>
+      <br />
+      agency : <input type = "checkbox" id="agency" {{isVisible "agency"}}/>
+      <br />
+      hw_id : <input type = "checkbox" id="hw_id" {{isVisible "hw_id"}}/>
+      <br />
+      service_id : <input type = "checkbox" id="service_id" {{isVisible "service_id"}}/>
+      <br />
+      lsam_id : <input type = "checkbox" id="lsam_id" {{isVisible "lsam_id"}}/>
+      <br />
+      station_name : <input type = "checkbox" id="station_name" {{isVisible "station_name"}}/>
+      <br />
+      sam_tracking : <input type = "checkbox" id="sam_tracking" {{isVisible "sam_tracking"}}/>
+      <br />
+      hw_status : <input type = "checkbox" id="hw_status" {{isVisible "hw_status"}}/>
+      <br />
+      sw_status : <input type = "checkbox" id="sw_status" {{isVisible "sw_status"}}/>
+      <br />
+    </div>
+  {{/if}}
+</template>

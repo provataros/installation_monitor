@@ -1,0 +1,22 @@
+
+
+<template name = "usb_side_panel">
+  {{#if isMenu "usb"}}
+    <button>Return</button>
+  {{/if}}
+</template>
+
+
+<template name = "usb">
+  {{#if isMenu "usb"}}
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  <input type = "text">
+  {{#each usb_list}}
+  {{/each}}
+  {{/if}}
+</template>
