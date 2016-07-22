@@ -98,12 +98,13 @@
 
 <template name = "search_results">
   {{#with results}}
-    <div class = "docInfo">Count : {{count this}}</div>
+    <div class = "docInfo">Count : {{count this}} &nbsp;<button id = "download">Download</button></div>
     <div class = "search_panel">
       <table id = "search_results" width = "100%">
         <tr>
           {{#if displayColumn "no"}}<th class = "sort" id = "sort_no">No</th>{{/if}}
           {{#if displayColumn "device_type"}}<th class = "sort" id = "sort_device_type">Device Type</th>{{/if}}
+          {{#if displayColumn "updatedAt"}}<th class = "sort" id = "sort_updatedAt">Last Update</th>{{/if}}
           {{#if displayColumn "install_date"}}<th class = "sort" id = "sort_install_date">Install Date</th>{{/if}}
           {{#if displayColumn "schedule_date"}}<th class = "sort" id = "sort_schedule_date">Schedule Date</th>{{/if}}
           {{#if displayColumn "register_date"}}<th class = "sort" id = "sort_register_date">Register Date</th>{{/if}}
@@ -124,6 +125,7 @@
           <tr class = "device_item {{evenrow @index}} {{isUrgent}}" >
             {{#if displayColumn "no"}}<td>{{@index}}</td>{{/if}}
             {{#if displayColumn "device_type"}}<td>{{device_type}}</td>{{/if}}
+            {{#if displayColumn "updatedAt"}}<td>{{toDate2 updatedAt}}</td>{{/if}}
             {{#if displayColumn "install_date"}}<td>{{toDate install_date}}</td>{{/if}}
             {{#if displayColumn "schedule_date"}}<td>{{toDate schedule_date}}</td>{{/if}}
             {{#if displayColumn "register_date"}}<td>{{toDate register_date}}</td>{{/if}}
@@ -186,6 +188,8 @@
       No : <input type = "checkbox" id="no" {{isVisible "no"}}/>
       <br />
       Device Type : <input type = "checkbox" id="device_type" {{isVisible "device_type"}}/>
+      <br />
+      updatedAt : <input type = "checkbox" id="updatedAt" {{isVisible "updatedAt"}}/>
       <br />
       install_date : <input type = "checkbox" id="install_date" {{isVisible "install_date"}}/>
       <br />

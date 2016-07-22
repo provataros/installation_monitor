@@ -99,3 +99,37 @@ export const populateStations = function(agency){
       labels.station_name.options.push(key.eng);
   });
 }
+
+function convert(str,length){
+  var l = str.length;
+  var r = length - l;
+  var s = "";
+  var zero = 0;
+  for (var i=0;i<r;i++){
+    s += zero.toString(16)+" ";
+  }
+  for (var i=0;i<l;i++){
+    s += ""+str.charCodeAt(i).toString(16)+" ";
+  }
+  return s;
+}
+
+export const createConfigs = function(data){
+  /*var msgid = convert("SC001",5);
+  var msgv = convert("1",1);
+  var msgrev = convert("0",1);
+  var service_id = convert(data.service_id,10);
+  var host = convert("ETS"+service_id);
+  var ntp = convert(data.ntp);
+  var no_if = convert(1);
+  var newline = convert("") ;
+  var ifnm = convert("0");
+  var iftp = convert("0");
+  var ip = convert(data.ip);
+  var subnet = convert(data.subnet);
+  var gateway = convert(data.gateway);
+  var dns1 = convert(data.dns1);
+  var dns2 =convert( data.dns2);
+  var rfu = convert("");
+*/
+}

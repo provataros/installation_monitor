@@ -3,7 +3,8 @@ import { Session } from 'meteor/session'
 import {labels} from "/client/static/labels.js"
 import {populateStations} from "/client/lib/lib.js"
 
-
+import {saveXLSX} from "/client/lib/excel.js";
+import {createConfigs} from "/client/lib/lib.js";
 
 var modalyesfunc;
 var modalnofunc;
@@ -82,6 +83,9 @@ Template.search_results.events({
       Session.set("sort_order",-1);
     }
   },
+  "click #download"(){
+    saveXLSX(this.fetch());
+  }
 })
 
 Template.side_panel.events({
@@ -101,7 +105,6 @@ Template.side_panel.events({
         fields[key] = value;
       }
     });
-    console.log(flag,fields);
     if (flag){
     //  console.log(id);
       if (this.new){
@@ -219,5 +222,11 @@ Template.settings.events({
       JSON.stringify(settings)
     )
     Session.set("displayColumns",settings)
+  }
+})
+
+Template.device.events({
+  "click #configs"(){
+    createConfigs(this);
   }
 })

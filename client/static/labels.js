@@ -1,4 +1,8 @@
 export const labels = {
+  no : {
+    name : "No",
+    group : "misc",
+  },
   hw_comments : {
     name : "Hardware Comments",
     group : "comments",
@@ -99,6 +103,7 @@ export const labels = {
       "TIT",
       "CIT",
       "PCRS",
+      "PCRS for TIT",
       "PSCCS",
       "Gate",
       "OVMC",
@@ -218,6 +223,11 @@ export const labels = {
 	},
   schedule_date : {
 		name : "Schedule Date",
+    type : "date",
+    group : "location",////////////////////////
+	},
+  register_date : {
+		name : "Register Date",
     type : "date",
     group : "location",////////////////////////
 	},

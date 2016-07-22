@@ -6,6 +6,7 @@ import { Mongo } from "meteor/mongo"
 import { Session } from 'meteor/session'
 import {labels} from "/client/static/labels.js"
 
+
 import './main.html';
 
 var devices = new Mongo.Collection("devices");
@@ -32,15 +33,16 @@ $.fn.extend({
 });
 
 Meteor.startup(() => {
-  Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
-  Session.keys = {}
+  //Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
+  //Session.keys = {}
 
   Meteor.subscribe("devices");
   Meteor.subscribe("stations");
 
-  Session.set("menu","search");
+  //Session.set("menu","search");
   Session.modal = {};
   Session.modal.no = function(){};
+
 
   var displayColumns = localStorage.getItem("displayColumns")
   if (!displayColumns){
@@ -64,4 +66,5 @@ Meteor.startup(() => {
     )
   }
   Session.set("displayColumns",JSON.parse(localStorage.getItem("displayColumns")))
+
 });

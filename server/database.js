@@ -42,7 +42,6 @@ Meteor.methods({
     try {
       if (data.lsam_id != ""){
         var f = Mongo._lsams.find({id : data.lsam_id}).count();
-        console.log(f);
         if (f!=1){
           return {error : {err : "LSAM does not exist!"}}
         }
@@ -59,7 +58,6 @@ Meteor.methods({
       if (!data._id){
         return {error : {err : "No _id!"}}
       }
-      console.log(data);
       return Mongo._devices.remove(data);
     }
     catch(err) {

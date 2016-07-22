@@ -165,6 +165,10 @@ Template.registerHelper('toDate', function(id) {
   return id?moment(id,"YYYYMMDD").format("DD/MM/YY"):""
 });
 
+Template.registerHelper('toDate2', function(id) {
+  return id?moment(id,"YYYYMMDDHHmmss").format("DD/MM/YY HH:mm:ss"):""
+});
+
 Template.registerHelper('args', function(a,b,c,d,e) {
   return arguments
 });
