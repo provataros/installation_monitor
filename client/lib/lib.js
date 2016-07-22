@@ -101,35 +101,62 @@ export const populateStations = function(agency){
 }
 
 function convert(str,length){
+
+  if (str==undefined || str == null || str == ""){
+    throw new Error("Invalid field")
+  }
   var l = str.length;
   var r = length - l;
-  var s = "";
+  if (l>length){
+    throw new Error("Invalid field length")
+  }
+  var s = [];
   var zero = 0;
   for (var i=0;i<r;i++){
-    s += zero.toString(16)+" ";
+    s.push(String.fromCharCode(0));
   }
   for (var i=0;i<l;i++){
-    s += ""+str.charCodeAt(i).toString(16)+" ";
+    s.push(str.charAt(i));
   }
+  console.log(s);
   return s;
+}
+var index = 0;
+
+
+function append(file,data){
+  for (var i=0;i<data.length;i++){
+    file[index] = data[i];
+    index ++;
+  }
 }
 
 export const createConfigs = function(data){
-  /*var msgid = convert("SC001",5);
-  var msgv = convert("1",1);
-  var msgrev = convert("0",1);
-  var service_id = convert(data.service_id,10);
-  var host = convert("ETS"+service_id);
-  var ntp = convert(data.ntp);
-  var no_if = convert(1);
-  var newline = convert("") ;
-  var ifnm = convert("0");
-  var iftp = convert("0");
-  var ip = convert(data.ip);
-  var subnet = convert(data.subnet);
-  var gateway = convert(data.gateway);
-  var dns1 = convert(data.dns1);
-  var dns2 =convert( data.dns2);
-  var rfu = convert("");
-*/
+  var file = [];
+  index = 0;
+  try{
+    var msgid = append(file,convert("SC001",5));
+    var msgv =  append(file,convert("1",1));
+    var msgrev =  append(file,convert("0",1));
+    var service_id =  append(file,convert(data.service_id,10));
+    var host =  append(file,convert(("ETS"+data.service_id),50));
+    var ntp =  append(file,convert(data.ntp,50));
+    var no_if =  append(file,[String.fromCharCode(0),String.fromCharCode(1)]);
+    var newline =  append(file,convert("\n",1) );
+    var ifnm =  append(file,convert("0",1));
+    var iftp =  append(file,convert("0",1));
+    var ip =  append(file,convert(data.ip,15));
+    var subnet =  append(file,convert(data.subnet,15));
+    var gateway =  append(file,convert(data.gateway,15));
+    var dns1 =  append(file,convert(data.dns1,15));
+    var dns2 = append(file,convert( data.dns2,15));
+    var rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(file,convert("\n",1) );
+
+    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc01")
+  }
+  catch(e){
+    console.log(e);
+  }
+
 }
