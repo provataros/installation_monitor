@@ -118,7 +118,6 @@ function convert(str,length){
   for (var i=0;i<l;i++){
     s.push(str.charAt(i));
   }
-  console.log(s);
   return s;
 }
 var index = 0;
@@ -153,7 +152,78 @@ export const createConfigs = function(data){
     var rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
     append(file,convert("\n",1) );
 
-    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc01")
+    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc001_"+data.service_id)
+
+
+    file = [];
+    index = 0;
+    msgid = append(file,convert("SC002",5));
+    msgv =  append(file,convert("1",1));
+    msgrev =  append(file,convert("0",1));
+    var service_id =  append(file,convert(data.service_id,10));
+    var host1 =  append(file,convert((data.host1),50));
+    var host2 =  append(file,convert((data.host2),50));
+    var host3 =  append(file,convert((data.host3),50));
+    var swd = append(file,convert((data.swd),100));
+    rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(file,convert("\n",1) );
+
+    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc002_"+data.service_id)
+  }
+  catch(e){
+    console.log(e);
+  }
+
+}
+
+
+export const createConfigs_3G = function(data,ip_3g){
+  var file = [];
+  index = 0;
+  try{
+
+    var conf = JSON.parse(localStorage.getItem("3g_settings"));
+    ip_3g = parseInt(ip_3g);
+    if (isNaN(ip_3g) || ip_3g <=1 || ip_3g >= 254){
+      Session.set("alert",{message : ("IP address "+conf.ip+ip_3g + " in not valid")});;
+      return;
+    }
+
+    var msgid = append(file,convert("SC001",5));
+    var msgv =  append(file,convert("1",1));
+    var msgrev =  append(file,convert("0",1));
+    var service_id =  append(file,convert(data.service_id,10));
+    var host =  append(file,convert(("ETS"+data.service_id),50));
+    var ntp =  append(file,convert(data.ntp,50));
+    var no_if =  append(file,[String.fromCharCode(0),String.fromCharCode(1)]);
+    var newline =  append(file,convert("\n",1) );
+    var ifnm =  append(file,convert("0",1));
+    var iftp =  append(file,convert("0",1));
+    var ip =  append(file,convert(conf.ip+ip_3g,15));
+    var subnet =  append(file,convert(conf.subnet,15));
+    var gateway =  append(file,convert(conf.gateway,15));
+    var dns1 =  append(file,convert(data.dns1,15));
+    var dns2 = append(file,convert( data.dns2,15));
+    var rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(file,convert("\n",1) );
+
+    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc001_"+data.service_id+"_3g")
+
+
+    file = [];
+    index = 0;
+    msgid = append(file,convert("SC002",5));
+    msgv =  append(file,convert("1",1));
+    msgrev =  append(file,convert("0",1));
+    var service_id =  append(file,convert(data.service_id,10));
+    var host1 =  append(file,convert((data.host1),50));
+    var host2 =  append(file,convert((data.host2),50));
+    var host3 =  append(file,convert((data.host3),50));
+    var swd = append(file,convert((data.swd),100));
+    rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(file,convert("\n",1) );
+
+    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc002_"+data.service_id+"_3g")
   }
   catch(e){
     console.log(e);

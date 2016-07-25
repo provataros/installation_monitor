@@ -65,6 +65,16 @@ Meteor.startup(() => {
       })
     )
   }
+  var config_3g = localStorage.getItem("3g_settings")
+  if (!config_3g){
+    localStorage.setItem("3g_settings",
+      JSON.stringify({
+        ip : "10.230.40.",
+        subnet : "255.255.255.0",
+        gateway : "10.230.40.1"
+      })
+    )
+  }
   Session.set("displayColumns",JSON.parse(localStorage.getItem("displayColumns")))
 
 });

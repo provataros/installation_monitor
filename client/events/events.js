@@ -5,6 +5,7 @@ import {populateStations} from "/client/lib/lib.js"
 
 import {saveXLSX} from "/client/lib/excel.js";
 import {createConfigs} from "/client/lib/lib.js";
+import {createConfigs_3G} from "/client/lib/lib.js";
 
 var modalyesfunc;
 var modalnofunc;
@@ -228,5 +229,8 @@ Template.settings.events({
 Template.device.events({
   "click #configs"(){
     createConfigs(this);
+  },
+  "click #configs-3g"(){
+    createConfigs_3G(this,$("#ip-3g").val());
   }
 })
