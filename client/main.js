@@ -33,8 +33,8 @@ $.fn.extend({
 });
 
 Meteor.startup(() => {
-  //Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
-  //Session.keys = {}
+  Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
+  Session.keys = {}
 
   Meteor.subscribe("devices");
   Meteor.subscribe("stations");
