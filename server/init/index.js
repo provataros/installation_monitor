@@ -69,3 +69,11 @@ function resetAll(){
 }
 
 export const Initialize = resetAll;
+export const FixNetwork = function(){
+  Mongo._devices.find({}).forEach(function(doc){
+    doc.host1 = doc.host1.replace(/ /g ,"").replace(/\//g,":");
+    doc.host2 = doc.host2.replace(/ /g ,"").replace(/\//g,":");
+    doc.host3 = doc.host3.replace(/ /g ,"").replace(/\//g,":");
+    Mongo._devices.update({_id : doc._id},doc);
+  })
+}

@@ -1,9 +1,13 @@
 import { Mongo } from 'meteor/mongo';
 import {Initialize} from "/server/init"
+import {FixNetwork} from "/server/init"
+
 
 Mongo._devices = new Mongo.Collection("devices");
 Mongo._stations = new Mongo.Collection("stations");
 Mongo._lsams = new Mongo.Collection("lsams");
+
+
 
 
 Meteor.publish("devices",function(){
@@ -67,4 +71,5 @@ Meteor.methods({
   resetAll : function(){
     Initialize();
   },
+  FixNetwork : FixNetwork,
 })
