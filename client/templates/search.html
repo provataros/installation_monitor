@@ -176,6 +176,11 @@
       {{#unless this.new}}
         <button id = "delete">Delete</button>
       {{/unless}}
+      {{#unless this.new}}
+        <button id = "history">History</button>
+        <button id = "show-history">Show History</button>
+      {{/unless}}
+
     {{/with}}
     {{#unless device}}
       <button id = "new_acim">New</button>
@@ -196,7 +201,7 @@
 
 <template name="searchDate">
   <input type="hidden" id = "s_{{this}}" class = "search_input" value="{{fromSessionP this}}"/>
-  <input class="datepicker" id = "date_{{this}}" type="text"/>
+  <input readonly class="datepicker" id = "date_{{this}}" type="text"/>
 </template>
 
 <template name = "settings">
@@ -221,6 +226,8 @@
       hw_id : <input type = "checkbox" id="hw_id" {{isVisible "hw_id"}}/>
       <br />
       service_id : <input type = "checkbox" id="service_id" {{isVisible "service_id"}}/>
+      <br />
+      device_id : <input type = "checkbox" id="device_id" {{isVisible "device_id"}}/>
       <br />
       lsam_id : <input type = "checkbox" id="lsam_id" {{isVisible "lsam_id"}}/>
       <br />

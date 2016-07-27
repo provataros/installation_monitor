@@ -39,6 +39,19 @@ Template.date.onRendered(function(){
   });
 })
 
+Template.popup.onRendered(function(){
+  var that = this;
+  this.$('.datepicker').datepicker({
+    value : $(this.find(".device-input")).val() ,
+    format : "dddd DD MMM YYYY",
+    position : "fixed"
+  },function(date){
+    $(that.find(".date-input")).val(date);
+  });
+  this.$('.datepicker').val(moment().format("dddd DD MMM YYYY"))
+  this.$('.date-input').val(moment().format("YYYYMMDDHHmmss"))
+})
+
 
 Template.searchDate.onRendered(function(){
   var that = this;

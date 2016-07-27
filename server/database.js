@@ -71,5 +71,8 @@ Meteor.methods({
   resetAll : function(){
     Initialize();
   },
+  insert_history : function(date,text,id){
+    return Mongo._devices.update({_id : id},{$push : {history : {date : date,value : text}}});
+  },
   FixNetwork : FixNetwork,
 })

@@ -74,7 +74,9 @@ $.fn.extend({
         calendar.find("#date_"+that.today.format("YYYYMMDD")).addClass("today");
         calendar.find("#date_"+that.selected).addClass("selected");
         calendar.css({top : $(that).position().top + $(that).outerHeight(true) + 10, left : $(that).position().left})
-
+        if (options.position == "fixed"){
+          calendar.css({top : "25px", left : "25px",position : "fixed"})
+        }
         calendar.on("click",function(e,t){
           e.preventDefault();
           e.stopPropagation();

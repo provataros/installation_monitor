@@ -7,6 +7,12 @@
     {{> alert}}
   {{/with}}
   {{#with device}}
+    {{#if history}}
+      {{> history}}
+    {{/if}}
+    {{#if popup}}
+      {{> popup}}
+    {{/if}}
     <div class = "docInfo">Created : {{dateTime createdAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edited : {{dateTime updatedAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registered : {{dateTime register_date}}</div>
     <div class = "section">
       <h1>Hardware</h1>
@@ -94,10 +100,45 @@
   {{focus}}
 </template>
 
+<template name = "popup">
+
+    <div class = "popup">
+      <div class ="popup-content">
+        <h1>History Item Details</h1>
+        <br />
+        <input type="hidden" class = "date-input" value="{{value}}"/>
+        <input readonly class="noborder datepicker" id = "history-date" type="text"/>
+        <textarea id = "history-info"></textarea>
+        <div id = "button-group">
+          <button id = "yes">Yes</button>
+          <button id = "no">No</button>
+        </div>
+      </div>
+    </div>
+  {{focus}}
+</template>
+
 <template name = "alert">
   <div class = "alert">
     <div class ="alert-content">
       <div>{{{message}}}</div>
+      <div id = "button-group">
+        <button id = "ok">OK</button>
+      </div>
+    </div>
+  </div>
+  {{focus}}
+</template>
+
+<template name = "history">
+  <div class = "alert">
+    <div class ="alert-content">
+      <h2>History</h2>
+      <table class = "history-table">
+        {{#each this.history}}
+        <tr class = "{{evenrow @index}}"><td>{{toDate date}}</td><td>{{value}}</td></tr>
+        {{/each}}
+      </table>
       <div id = "button-group">
         <button id = "ok">OK</button>
       </div>

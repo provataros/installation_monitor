@@ -66,6 +66,17 @@ Template.dropdown.events({
     $("#edit_station_id")[0].selectedIndex = 0;
     $("#edit_station_name")[0].selectedIndex = 0;
   },
+  "change #edit_agency" : function(e,t){
+    if (event.target.value == "STASY"){
+      $("#edit_host2").val("10.232.10.31:10005");
+    }
+    else if(event.target.value == "TRAINOSE"){
+      $("#edit_host2").val("10.233.10.31:10005");
+    }
+    else{
+      $("#edit_host2").val("");
+    }
+  }
 });
 
 Template.search_results.events({
@@ -90,6 +101,12 @@ Template.search_results.events({
 })
 
 Template.side_panel.events({
+  "click #history" : function(){
+    Session.set("popup","History")
+  },
+  "click #show-history" : function(){
+    Session.set("history","History")
+  },
   "click #back" : function(){
     Session.set("selected_device",null);
   },
@@ -208,6 +225,7 @@ Template.body.events({
     if (e.keyCode == 27){
        Session.set("modal",undefined);
        Session.set("alert",undefined);
+       Session.set("popup",undefined);
     }
   }
 })

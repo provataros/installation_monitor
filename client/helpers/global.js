@@ -2,6 +2,7 @@ import { Mongo } from "meteor/mongo"
 import { Session } from 'meteor/session'
 import {labels} from "/client/static/labels.js"
 import {populateStations} from "/client/lib/lib.js"
+import {save_history} from "/client/lib/lib.js"
 
 Template.registerHelper("device",function(){
   var id = Session.get("selected_device");
@@ -38,12 +39,34 @@ Template.alert.events({
   },
 })
 
+Template.history.events({
+  "click #ok"(){
+    Session.set("history",undefined);
+  },
+})
+
+Template.popup.events({
+  "click #yes"(){
+    save_history($(".popup .date-input").val(),$(".popup #history-info").val(),this._id);
+    Session.set("popup",undefined);
+  },
+  "click #no"(){
+    Session.set("popup",undefined);
+  }
+})
+
 Template.registerHelper("menu",function(){
   return Session.get("menu");
 })
 
 Template.registerHelper("modal",function(){
   return Session.get("modal");
+})
+Template.registerHelper("popup",function(){
+  return Session.get("popup");
+})
+Template.registerHelper("history",function(){
+  return Session.get("history");
 })
 Template.registerHelper("alert",function(){
   return Session.get("alert");

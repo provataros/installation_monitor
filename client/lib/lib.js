@@ -2,6 +2,13 @@ import { Session } from 'meteor/session'
 import { labels } from "/client/static/labels.js"
 import { Mongo } from "meteor/mongo"
 
+export const save_history = function(date,text,id){
+  if (date && text){
+    Meteor.call("insert_history",date,text,id,function(){
+      console.log("done");
+    })
+  }
+}
 
 export const construct_query = function(){
   var hardware = Session.get("s_hwid");
@@ -162,26 +169,28 @@ export const createConfigs = function(data){
     var rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
     append(file,convert("\n",1) );
 
-    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc001_"+data.service_id)
 
 
-    file = [];
+
+    var file2 = [];
     index = 0;
-    msgid = append(file,convert("SC002",5));
-    msgv =  append(file,convert("1",1));
-    msgrev =  append(file,convert("0",1));
-    var service_id =  append(file,convert(data.service_id,10));
-    var host1 =  append(file,convert((data.host1),50));
-    var host2 =  append(file,convert((data.host2),50));
-    var host3 =  append(file,convert((data.host3),50));
-    var swd = append(file,convert((data.swd),100));
-    rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
-    append(file,convert("\n",1) );
+    msgid = append(file2,convert("SC002",5));
+    msgv =  append(file2,convert("1",1));
+    msgrev =  append(file2,convert("0",1));
+    var service_id =  append(file2,convert(data.service_id,10));
+    var host1 =  append(file2,convert((data.host1),50));
+    var host2 =  append(file2,convert((data.host2),50));
+    var host3 =  append(file2,convert((data.host3),50));
+    var swd = append(file2,convert((data.swd),100));
+    rfu = append(file2,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(file2,convert("\n",1) );
 
+    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc001_"+data.service_id)
     saveAs(new Blob(file,{type:"application/octet-stream"}), "sc002_"+data.service_id)
   }
   catch(e){
     console.log(e);
+    Session.set("alert",{message : ("Please check for missing/incorrect fields")});;
   }
 
 }
@@ -217,23 +226,24 @@ export const createConfigs_3G = function(data,ip_3g){
     var rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
     append(file,convert("\n",1) );
 
-    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc001_"+data.service_id+"_3g")
 
 
-    file = [];
+
+    var file2 = [];
     index = 0;
-    msgid = append(file,convert("SC002",5));
-    msgv =  append(file,convert("1",1));
-    msgrev =  append(file,convert("0",1));
-    var service_id =  append(file,convert(data.service_id,10));
-    var host1 =  append(file,convert((data.host1),50));
-    var host2 =  append(file,convert((data.host2),50));
-    var host3 =  append(file,convert((data.host3),50));
-    var swd = append(file,convert((data.swd),100));
-    rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
-    append(file,convert("\n",1) );
+    msgid = append(file2,convert("SC002",5));
+    msgv =  append(file2,convert("1",1));
+    msgrev =  append(file2,convert("0",1));
+    var service_id =  append(file2,convert(data.service_id,10));
+    var host1 =  append(file2,convert((data.host1),50));
+    var host2 =  append(file2,convert((data.host2),50));
+    var host3 =  append(file2,convert((data.host3),50));
+    var swd = append(file2,convert((data.swd),100));
+    rfu = append(file2,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(file2,convert("\n",1) );
 
-    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc002_"+data.service_id+"_3g")
+    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc001_"+data.service_id+"_3g")
+    saveAs(new Blob(file2,{type:"application/octet-stream"}), "sc002_"+data.service_id+"_3g")
   }
   catch(e){
     console.log(e);
