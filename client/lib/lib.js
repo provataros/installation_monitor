@@ -10,6 +10,7 @@ export const construct_query = function(){
   var lsam = Session.get("s_lsam");
   var type = Session.get("s_device_type");
   var agency = Session.get("s_agency");
+  var sub_agency = Session.get("s_sub_agency");
   var sw_status = Session.get("s_sw_status");
   var urgent = Session.get("s_urgent");
   var error = Session.get("s_error");
@@ -48,6 +49,10 @@ export const construct_query = function(){
   if (agency){
     flag = true;
     query.agency = {$regex: ".*" + agency + ".*"};
+  }
+  if (sub_agency){
+    flag = true;
+    query.sub_agency = {$regex: ".*" + sub_agency + ".*"};
   }
   if (sw_status){
     flag = true;

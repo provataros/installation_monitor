@@ -42,6 +42,16 @@
       </select>
     </div>
     <div class = "search_div">
+      <label>Sub-Agency</label>
+      <select class = "search_input" id = "s_sub_agency">
+        <option></option>
+        <option {{selected_type "Tram" }} value  = "Tram">Tram</option>
+        <option {{selected_type "Metro" }} value = "Metro">Metro</option>
+        <option {{selected_type "Suburban" }} value = "Suburban">Suburban</option>
+        <option {{selected_type "Bus" }} value = "Bus">Bus</option>
+      </select>
+    </div>
+    <div class = "search_div">
       <label>Installation Status</label>
       <select class = "search_input" id = "s_sw_status">
         <option></option>
@@ -114,6 +124,7 @@
           {{#if displayColumn "device_id"}}<th class = "sort" id = "sort_device_id">Device ID</th>{{/if}}
           {{#if displayColumn "service_id"}}<th class = "sort" id = "sort_service_id">Service Account ID</th>{{/if}}
           {{#if displayColumn "lsam_id"}}<th class = "sort" id = "sort_lsam_id">LSAM ID</th>{{/if}}
+          {{#if displayColumn "sub_agency"}}<th class = "sort" id = "sort_sub_agency">Sub-Agency</th>{{/if}}
           {{#if displayColumn "station_name"}}<th class = "sort" id = "sort_station_name">Location</th>{{/if}}
           {{#if displayColumn "sam_tracking"}}<th class = "sort" id = "sort_sam_tracking">SAM Location</th>{{/if}}
           {{#if displayColumn "hw_status"}}<th class = "sort" id = "sort_hw_status">H/W Status</th>{{/if}}
@@ -135,7 +146,8 @@
             {{#if displayColumn "device_id"}}<td>{{device_id}}</td>{{/if}}
             {{#if displayColumn "service_id"}}<td>{{service_id}}</td>{{/if}}
             {{#if displayColumn "lsam_id"}}<td>{{lsam_id}}</td>{{/if}}
-            {{#if displayColumn "station_name"}}<td>{{station_name}} {{line}}</td>{{/if}}
+            {{#if displayColumn "sub_agency"}}<td>{{sub_agency}}</td>{{/if}}
+            {{#if displayColumn "station_name"}}<td>{{station_name}}</td>{{/if}}
             {{#if displayColumn "sam_tracking"}}<td>{{sam_tracking}}</td>{{/if}}
             {{#if displayColumn "hw_status"}}<td class = "{{lower hw_status}}">{{hw_status}}</td>{{/if}}
             {{#if displayColumn "sw_status"}}<td class = "{{lower sw_status}}">{{sw_status}}</td>{{/if}}
@@ -199,6 +211,8 @@
       register_date : <input type = "checkbox" id="register_date" {{isVisible "register_date"}}/>
       <br />
       agency : <input type = "checkbox" id="agency" {{isVisible "agency"}}/>
+      <br />
+      sub_agency : <input type = "checkbox" id="sub_agency" {{isVisible "sub_agency"}}/>
       <br />
       hw_id : <input type = "checkbox" id="hw_id" {{isVisible "hw_id"}}/>
       <br />
