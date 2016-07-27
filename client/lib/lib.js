@@ -11,6 +11,7 @@ export const construct_query = function(){
   var type = Session.get("s_device_type");
   var agency = Session.get("s_agency");
   var sub_agency = Session.get("s_sub_agency");
+  var station_name = Session.get("s_station_name");
   var sw_status = Session.get("s_sw_status");
   var urgent = Session.get("s_urgent");
   var error = Session.get("s_error");
@@ -28,35 +29,39 @@ export const construct_query = function(){
   var query = {};
   if (hardware){
     flag = true;
-    query.hw_id = {$regex: ".*" + hardware + ".*"};
+    query.hw_id = {$regex: new RegExp(hardware, "i")};
   }
   if (device){
     flag = true;
-    query.device_id = {$regex: ".*" + device + ".*"};
+    query.device_id = {$regex: new RegExp(device, "i")};
   }
   if (account){
     flag = true;
-    query.service_id = {$regex: ".*" + account + ".*"};
+    query.service_id = {$regex: new RegExp(account, "i")};
   }
   if (lsam){
     flag = true;
-    query.lsam_id = {$regex: ".*" + lsam + ".*"};
+    query.lsam_id = {$regex: new RegExp(lsam, "i")};
   }
   if (type){
     flag = true;
-    query.device_type = {$regex: ".*" + type + ".*"};
+    query.device_type = {$regex: new RegExp(type, "i")};
   }
   if (agency){
     flag = true;
-    query.agency = {$regex: ".*" + agency + ".*"};
+    query.agency = {$regex: new RegExp(agency, "i")};
   }
   if (sub_agency){
     flag = true;
-    query.sub_agency = {$regex: ".*" + sub_agency + ".*"};
+    query.sub_agency = {$regex: new RegExp(sub_agency, "i")};
+  }
+  if (station_name){
+    flag = true;
+    query.station_name = {$regex: new RegExp(station_name, "i")};
   }
   if (sw_status){
     flag = true;
-    query.sw_status = {$regex: ".*" + sw_status + ".*"};
+    query.sw_status = {$regex: new RegExp(sw_status, "i")};
   }
   if (urgent=="true"){
     flag = true;
