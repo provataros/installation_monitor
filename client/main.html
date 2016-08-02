@@ -4,41 +4,72 @@
 </head>
 
 <body>
-  <div id = "side_panel">
-    {{> side_panel}}
-  </div>
-  <div id="content">
-    {{#with menu}}
-      {{> search}}
-      {{> settings}}
-      {{> usb}}
-    {{/with}}
-  </div>
 
+  {{#with modal}}
+    {{> confirm}}
+  {{/with}}
+  {{#with alert}}
+    {{> alert}}
+  {{/with}}
+  {{#if currentUser}}
+    <div id = "side_panel">
+      {{> side_panel}}
+    </div>
+    <div id="content">
+      {{#with menu}}
+        {{> search}}
+        {{> settings}}
+        {{> usb}}
+      {{/with}}
+    </div>
+  {{else}}
+    {{#if isRegister}}
+      {{> register}}
+    {{else}}
+      {{> login}}
+    {{/if}}
+  {{/if}}
 </body>
 
+<template name="login">
+  <div class = "midcenter">
+    <h2>Login</h2>
+    <p>Username: <input type="text" id="username" name="username"></p>
+    <p>Password: <input type="password" id="password" name="password"></p>
+    <a href="#" class = "b1" id="register">Register</a>
+    <button class = "b2" autofocus id="login">Login</button>
+  </div>
+</template>
 
-
+<template name="register">
+  <div class = "midcenter">
+    <h2>Register</h2>
+    <p>Username: <input type="text" id="username"></p>
+    <p>Password: <input type="password" id="password"></p>
+    <button class = "b1" id = "cancel">Cancel</button>
+    <button class = "b2" autofocus id="register">Register</button>
+  </div>
+</template>
 
 
 <template name = "side_panel">
   {{#with menu}}
-
-    {{#unless isMenu "search"}}
-      <button id = "search">Search</button>
-    {{/unless}}
-    {{#unless isMenu "settings"}}
-      <button id = "settings">Set</button>
-    {{/unless}}
-    {{#unless isMenu "usb"}}
-      <button id = "usb">USB</button>
-    {{/unless}}
-
-    <div class = "button-separator"></div>
-
-    {{> search_side_panel}}
-    {{> usb_side_panel}}
-
+    <ul id = "context-menu" class = "menu-buttons">
+          {{> search_side_panel}}
+          {{> usb_side_panel}}
+    </ul>
+    <ul id = "app-menu" class = "menu-buttons">
+          {{#unless isMenu "search"}}
+            <li id = "search">Search</li>
+          {{/unless}}
+          {{#unless isMenu "settings"}}
+            <li id = "settings">Settings</li>
+          {{/unless}}
+          <!--{{#unless isMenu "usb"}}
+            <li id = "usb">USB</li>
+          {{/unless}}-->
+          <li id = "logout">Logout ({{currentUser.username}})</li>
+    </ul>
   {{/with}}
 </template>
 

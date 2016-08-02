@@ -22,6 +22,17 @@ Template.registerHelper("device",function(){
 })
 
 
+Template.body.helpers({
+  currentUser : function(){
+    return Meteor.userId();
+  }
+})
+Template.body.helpers({
+  isRegister : function(){
+    return Session.get("register");
+  }
+})
+
 Template.confirm.events({
   "click #yes"(){
     Session.modal.yes();
@@ -39,12 +50,21 @@ Template.alert.events({
   },
 })
 
+Template.notes.events({
+  "click #ok"(){
+    Session.set("notes",undefined);
+  },
+})
 Template.history.events({
   "click #ok"(){
     Session.set("history",undefined);
   },
 })
-
+Template.settings.events({
+  "click #ok"(){
+    Session.set("settings",undefined);
+  },
+})
 Template.popup.events({
   "click #yes"(){
     save_history($(".popup .date-input").val(),$(".popup #history-info").val(),this._id);
@@ -62,10 +82,19 @@ Template.registerHelper("menu",function(){
 Template.registerHelper("modal",function(){
   return Session.get("modal");
 })
+Template.registerHelper("getChangeHistory",function(id){
+  return Mongo._history.find({id : id},{sort: {date: -1}})
+})
 Template.registerHelper("popup",function(){
   return Session.get("popup");
 })
-Template.registerHelper("history",function(){
+Template.registerHelper("notes",function(){
+  return Session.get("notes");
+})
+Template.registerHelper("settings",function(){
+  return Session.get("settings");
+})
+Template.registerHelper("history",function(){//TODO
   return Session.get("history");
 })
 Template.registerHelper("alert",function(){
@@ -78,6 +107,9 @@ Template.registerHelper("focus",function(){
 Template.registerHelper("isVisible",function(col){
   return (Session.get("displayColumns"))[col]?"checked":""
 });
+Template.registerHelper("getConfig",function(col){
+  return Session.get("config")[col]
+});
 
 Template.registerHelper("usb_list",function(){
   return Mongo._usb.find({})
@@ -85,6 +117,9 @@ Template.registerHelper("usb_list",function(){
 
 Template.registerHelper("isMenu",function(value){
   return this == value;
+})
+Template.registerHelper("reverse",function(value){
+  return $.merge([],value).reverse();
 })
 
 Template.registerHelper("displayColumn",function(col){
@@ -119,6 +154,15 @@ Template.registerHelper('toArray',function(obj,group){
     for (var key in obj) {
       if (key === "_id")continue;
       if (labels[key].group ===group)result.push({name:key,value:obj[key]});
+    }
+    return result;
+});
+Template.registerHelper('keys',function(obj){
+    var result = [];
+    var f = obj.from;
+    var t = obj.to;
+    for (var key in f){
+      if (key != "_id")result.push({key:key,from:f[key],to : t[key]});
     }
     return result;
 });

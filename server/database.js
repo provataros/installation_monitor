@@ -6,6 +6,7 @@ import {FixNetwork} from "/server/init"
 Mongo._devices = new Mongo.Collection("devices");
 Mongo._stations = new Mongo.Collection("stations");
 Mongo._lsams = new Mongo.Collection("lsams");
+Mongo._history = new Mongo.Collection("history");
 
 
 
@@ -15,6 +16,9 @@ Meteor.publish("devices",function(){
 })
 Meteor.publish("stations",function(){
   return Mongo._stations.find({});
+})
+Meteor.publish("history",function(){
+  return Mongo._history.find({});
 })
 Meteor.startup(function(){
   if (false)console.log(_.each(stations_obj,function(doc){
@@ -26,8 +30,20 @@ Meteor.methods({
   find : function(){
     //console.log(Mongo._devices.find({}).fetch());
   },
+  register_user : function(user,pass){
+    if (user && pass){
+      var result = Accounts.createUser({username : user,password : pass})
+      console.log(result)
+      if (result)return true;
+      return false;
+    }
+    return "Please fill the fields"
+  },
   save : function(id,data){
     try {
+      if (!Meteor.userId()){
+        return {error : {err : "Not logged in!"}}
+      }
       if (data.lsam_id){
         var f = Mongo._lsams.find({id : data.lsam_id}).count();
         if (f!=1){
@@ -35,7 +51,18 @@ Meteor.methods({
         }
 
       }
+
+      var fields = {};
+      for (var k in data){
+          if (data.hasOwnProperty(k)) {
+               fields[k] = 1;
+          }
+      }
+      fields._id = 0;
+      var f = Mongo._devices.findOne({_id : id },{fields : fields});
+      Mongo._history.insert({user : Meteor.user().username,id : id,date : moment().format("YYYYMMDDHHmmss"), data : {from : f,to : data}})
       data.updatedAt = moment().format("YYYYMMDDHHmmss");
+      data.updatedFrom = Meteor.user().username;
       return Mongo._devices.update( {_id : id },{$set : data},{upsert : true});
     }
     catch(err) {

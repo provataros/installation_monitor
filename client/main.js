@@ -12,10 +12,11 @@ import './main.html';
 var devices = new Mongo.Collection("devices");
 var stations = new Mongo.Collection("stations");
 var usb = new Mongo.Collection("usb");
-
+var history = new Mongo.Collection("history");
 Mongo._devices = devices;
 Mongo._stations = stations;
 Mongo._usb = usb;
+Mongo._history = history;
 
 var status = {};
 
@@ -38,6 +39,7 @@ Meteor.startup(() => {
 
   Meteor.subscribe("devices");
   Meteor.subscribe("stations");
+  Meteor.subscribe("history");
 
   Session.set("menu","search");
   Session.modal = {};
@@ -75,6 +77,15 @@ Meteor.startup(() => {
       })
     )
   }
+  var settings = localStorage.getItem("config")
+  if (!settings){
+    localStorage.setItem("config",
+      JSON.stringify({
+        "3g_subnet" : "10.230.40"
+      })
+    )
+  }
   Session.set("displayColumns",JSON.parse(localStorage.getItem("displayColumns")))
+  Session.set("config",JSON.parse(localStorage.getItem("config")))
 
 });

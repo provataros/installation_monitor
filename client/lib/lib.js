@@ -201,7 +201,7 @@ export const createConfigs_3G = function(data,ip_3g){
   index = 0;
   try{
 
-    var conf = JSON.parse(localStorage.getItem("3g_settings"));
+    var conf = JSON.parse(localStorage.getItem("config"));
     ip_3g = parseInt(ip_3g);
     if (isNaN(ip_3g) || ip_3g <=1 || ip_3g >= 254){
       Session.set("alert",{message : ("IP address "+conf.ip+ip_3g + " in not valid")});;
@@ -218,9 +218,9 @@ export const createConfigs_3G = function(data,ip_3g){
     var newline =  append(file,convert("\n",1) );
     var ifnm =  append(file,convert("0",1));
     var iftp =  append(file,convert("0",1));
-    var ip =  append(file,convert(conf.ip+ip_3g,15));
-    var subnet =  append(file,convert(conf.subnet,15));
-    var gateway =  append(file,convert(conf.gateway,15));
+    var ip =  append(file,convert(conf["3g_subnet"]+"."+ip_3g,15));
+    var subnet =  append(file,convert(data.subnet,15));
+    var gateway =  append(file,convert(conf["3g_subnet"]+".1",15));
     var dns1 =  append(file,convert(data.dns1,15));
     var dns2 = append(file,convert( data.dns2,15));
     var rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);

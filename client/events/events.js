@@ -10,6 +10,59 @@ import {createConfigs_3G} from "/client/lib/lib.js";
 var modalyesfunc;
 var modalnofunc;
 
+
+
+Template.register.events({
+  "click #cancel" : function(){
+    Session.set("register",false)
+  },
+  "click #register" : function(){
+    var user = $("#username").val();
+    var pass = $("#password").val();
+    if (!user || !pass){
+      Session.set("alert",{message : "Please fill all the fields"})
+      return false;
+    }
+    Meteor.call("register_user",user,pass,function(err,res){
+      if (err){
+        Session.set("alert",{message : err.reason})
+      }
+      else{
+        if (res){
+          Session.set("alert",{message : "Register succesful!"})
+          Meteor.loginWithPassword(user,pass)
+        }
+        else{
+          Session.set("alert",{message : "Something went wrong, please retry"})
+        }
+      }
+    })
+  }
+})
+
+Template.login.events({
+  "click #login" : function(){
+    var user = $("#username").val();
+    var pass = $("#password").val();
+    if (!user || !pass){
+      Session.set("alert",{message : "Please fill all the fields"})
+      return false;
+    }
+    Meteor.loginWithPassword(user,pass,function(err,res){
+      if (err){
+        Session.set("alert",{message : err.reason})
+      }
+      else{
+
+      }
+    })
+  },
+  "click #register" : function(){
+    Session.set("register",true);
+  }
+})
+
+
 Template.search_bar.events({
   "keypress .search_input" : function(event,target){
     var id = $(event.target).attr("id");
@@ -100,11 +153,17 @@ Template.search_results.events({
   }
 })
 
-Template.side_panel.events({
-  "click #history" : function(){
-    Session.set("popup","History")
+Template.notes.events({
+  "click #createNote" : function(){
+    Session.set("popup","notes")
   },
-  "click #show-history" : function(){
+})
+
+Template.side_panel.events({
+  "click #notes" : function(){
+    Session.set("notes","Notes")
+  },
+  "click #history" : function(){
     Session.set("history","History")
   },
   "click #back" : function(){
@@ -209,14 +268,18 @@ Template.side_panel.events({
     $("#edit_hw_id").val(undefined);
     $("#edit_lsam_id").val(undefined);
     $("#edit_device_id").val(undefined);
+    console.log(this);
   },
   "click #usb" : function(){
+  },
+  "click #logout" : function(){
+    Meteor.logout();
   },
   "click #search" : function(){
     Session.set("menu","search");
   },
   "click #settings" : function(){
-    Session.set("menu","settings");
+    Session.set("settings","settings");
   }
 })
 
@@ -241,6 +304,16 @@ Template.settings.events({
       JSON.stringify(settings)
     )
     Session.set("displayColumns",settings)
+  },
+  "change input[type='text']"(e,t){
+    var id = (e.target.id);
+    var value = e.target.value;
+    var settings = JSON.parse(localStorage.getItem("config"));
+    settings[id]=value;
+    localStorage.setItem("config",
+      JSON.stringify(settings)
+    )
+    Session.set("config",settings)
   }
 })
 

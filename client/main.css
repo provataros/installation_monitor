@@ -11,7 +11,10 @@ html,body{
 *{
   font-family: 'Roboto', sans-serif;
 }
-
+.notes-table{
+  text-align: left;
+  font-size: 16px;
+}
 .history-table{
   text-align: left;
   font-size: 16px;
@@ -41,12 +44,10 @@ html,body{
 }
 
 
-
-
-
-
 .history-table {
   border-collapse: collapse;
+  width : 100%;
+  text-align: center;
 }
 .history-table tr{
   padding : 3px 0px;
@@ -67,6 +68,32 @@ html,body{
 }
 
 .history-table tr:hover{
+  background-color: #03a9f4;
+}
+
+
+.notes-table {
+  border-collapse: collapse;
+}
+.notes-table tr{
+  padding : 3px 0px;
+  vertical-align: top;
+}
+.notes-table{
+  font-size: 16px;
+}
+
+.notes-table td{
+  padding-right :10px;
+  vertical-align: top;
+}
+
+
+.notes-table tr.odd{
+  background-color: #e8f1f9;
+}
+
+.notes-table tr:hover{
   background-color: #03a9f4;
 }
 
@@ -191,23 +218,59 @@ h1 {
     position: relative;
 }
 
+.pane{
+  margin: 0px auto;
+}
+
 #side_panel{
-  width : 50px;
+  width : 100%;
+  height : 50px;
   box-sizing: border-box;
   position : fixed;
   background-color : #444444;
-  padding : 5px;
   z-index: 2;
+  vertical-align: middle;
+  color : white;
+
 }
 #content{
-  margin-left : 50px;
+  margin-top : 50px;
 }
 
-#side_panel button,.button-separator{
-  width : 40px;
-  height : 40px;
-  margin-bottom: 5px;
+.menu-buttons{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width : auto;
+    display : inline-block;
+    position : absolute;
+    height : 100%;
+    vertical-align: middle;
 }
+
+.menu-buttons li{
+  height : 100%;
+  margin-bottom: 0px;
+  display :inline-block;
+  line-height : 50px;
+  margin : 0px 10px;
+  cursor : pointer;
+}
+.menu-buttons div{
+  display: inline-block;
+  margin: 0px 10px;
+}
+
+#app-menu{
+  top : 0px;
+  right : 0px;
+}
+#context-menu{
+  top : 0px;
+  left : 0px;
+}
+
 
 .calendar{
   width : 250px;
@@ -274,6 +337,22 @@ h1 {
   font-size : 14px;
 }
 
+.midcenter{
+  width : 250px;
+  margin : 250px auto;
+  vertical-align: middle;
+  text-align: center;
+}
+.midcenter button{
+  display : inline-block;
+}
+.midcenter .b1{
+  float : left;
+}
+.midcenter .b2{
+  float : right;
+}
+
 .popup  textarea{
   margin : 20px auto;
   width : 100%;
@@ -301,7 +380,9 @@ h1 {
   box-sizing: border-box;
 
 }
-
+.alert > .alert-content{
+  max-width : 80% !important;
+}
 
 .modal > .modal-content,.alert > .alert-content{
   background-color: white;

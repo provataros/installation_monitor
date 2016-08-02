@@ -1,19 +1,16 @@
 
 <template name = "device">
-  {{#with modal}}
-    {{> confirm}}
-  {{/with}}
-  {{#with alert}}
-    {{> alert}}
-  {{/with}}
   {{#with device}}
     {{#if history}}
       {{> history}}
     {{/if}}
+    {{#if notes}}
+      {{> notes}}
+    {{/if}}
     {{#if popup}}
       {{> popup}}
     {{/if}}
-    <div class = "docInfo">Created : {{dateTime createdAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edited : {{dateTime updatedAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registered : {{dateTime register_date}}</div>
+    <div class = "docInfo">Created : {{dateTime createdAt}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edited : {{dateTime updatedAt}} &nbsp;by &nbsp;<b>{{updatedFrom}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Registered : {{dateTime register_date}}</div>
     <div class = "section">
       <h1>Hardware</h1>
       {{> device_field toObject "hw_status" this}}
@@ -104,14 +101,14 @@
 
     <div class = "popup">
       <div class ="popup-content">
-        <h1>History Item Details</h1>
+        <h1>Note Details</h1>
         <br />
         <input type="hidden" class = "date-input" value="{{value}}"/>
         <input readonly class="noborder datepicker" id = "history-date" type="text"/>
         <textarea id = "history-info"></textarea>
         <div id = "button-group">
-          <button id = "yes">Yes</button>
-          <button id = "no">No</button>
+          <button id = "yes">Save</button>
+          <button id = "no">Cancel</button>
         </div>
       </div>
     </div>
@@ -130,13 +127,33 @@
   {{focus}}
 </template>
 
+<template name = "notes">
+  <div class = "alert">
+    <div class ="alert-content">
+      <h2>Notes</h2>
+      <table class = "notes-table">
+        {{#each reverse this.history}}
+        <tr class = "{{evenrow @index}}"><td>{{toDate2 date}}</td><td>&nbsp;&nbsp;&nbsp;{{value}}</td></tr>
+        {{/each}}
+      </table>
+      <div id = "button-group">
+        <button id = "ok">OK</button><button id="createNote">Create Note</button>
+      </div>
+    </div>
+  </div>
+  {{focus}}
+</template>
+
 <template name = "history">
   <div class = "alert">
     <div class ="alert-content">
-      <h2>History</h2>
+      <h2>Change History</h2>
       <table class = "history-table">
-        {{#each this.history}}
-        <tr class = "{{evenrow @index}}"><td>{{toDate date}}</td><td>{{value}}</td></tr>
+        {{#each getChangeHistory this._id}}
+        <tr><th>{{user}}&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;{{toDate2 date}}</th></tr>
+          {{#each keys data}}
+            <tr><td>{{key}}&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;{{from}}  &rarr;  {{to}}</td></tr>
+          {{/each}}
         {{/each}}
       </table>
       <div id = "button-group">
