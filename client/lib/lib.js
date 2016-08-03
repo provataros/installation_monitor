@@ -20,6 +20,7 @@ export const construct_query = function(){
   var sub_agency = Session.get("s_sub_agency");
   var station_name = Session.get("s_station_name");
   var sw_status = Session.get("s_sw_status");
+  var hw_status = Session.get("s_hw_status");
   var urgent = Session.get("s_urgent");
   var error = Session.get("s_error");
 
@@ -52,15 +53,15 @@ export const construct_query = function(){
   }
   if (type){
     flag = true;
-    query.device_type = {$regex: new RegExp(type, "i")};
+    query.device_type = type
   }
   if (agency){
     flag = true;
-    query.agency = {$regex: new RegExp(agency, "i")};
+    query.agency = agency
   }
   if (sub_agency){
     flag = true;
-    query.sub_agency = {$regex: new RegExp(sub_agency, "i")};
+    query.sub_agency = sub_agency
   }
   if (station_name){
     flag = true;
@@ -68,7 +69,11 @@ export const construct_query = function(){
   }
   if (sw_status){
     flag = true;
-    query.sw_status = {$regex: new RegExp(sw_status, "i")};
+    query.sw_status = sw_status
+  }
+  if (hw_status){
+    flag = true;
+    query.hw_status = hw_status;
   }
   if (urgent=="true"){
     flag = true;

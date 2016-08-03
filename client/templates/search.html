@@ -56,6 +56,14 @@
       <input class = "search_input"  type = "text" id = "s_station_name" value = "{{fromSession 's_station_name'}}">
     </div>
     <div class = "search_div">
+      <label>Hardware Status</label>
+      <select class = "search_input" id = "s_hw_status">
+        <option></option>
+        <option {{selected_hw_status "Not Done" }} value = "Not Done">Not Done</option>
+        <option {{selected_hw_status "Done" }} value = "Done">Done</option>
+      </select>
+    </div>
+    <div class = "search_div">
       <label>Installation Status</label>
       <select class = "search_input" id = "s_sw_status">
         <option></option>

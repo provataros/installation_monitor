@@ -223,6 +223,10 @@ Template.registerHelper('selected_sw_status', function(id) {
   return Session.get("s_sw_status")===id?"selected":"";
 });
 
+Template.registerHelper('selected_hw_status', function(id) {
+  return Session.get("s_hw_status")===id?"selected":"";
+});
+
 
 Template.registerHelper('selected_agency', function(id) {
   return Session.get("s_agency")===id?"selected":"";
