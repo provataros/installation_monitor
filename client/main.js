@@ -44,7 +44,7 @@ Meteor.startup(() => {
   Session.set("menu","search");
   Session.modal = {};
   Session.modal.no = function(){};
-
+  Session.set("multiSelected",{})
 
   var displayColumns = localStorage.getItem("displayColumns")
   if (!displayColumns){

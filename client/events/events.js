@@ -5,6 +5,8 @@ import {populateStations} from "/client/lib/lib.js"
 
 import {saveXLSX} from "/client/lib/excel.js";
 import {createConfigs} from "/client/lib/lib.js";
+import {createConfigsBatch} from "/client/lib/lib.js";
+import {createConfigsBatch3G} from "/client/lib/lib.js";
 import {createConfigs_3G} from "/client/lib/lib.js";
 
 var modalyesfunc;
@@ -133,9 +135,18 @@ Template.dropdown.events({
 });
 
 Template.search_results.events({
-  "click .device_item" : function(){
-    Session.set("selected_device",this._id);
-    status = {};
+  "click .device_item" : function(e,t){
+    if (e.ctrlKey){
+      var f = Session.get("multiSelected");
+      if (f[this._id])delete f[this._id]
+      else f[this._id] = this;
+      Session.set("multiSelected",f);
+    }
+    else{
+      console.log(e,t);
+      Session.set("selected_device",this._id);
+      status = {};
+    }
   },
   "click .sort" : function(e){
     var sort = Session.get("sort");
@@ -150,6 +161,12 @@ Template.search_results.events({
   },
   "click #download"(){
     saveXLSX(this.fetch());
+  },
+  "click #generate"(){
+    createConfigsBatch(Session.get("multiSelected"));
+  },
+  "click #generate3g"(){
+    createConfigsBatch3G(Session.get("multiSelected"));
   }
 })
 

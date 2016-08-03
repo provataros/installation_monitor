@@ -34,13 +34,17 @@ html,body{
   padding-right :10px;
 }
 
+.multiSelected{
+  background-color : #b3c8d8 !important;
+}
+
 
 #search_results tr.odd{
   background-color: #e8f1f9;
 }
 
 #search_results tr:hover{
-  background-color: #03a9f4;
+  background-color: #03a9f4 !important;
 }
 
 

@@ -227,6 +227,21 @@ Template.registerHelper('selected_hw_status', function(id) {
   return Session.get("s_hw_status")===id?"selected":"";
 });
 
+Template.registerHelper('isMultiSelected', function(id) {
+  return Session.get("multiSelected")[this._id]!=null?"multiSelected":"";
+});
+
+Template.registerHelper('multiSelectedCount', function(id) {
+  var f = Session.get("multiSelected");
+  var count=0;
+  for (i in f) {
+    if (f.hasOwnProperty(i)) {
+        count++;
+    }
+  }
+  return count;
+});
+
 
 Template.registerHelper('selected_agency', function(id) {
   return Session.get("s_agency")===id?"selected":"";

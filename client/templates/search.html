@@ -121,7 +121,7 @@
 
 <template name = "search_results">
   {{#with results}}
-    <div class = "docInfo">Count : {{count this}} &nbsp;<button id = "download">Download</button></div>
+    <div class = "docInfo">Count : {{count this}} &nbsp;<button id = "download">Download</button> &nbsp;&nbsp;Selected Count : {{multiSelectedCount}}&nbsp;&nbsp;<button id = "generate">Generate</button>&nbsp;<button id = "generate3g">Generate 3G</button>&nbsp;</div>
     <div class = "search_panel">
       <table id = "search_results" width = "100%">
         <tr>
@@ -147,7 +147,7 @@
         </tr>
         <br>
         {{#each this}}
-          <tr class = "device_item {{evenrow @index}} {{isUrgent}}" >
+          <tr class = "device_item {{evenrow @index}} {{isUrgent}} {{isMultiSelected}}" >
             {{#if displayColumn "no"}}<td>{{@index}}</td>{{/if}}
             {{#if displayColumn "device_type"}}<td>{{device_type}}</td>{{/if}}
             {{#if displayColumn "updatedAt"}}<td>{{toDate2 updatedAt}}</td>{{/if}}

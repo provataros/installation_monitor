@@ -144,54 +144,96 @@ function convert(str,length){
 }
 var index = 0;
 
-
-function append(file,data){
+var file = "";
+function append(data){
   for (var i=0;i<data.length;i++){
-    file[index] = data[i];
-    index ++;
+    file += data[i];
   }
 }
 
-export const createConfigs = function(data){
-  var file = [];
+export const createConfigsBatch = function(data){
+  var zips = [];
+  var zip = new JSZip();
+  $.each(data,function(key,value){
+    try{
+      var f = createConfigs(value,false);
+      zips.push(f);
+      zip.folder(value.service_id).folder("IN").file("SC001_"+value.service_id,f.file1);
+      zip.folder(value.service_id).folder("IN").file("SC002_"+value.service_id,f.file2);     
+    }
+    catch(e){
+      console.log(e);
+      console.log("Please check for missing/incorrect fields");
+    }
+  })
+  if (zips.length>0)saveAs(zip.generate({type : "blob"}), "configs.zip")
+}
+
+export const createConfigsBatch3G = function(data){
+  var zips = [];
+  var zip = new JSZip();
+  var start = 20;
+  $.each(data,function(key,value){
+    try{
+      var f = createConfigs_3G(value,""+start,false);
+      zips.push(f);
+      zip.folder(value.service_id).folder("IN").file("SC001_3G_"+value.service_id,f.file1);
+      zip.folder(value.service_id).folder("IN").file("SC002_3G_"+value.service_id,f.file2);     
+    }
+    catch(e){
+      console.log(e);
+      console.log("Please check for missing/incorrect fields");
+    }
+    start++;
+  })
+  if (zips.length>0)saveAs(zip.generate({type : "blob"}), "configs3g.zip")
+}
+
+export const createConfigs = function(data,save=true){
+  
   index = 0;
   try{
-    var msgid = append(file,convert("SC001",5));
-    var msgv =  append(file,convert("1",1));
-    var msgrev =  append(file,convert("0",1));
-    var service_id =  append(file,convert(data.service_id,10));
-    var host =  append(file,convert(("ETS"+data.service_id),50));
-    var ntp =  append(file,convert(data.ntp,50));
-    var no_if =  append(file,[String.fromCharCode(0),String.fromCharCode(1)]);
-    var newline =  append(file,convert("\n",1) );
-    var ifnm =  append(file,convert("0",1));
-    var iftp =  append(file,convert("0",1));
-    var ip =  append(file,convert(data.ip,15));
-    var subnet =  append(file,convert(data.subnet,15));
-    var gateway =  append(file,convert(data.gateway,15));
-    var dns1 =  append(file,convert(data.dns1,15));
-    var dns2 = append(file,convert( data.dns2,15));
-    var rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
-    append(file,convert("\n",1) );
+    file = "";
+    var msgid =append(convert("SC001",5));
+    var msgv = append(convert("1",1));
+    var msgrev = append(convert("0",1));
+    var service_id = append(convert(data.service_id,10));
+    var host = append(convert(("ETS"+data.service_id),50));
+    var ntp = append(convert(data.ntp,50));
+    var no_if = append([String.fromCharCode(0),String.fromCharCode(1)]);
+    var newline = append(convert("\n",1) );
+    var ifnm = append(convert("0",1));
+    var iftp = append(convert("0",1));
+    var ip = append(convert(data.ip,15));
+    var subnet = append(convert(data.subnet,15));
+    var gateway = append(convert(data.gateway,15));
+    var dns1 = append(convert(data.dns1,15));
+    var dns2 =append(convert( data.dns2,15));
+    var rfu =append([String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(convert("\n",1) );
 
+    var file1 = file.slice(0);
 
-
-
-    var file2 = [];
+    file = "";
     index = 0;
-    msgid = append(file2,convert("SC002",5));
-    msgv =  append(file2,convert("1",1));
-    msgrev =  append(file2,convert("0",1));
-    var service_id =  append(file2,convert(data.service_id,10));
-    var host1 =  append(file2,convert((data.host1),50));
-    var host2 =  append(file2,convert((data.host2),50));
-    var host3 =  append(file2,convert((data.host3),50));
-    var swd = append(file2,convert((data.swd),100));
-    rfu = append(file2,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
-    append(file2,convert("\n",1) );
+    msgid =append(convert("SC002",5));
+    msgv = append(convert("1",1));
+    msgrev = append(convert("0",1));
+    var service_id = append(convert(data.service_id,10));
+    var host1 = append(convert((data.host1),50));
+    var host2 = append(convert((data.host2),50));
+    var host3 = append(convert((data.host3),50));
+    var swd =append(convert((data.swd),100));
+    rfu =append([String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(convert("\n",1) );
 
-    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc001_"+data.service_id)
-    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc002_"+data.service_id)
+    var file2 = file.slice(0);
+
+    var zip = new JSZip().folder(data.service_id).folder("IN");
+    zip.file("sc001_"+data.service_id,file1);
+    zip.file("sc002_"+data.service_id,file2);
+    if (save)saveAs(zip.generate({type : "blob"}), data.service_id+".zip")
+    else return {file1 : file1,file2 : file2};
   }
   catch(e){
     console.log(e);
@@ -201,8 +243,7 @@ export const createConfigs = function(data){
 }
 
 
-export const createConfigs_3G = function(data,ip_3g){
-  var file = [];
+export const createConfigs_3G = function(data,ip_3g,save=true){
   index = 0;
   try{
 
@@ -212,43 +253,49 @@ export const createConfigs_3G = function(data,ip_3g){
       Session.set("alert",{message : ("IP address "+conf.ip+ip_3g + " in not valid")});;
       return;
     }
+    
+    file = "";
+    var msgid =append(convert("SC001",5));
+    var msgv = append(convert("1",1));
+    var msgrev = append(convert("0",1));
+    var service_id = append(convert(data.service_id,10));
+    var host = append(convert(("ETS"+data.service_id),50));
+    var ntp = append(convert(data.ntp,50));
+    var no_if = append([String.fromCharCode(0),String.fromCharCode(1)]);
+    var newline = append(convert("\n",1) );
+    var ifnm = append(convert("0",1));
+    var iftp = append(convert("0",1));
+    var ip = append(convert(conf["3g_subnet"]+"."+ip_3g,15));
+    var subnet = append(convert(data.subnet,15));
+    var gateway = append(convert(conf["3g_subnet"]+".1",15));
+    var dns1 = append(convert(data.dns1,15));
+    var dns2 =append(convert( data.dns2,15));
+    var rfu =append([String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(convert("\n",1) );
 
-    var msgid = append(file,convert("SC001",5));
-    var msgv =  append(file,convert("1",1));
-    var msgrev =  append(file,convert("0",1));
-    var service_id =  append(file,convert(data.service_id,10));
-    var host =  append(file,convert(("ETS"+data.service_id),50));
-    var ntp =  append(file,convert(data.ntp,50));
-    var no_if =  append(file,[String.fromCharCode(0),String.fromCharCode(1)]);
-    var newline =  append(file,convert("\n",1) );
-    var ifnm =  append(file,convert("0",1));
-    var iftp =  append(file,convert("0",1));
-    var ip =  append(file,convert(conf["3g_subnet"]+"."+ip_3g,15));
-    var subnet =  append(file,convert(data.subnet,15));
-    var gateway =  append(file,convert(conf["3g_subnet"]+".1",15));
-    var dns1 =  append(file,convert(data.dns1,15));
-    var dns2 = append(file,convert( data.dns2,15));
-    var rfu = append(file,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
-    append(file,convert("\n",1) );
+    var file1 = file.slice(0);
+    file = "";
 
-
-
-
-    var file2 = [];
     index = 0;
-    msgid = append(file2,convert("SC002",5));
-    msgv =  append(file2,convert("1",1));
-    msgrev =  append(file2,convert("0",1));
-    var service_id =  append(file2,convert(data.service_id,10));
-    var host1 =  append(file2,convert((data.host1),50));
-    var host2 =  append(file2,convert((data.host2),50));
-    var host3 =  append(file2,convert((data.host3),50));
-    var swd = append(file2,convert((data.swd),100));
-    rfu = append(file2,[String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
-    append(file2,convert("\n",1) );
+    msgid =append(convert("SC002",5));
+    msgv = append(convert("1",1));
+    msgrev = append(convert("0",1));
+    var service_id = append(convert(data.service_id,10));
+    var host1 = append(convert((data.host1),50));
+    var host2 = append(convert((data.host2),50));
+    var host3 = append(convert((data.host3),50));
+    var swd =append(convert((data.swd),100));
+    rfu =append([String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0),String.fromCharCode(0)]);
+    append(convert("\n",1) );
 
-    saveAs(new Blob(file,{type:"application/octet-stream"}), "sc001_"+data.service_id+"_3g")
-    saveAs(new Blob(file2,{type:"application/octet-stream"}), "sc002_"+data.service_id+"_3g")
+    
+    var file2 = file.slice(0);
+
+    var zip = new JSZip().folder(data.service_id).folder("IN");
+    zip.file("sc001_"+data.service_id,file1);
+    zip.file("sc002_"+data.service_id,file2);
+    if (save)saveAs(zip.generate({type : "blob"}), data.service_id+".zip")
+    else return {file1 : file1,file2 : file2};
   }
   catch(e){
     console.log(e);
