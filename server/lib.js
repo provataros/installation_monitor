@@ -60,7 +60,7 @@ export const createConfigsBatch = function(data){
   }
 }
 
-export const createConfigsBatch3G = function(data){
+export const createConfigsBatch3G = function(data,subnet){
   if (data.length == 0){
     console.log("No devices selected","heads-up",2000);
     return;
@@ -73,7 +73,7 @@ export const createConfigsBatch3G = function(data){
   _.each(data,function(value){
     try{
       lflag = true;
-      var f = createConfigs_3G(value,""+start,false);
+      var f = createConfigs_3G(value,""+start,false,subnet);
       if (f){
         zips[value.service_id] = {ok : true,data : f};
         zip.folder(value.service_id).folder("IN").file("SC001_3G"+CryptoJS.MD5(f.file1).toString(),f.file1);
@@ -161,11 +161,11 @@ export const createConfigs = function(data,save=true){
 }
 
 
-export const createConfigs_3G = function(data,ip_3g,save=true){
+export const createConfigs_3G = function(data,ip_3g,save=true,extrasubnet){
   index = 0;
   try{
 
-    var conf = Meteor.isClient?JSON.parse(localStorage.getItem("config")):{"3g_subnet":"10.230.40"}
+    var conf = !extrasubnet?JSON.parse(localStorage.getItem("config")):extrasubnet;
     ip_3g = parseInt(ip_3g);
     if (isNaN(ip_3g) || ip_3g <=1 || ip_3g >= 254){
       Session.set("alert",{message : ("IP address "+conf.ip+ip_3g + " in not valid")});;

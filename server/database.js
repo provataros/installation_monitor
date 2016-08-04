@@ -109,13 +109,15 @@ Meteor.methods({
     })
     return createConfigsBatch(arr)
   },
-  getConfigs3G : function(){
+  getConfigs3G : function(subnet){
     var f = Mongo._devices.find({device_type : "ACIM"}).fetch();
     var arr = {};
     _.each(f,function(key,value){
       arr[key._id] = key;
     })
-    return createConfigsBatch3G(arr)
+    var ss = {};
+    ss["3g_subnet"] = subnet;
+    return createConfigsBatch3G(arr,ss)
   }
   //FixNetwork : FixNetwork,
 })
