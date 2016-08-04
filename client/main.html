@@ -29,6 +29,7 @@
       {{> login}}
     {{/if}}
   {{/if}}
+  {{> notification}}
 </body>
 
 <template name="login">
@@ -101,4 +102,10 @@
 <template name = "checkbox">
   <label>{{field_label name}}:</label>
   <input type="checkbox" id = "edit_{{name}}" class = "device-input" {{isChecked}}/>
+</template>
+
+<template name = "notification"> 
+  {{#with notification}}
+    <div class = "notification type-{{type}}"><div>{{message}}</div></div>
+  {{/with}}
 </template>

@@ -11,6 +11,7 @@ Mongo._history = new Mongo.Collection("history");
 
 
 
+
 Meteor.publish("devices",function(){
   return Mongo._devices.find({});
 })

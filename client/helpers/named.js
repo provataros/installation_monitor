@@ -8,25 +8,15 @@ import {labels} from "/client/static/labels.js"
 import {construct_query} from "/client/lib/lib.js"
 
 Template.search_results.helpers({
-  results : function(){
-    var query = construct_query();
-    var sort = Session.get("sort");
-    if (sort){
-      obj = {};
-      obj[sort] = Session.get("sort_order");
-      sort = {sort : obj}
-    }
-    else{
-      sort = null;
-    }
-    if (query){
-      return sort?Mongo._devices.find(query,sort):Mongo._devices.find(query);
-    }
-  },
+  
   isUrgent : function(){
     return this.urgent=="true"?"urgent":"";
+  },
+  save : function(){
+    Session.set("search_results",this.fetch());
   }
 })
+
 
 
 Template.date.onRendered(function(){

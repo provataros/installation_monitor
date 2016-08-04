@@ -5,7 +5,7 @@ import { Mongo } from "meteor/mongo"
 
 import { Session } from 'meteor/session'
 import {labels} from "/client/static/labels.js"
-
+import {testConfigGeneration} from "/client/lib/lib.js"
 
 import './main.html';
 
@@ -59,7 +59,6 @@ Meteor.startup(() => {
         agency : true,
         hw_id : true,
         service_id : true,
-        lsam_id : true,
         station_name : true,
         sam_tracking : true,
         hw_status : true,
@@ -86,6 +85,8 @@ Meteor.startup(() => {
     )
   }
   Session.set("displayColumns",JSON.parse(localStorage.getItem("displayColumns")))
-  Session.set("config",JSON.parse(localStorage.getItem("config")))
+  Session.set("config",JSON.parse(localStorage.getItem("config")));
+  testConfigGeneration();
+  
 
 });

@@ -121,7 +121,8 @@
 
 <template name = "search_results">
   {{#with results}}
-    <div class = "docInfo">Count : {{count this}} &nbsp;<button id = "download">Download</button> &nbsp;&nbsp;Selected Count : {{multiSelectedCount}}&nbsp;&nbsp;<button id = "generate">Generate</button>&nbsp;<button id = "generate3g">Generate 3G</button>&nbsp;</div>
+    {{save}}
+    <div class = "docInfo">Count : {{count this}} &nbsp;&nbsp;&nbsp;Selected Count : {{multiSelectedCount}}&nbsp;&nbsp;</div>
     <div class = "search_panel">
       <table id = "search_results" width = "100%">
         <tr>
@@ -196,6 +197,11 @@
     {{/with}}
     {{#unless device}}
       <li id = "new_acim">New</li>
+      {{#with results}}
+        <li id = "download">Download Excel</li>
+        <li id = "generate">Generate</li>
+        <li id = "generate3g">Generate 3G</li>
+      {{/with}}
     {{/unless}}
   {{/if}}
 </template>

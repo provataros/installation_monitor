@@ -3,6 +3,7 @@ import { Session } from 'meteor/session'
 import {labels} from "/client/static/labels.js"
 import {populateStations} from "/client/lib/lib.js"
 import {save_history} from "/client/lib/lib.js"
+import {construct_query} from "/client/lib/lib.js"
 
 Template.registerHelper("device",function(){
   var id = Session.get("selected_device");
@@ -119,6 +120,7 @@ Template.registerHelper("isMenu",function(value){
   return this == value;
 })
 Template.registerHelper("reverse",function(value){
+  if (!value) return null;
   return $.merge([],value).reverse();
 })
 
@@ -157,6 +159,24 @@ Template.registerHelper('toArray',function(obj,group){
     }
     return result;
 });
+Template.registerHelper("results",function(){
+    var query = construct_query();
+    var sort = Session.get("sort");
+    if (sort){
+      obj = {};
+      obj[sort] = Session.get("sort_order");
+      sort = {sort : obj}
+    }
+    else{
+      sort = null;
+    }
+    if (query){
+      var f= sort?Mongo._devices.find(query,sort):Mongo._devices.find(query);
+
+      Session.set("multiSelected",{});
+      return f;
+    }
+})
 Template.registerHelper('keys',function(obj){
     var result = [];
     var f = obj.from;
@@ -221,6 +241,9 @@ Template.registerHelper('selected_type', function(id) {
 
 Template.registerHelper('selected_sw_status', function(id) {
   return Session.get("s_sw_status")===id?"selected":"";
+});
+Template.registerHelper('notification', function(id) {
+  return Session.get("notification");
 });
 
 Template.registerHelper('selected_hw_status', function(id) {

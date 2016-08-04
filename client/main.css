@@ -238,7 +238,8 @@ h1 {
 
 }
 #content{
-  margin-top : 50px;
+  padding-top : 50px;
+  box-sizing: border-box;
 }
 
 .menu-buttons{
@@ -407,3 +408,28 @@ h1 {
 .modal button, .alert button,.popup button{
   margin : 20px 20px 0px 20px;
 }
+
+.notification{
+  width : 100%;
+  height : 50px;
+  text-align: center;
+  display : table;
+  background-color : mediumseagreen;
+  position: fixed;
+  bottom : 0px;
+  color : white;
+}
+.notification > div{
+  display : table-cell;
+  vertical-align: middle;
+}
+.type-heads-up{
+  background-color : #e0aa5d !important;
+}
+.type-success{
+  background-color : seagreen !important;
+}
+.type-error{
+  background-color : darkred !important;
+}
+

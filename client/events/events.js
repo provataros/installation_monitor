@@ -8,6 +8,7 @@ import {createConfigs} from "/client/lib/lib.js";
 import {createConfigsBatch} from "/client/lib/lib.js";
 import {createConfigsBatch3G} from "/client/lib/lib.js";
 import {createConfigs_3G} from "/client/lib/lib.js";
+import {displayNotification} from "/client/lib/lib.js";
 
 var modalyesfunc;
 var modalnofunc;
@@ -134,6 +135,29 @@ Template.dropdown.events({
   }
 });
 
+Meteor.startup(function(){
+  $(document).on('keydown', function (e) {
+    if (e.ctrlKey && (e.key == "a" || e.key == "A")){
+      console.log(true);
+      var f = Session.get("search_results");
+      var dict = {};
+      $.each(f,function(key,value){
+        dict[value._id] = value;
+      })
+      Session.set("multiSelected",dict);
+      e.preventDefault();
+    }
+    if (e.keyCode == 27){
+       Session.set("modal",undefined);
+       Session.set("alert",undefined);
+       Session.set("popup",undefined);
+       Session.set("notes",undefined);
+       Session.set("history",undefined);
+       Session.set("multiSelected",{});
+    }
+  });
+})
+
 Template.search_results.events({
   "click .device_item" : function(e,t){
     if (e.ctrlKey){
@@ -143,7 +167,6 @@ Template.search_results.events({
       Session.set("multiSelected",f);
     }
     else{
-      console.log(e,t);
       Session.set("selected_device",this._id);
       status = {};
     }
@@ -158,17 +181,9 @@ Template.search_results.events({
       Session.set("sort",id);
       Session.set("sort_order",-1);
     }
-  },
-  "click #download"(){
-    saveXLSX(this.fetch());
-  },
-  "click #generate"(){
-    createConfigsBatch(Session.get("multiSelected"));
-  },
-  "click #generate3g"(){
-    createConfigsBatch3G(Session.get("multiSelected"));
   }
 })
+
 
 Template.notes.events({
   "click #createNote" : function(){
@@ -177,6 +192,15 @@ Template.notes.events({
 })
 
 Template.side_panel.events({
+  "click #download"(){
+    saveXLSX(this.fetch());
+  },
+  "click #generate"(){
+    createConfigsBatch(Session.get("multiSelected"));
+  },
+  "click #generate3g"(){
+    createConfigsBatch3G(Session.get("multiSelected"));
+  },
   "click #notes" : function(){
     Session.set("notes","Notes")
   },
@@ -241,7 +265,7 @@ Template.side_panel.events({
       }
     }
     else{
-      Session.set("alert",{message : ("Nothing to update")});;
+      displayNotification("Nothing to update","heads-up");;
     }
   },
   "click #reset" : function(){
@@ -300,17 +324,6 @@ Template.side_panel.events({
   }
 })
 
-Template.body.events({
-  "keydown"(e,t){
-    if (e.keyCode == 27){
-       Session.set("modal",undefined);
-       Session.set("alert",undefined);
-       Session.set("popup",undefined);
-    }
-  }
-})
-
-
 Template.settings.events({
   "change input[type='checkbox']"(e,t){
     var id = (e.target.id);
@@ -342,3 +355,4 @@ Template.device.events({
     createConfigs_3G(this,$("#ip-3g").val());
   }
 })
+
