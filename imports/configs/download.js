@@ -58,7 +58,7 @@ ddpclient.connect(function(error, wasReconnect) {
 
     ddpclient.call(
       method,             // name of Meteor Method being called
-      [],            // parameters to send to Meteor Method
+      ["10.230.40"],            // parameters to send to Meteor Method
       function (err, result) {   // callback which returns the method call results
         if (!err){ 
           var root;
