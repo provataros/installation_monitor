@@ -100,7 +100,7 @@ Meteor.methods({
     //Initialize();
   },
   insert_history : function(date,text,id){
-    return Mongo._devices.update({_id : id},{$push : {history : {date : date,value : text}}});
+    return Mongo._devices.update({_id : id},{$push : {history : {user : Meteor.user().username,date : date,value : text}}});
   },
   //FixNetwork : FixNetwork,
 })

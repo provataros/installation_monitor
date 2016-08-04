@@ -133,7 +133,7 @@
       <h2>Notes</h2>
       <table class = "notes-table">
         {{#each reverse this.history}}
-        <tr class = "{{evenrow @index}}"><td>{{toDate2 date}}</td><td>&nbsp;&nbsp;&nbsp;{{value}}</td></tr>
+        <tr class = "{{evenrow @index}}"><td><b>{{user}}</b></td><td>&nbsp;&nbsp;&nbsp;<b>{{toDate2 date}}</b></td><td>&nbsp;&nbsp;&nbsp;{{value}}</td></tr>
         {{/each}}
       </table>
       <div id = "button-group">

@@ -138,7 +138,6 @@ Template.dropdown.events({
 Meteor.startup(function(){
   $(document).on('keydown', function (e) {
     if (e.ctrlKey && (e.key == "a" || e.key == "A")){
-      console.log(true);
       var f = Session.get("search_results");
       var dict = {};
       $.each(f,function(key,value){
