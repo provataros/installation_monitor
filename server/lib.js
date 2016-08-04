@@ -56,7 +56,6 @@ export const createConfigsBatch = function(data){
   })
   if (!lflag)console.log("No devices selected.","heads-up")
   if (!error && lflag){
-    console.log("Configuration files successfully created.","success");
     return zips;
   }
 }
@@ -93,7 +92,6 @@ export const createConfigsBatch3G = function(data){
   
   if (!lflag)console.log("No devices selected.","heads-up",2000)
   if (!error && lflag){
-    console.log("Configuration files successfully created.","success");
     return zips;
   }
 }
