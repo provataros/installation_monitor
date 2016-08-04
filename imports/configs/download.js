@@ -51,10 +51,13 @@ ddpclient.connect(function(error, wasReconnect) {
   }
 
   console.log("Connected");
-
+  var method = "getConfigs";
+  if (process.argv[2]){
+    method = "getConfigs3G";
+  }
 
     ddpclient.call(
-      "getConfigs",             // name of Meteor Method being called
+      method,             // name of Meteor Method being called
       [],            // parameters to send to Meteor Method
       function (err, result) {   // callback which returns the method call results
         if (!err){ 
