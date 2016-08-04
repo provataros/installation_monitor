@@ -165,7 +165,7 @@ export const createConfigs_3G = function(data,ip_3g,save=true){
   index = 0;
   try{
 
-    var conf = JSON.parse(localStorage.getItem("config"));
+    var conf = Meteor.isClient?JSON.parse(localStorage.getItem("config")):{"3g_subnet":"10.230.40"}
     ip_3g = parseInt(ip_3g);
     if (isNaN(ip_3g) || ip_3g <=1 || ip_3g >= 254){
       Session.set("alert",{message : ("IP address "+conf.ip+ip_3g + " in not valid")});;
