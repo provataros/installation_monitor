@@ -1,6 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import {Initialize} from "/server/init"
 import {FixNetwork} from "/server/init"
+import {createConfigsBatch} from "./lib.js"
+import {createConfigsBatch3G} from "./lib.js"
 
 
 Mongo._devices = new Mongo.Collection("devices");
@@ -22,9 +24,6 @@ Meteor.publish("history",function(){
   return Mongo._history.find({});
 })
 Meteor.startup(function(){
-  if (false)console.log(_.each(stations_obj,function(doc){
-    Mongo._stations.insert(doc);
-  }));
 })
 
 Meteor.methods({
@@ -102,5 +101,13 @@ Meteor.methods({
   insert_history : function(date,text,id){
     return Mongo._devices.update({_id : id},{$push : {history : {user : Meteor.user().username,date : date,value : text}}});
   },
+  getConfigs : function(){
+    var f = Mongo._devices.find({device_type : "ACIM"}).fetch();
+    var arr = {};
+    _.each(f,function(key,value){
+      arr[key._id] = key;
+    })
+    return createConfigsBatch(arr)
+  }
   //FixNetwork : FixNetwork,
 })
