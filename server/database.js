@@ -126,11 +126,11 @@ Meteor.methods({
     const bat = spawn('cmd.exe', ['/c', 'C:\\backup\\backup.bat']);
 
     bat.stdout.on('data', (data) => {
-      console.log(data);
+      //console.log(data);
     });
 
     bat.stderr.on('data', (data) => {
-      console.log(data);
+      //console.log(data);
     });
 
     bat.on('exit', (code) => {
