@@ -63,7 +63,6 @@ ddpclient.connect(function(error, wasReconnect) {
         if (!err){ 
           var root;
           root = __dirname;
-          console.log(result);
           rmdir(root+"/../Sync/ACIM",function(e,r){
             if (e)console.log(e,r)
             else{
