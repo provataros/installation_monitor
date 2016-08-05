@@ -156,7 +156,11 @@ Meteor.startup(function(){
     }
   });
 })
-
+Template.date.events({
+  "click .fa.fa-times" : function(e,t){
+    $(e.delegateTarget).find("input").val(undefined);
+  }
+})
 Template.search_results.events({
   "click .device_item" : function(e,t){
     if (e.ctrlKey){
@@ -308,6 +312,9 @@ Template.side_panel.events({
     $("#edit_hw_id").val(undefined);
     $("#edit_lsam_id").val(undefined);
     $("#edit_device_id").val(undefined);
+    $("#edit_label").val(undefined);
+    $("#edit_ip").val(undefined);
+    $("#edit_service_id").val(undefined);
     console.log(this);
   },
   "click #usb" : function(){

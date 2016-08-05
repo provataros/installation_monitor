@@ -63,6 +63,7 @@ ddpclient.connect(function(error, wasReconnect) {
         if (!err){ 
           var root;
           root = __dirname;
+          console.log(result);
           rmdir(root+"/../Sync/ACIM",function(e,r){
             if (e)console.log(e,r)
             else{
@@ -73,17 +74,17 @@ ddpclient.connect(function(error, wasReconnect) {
               var val = result[key];
               if (val.ok){
                 total++;
-                mkdir(root+"/../Sync/ACIM/"+key,function(err){
+                mkdir(root+"/../Sync/ACIM/"+key+"/IN",function(err){
                   if (err)console.log(err)
                   else{
-                    fs.writeFile(root+"/../Sync/ACIM/"+key+"/sc001_"+key, val.data.file1, function(err) {
+                    fs.writeFile(root+"/../Sync/ACIM/"+key+"/IN/sc001_"+key, val.data.file1, function(err) {
                       if(err) {
                           console.log(err);
                       }
                       count1++;
                       if ((count1 == total) && (count2 == total))exit();
                     }); 
-                    fs.writeFile(root+"/../Sync/ACIM/"+key+"/sc002_"+key, val.data.file2, function(err) {
+                    fs.writeFile(root+"/../Sync/ACIM/"+key+"/IN/sc002_"+key, val.data.file2, function(err) {
                       if(err) {
                           console.log(err);
                       }

@@ -80,6 +80,8 @@ Meteor.methods({
         }
       }
       data.createdAt = moment().format("YYYYMMDDHHmmss");
+      data.updatedAt = data.createdAt;
+      data.updatedFrom = Meteor.user().username;
       return Mongo._devices.insert(data);
     }
     catch(err) {
@@ -104,7 +106,7 @@ Meteor.methods({
     return Mongo._devices.update({_id : id},{$push : {history : {user : Meteor.user().username,date : date,value : text}}});
   },
   getConfigs : function(){
-    var f = Mongo._devices.find({device_type : "ACIM"}).fetch();
+    var f = Mongo._devices.find({device_type : "ACIM", service_id : {$ne : ""}}).fetch();
     var arr = {};
     _.each(f,function(key,value){
       arr[key._id] = key;
@@ -112,7 +114,7 @@ Meteor.methods({
     return createConfigsBatch(arr)
   },
   getConfigs3G : function(subnet){
-    var f = Mongo._devices.find({device_type : "ACIM"}).fetch();
+    var f = Mongo._devices.find({device_type : "ACIM", service_id : {$ne : ""}}).fetch();
     var arr = {};
     _.each(f,function(key,value){
       arr[key._id] = key;
