@@ -104,6 +104,7 @@ export const labels = {
       "CIT",
       "PCRS",
       "PCRS for TIT",
+      "PCRS for CIT",
       "PSCCS",
       "Gate",
       "OVMC",
