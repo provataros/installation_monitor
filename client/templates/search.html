@@ -228,28 +228,39 @@
   <div class = "alert">
     <div class ="alert-content">
       <h2>Settings</h2>
-        <table class = "pane">
-          <tr><td><label for = "device_type">Device Type </label></td><td><input type = "checkbox" id="device_type" {{isVisible "device_type"}}/></td></tr>
-          <tr><td><label for = "updatedAt">updatedAt </label></td><td><input type = "checkbox" id="updatedAt" {{isVisible "updatedAt"}}/></td></tr>
-          <tr><td><label for = "no">No </label></td><td><input type = "checkbox" id="no" {{isVisible "no"}}/></td></tr>
-          <tr><td><label for = "updatedFrom">updatedFrom </label></td><td><input type = "checkbox" id="updatedFrom" {{isVisible "updatedFrom"}}/></td></tr>
-          <tr><td><label for = "install_date">install_date </label></td><td><input type = "checkbox" id="install_date" {{isVisible "install_date"}}/></td></tr>
-          <tr><td><label for = "schedule_date">schedule_date </label></td><td><input type = "checkbox" id="schedule_date" {{isVisible "schedule_date"}}/></td></tr>
-          <tr><td><label for = "register_date">register_date </label></td><td><input type = "checkbox" id="register_date" {{isVisible "register_date"}}/></td></tr>
-          <tr><td><label for = "agency">agency </label></td><td><input type = "checkbox" id="agency" {{isVisible "agency"}}/></td></tr>
-          <tr><td><label for = "sub_agency">sub_agency </label></td><td><input type = "checkbox" id="sub_agency" {{isVisible "sub_agency"}}/></td></tr>
-          <tr><td><label for = "hw_id">hw_id </label></td><td><input type = "checkbox" id="hw_id" {{isVisible "hw_id"}}/></td></tr>
-          <tr><td><label for = "service_id">service_id </label></td><td><input type = "checkbox" id="service_id" {{isVisible "service_id"}}/></td></tr>
-          <tr><td><label for = "device_id">device_id </label></td><td><input type = "checkbox" id="device_id" {{isVisible "device_id"}}/></td></tr>
-          <tr><td><label for = "lsam_id">lsam_id </label></td><td><input type = "checkbox" id="lsam_id" {{isVisible "lsam_id"}}/></td></tr>
-          <tr><td><label for = "station_name">station_name </label></td><td><input type = "checkbox" id="station_name" {{isVisible "station_name"}}/></td></tr>
-          <tr><td><label for = "sam_tracking">sam_tracking </label></td><td><input type = "checkbox" id="sam_tracking" {{isVisible "sam_tracking"}}/></td></tr>
-          <tr><td><label for = "hw_status">hw_status </label></td><td><input type = "checkbox" id="hw_status" {{isVisible "hw_status"}}/></td></tr>
-          <tr><td><label for = "sw_status">sw_status </label></td><td><input type = "checkbox" id="sw_status" {{isVisible "sw_status"}}/></td></tr>
-          <tr><td><label for = "ip">ip </label></td><td><input type = "checkbox" id="ip" {{isVisible "ip"}}/></td></tr>
-          <tr><td><label for = "gateway">gateway </label></td><td><input type = "checkbox" id="gateway" {{isVisible "gateway"}}/></td></tr>
-          <tr><td><label for = "3g_subnet">3G Subnet </label></td><td><input type = "text" id="3g_subnet" value='{{getConfig "3g_subnet"}}'/></td></tr>
-        </table>
+        <div class = "pane-container">
+          <div class = "pane">
+            <h4> Column Display</h4>
+            <table>
+              <tr><td><label for = "device_type">Device Type </label></td><td><input type = "checkbox" id="device_type" {{isVisible "device_type"}}/></td></tr>
+              <tr><td><label for = "updatedAt">updatedAt </label></td><td><input type = "checkbox" id="updatedAt" {{isVisible "updatedAt"}}/></td></tr>
+              <tr><td><label for = "no">No </label></td><td><input type = "checkbox" id="no" {{isVisible "no"}}/></td></tr>
+              <tr><td><label for = "updatedFrom">updatedFrom </label></td><td><input type = "checkbox" id="updatedFrom" {{isVisible "updatedFrom"}}/></td></tr>
+              <tr><td><label for = "install_date">install_date </label></td><td><input type = "checkbox" id="install_date" {{isVisible "install_date"}}/></td></tr>
+              <tr><td><label for = "schedule_date">schedule_date </label></td><td><input type = "checkbox" id="schedule_date" {{isVisible "schedule_date"}}/></td></tr>
+              <tr><td><label for = "register_date">register_date </label></td><td><input type = "checkbox" id="register_date" {{isVisible "register_date"}}/></td></tr>
+              <tr><td><label for = "agency">agency </label></td><td><input type = "checkbox" id="agency" {{isVisible "agency"}}/></td></tr>
+              <tr><td><label for = "sub_agency">sub_agency </label></td><td><input type = "checkbox" id="sub_agency" {{isVisible "sub_agency"}}/></td></tr>
+              <tr><td><label for = "hw_id">hw_id </label></td><td><input type = "checkbox" id="hw_id" {{isVisible "hw_id"}}/></td></tr>
+              <tr><td><label for = "service_id">service_id </label></td><td><input type = "checkbox" id="service_id" {{isVisible "service_id"}}/></td></tr>
+              <tr><td><label for = "device_id">device_id </label></td><td><input type = "checkbox" id="device_id" {{isVisible "device_id"}}/></td></tr>
+              <tr><td><label for = "lsam_id">lsam_id </label></td><td><input type = "checkbox" id="lsam_id" {{isVisible "lsam_id"}}/></td></tr>
+              <tr><td><label for = "station_name">station_name </label></td><td><input type = "checkbox" id="station_name" {{isVisible "station_name"}}/></td></tr>
+              <tr><td><label for = "sam_tracking">sam_tracking </label></td><td><input type = "checkbox" id="sam_tracking" {{isVisible "sam_tracking"}}/></td></tr>
+              <tr><td><label for = "hw_status">hw_status </label></td><td><input type = "checkbox" id="hw_status" {{isVisible "hw_status"}}/></td></tr>
+              <tr><td><label for = "sw_status">sw_status </label></td><td><input type = "checkbox" id="sw_status" {{isVisible "sw_status"}}/></td></tr>
+              <tr><td><label for = "ip">ip </label></td><td><input type = "checkbox" id="ip" {{isVisible "ip"}}/></td></tr>
+              <tr><td><label for = "gateway">gateway </label></td><td><input type = "checkbox" id="gateway" {{isVisible "gateway"}}/></td></tr>
+            </table>
+          </div>
+          <div class = "pane">
+            <h4>Network</h4>
+            <table>
+              <tr><td><label for = "3g_subnet">3G Subnet </label></td><td><input type = "text" id="3g_subnet" value='{{getConfig "3g_subnet"}}'/></td></tr>
+            </table>
+          </div>
+          
+        </div>
       <div id = "button-group">
         <button id = "ok">OK</button>
       </div>

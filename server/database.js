@@ -3,6 +3,8 @@ import {Initialize} from "/server/init"
 import {FixNetwork} from "/server/init"
 import {createConfigsBatch} from "./lib.js"
 import {createConfigsBatch3G} from "./lib.js"
+import {spawn} from 'child_process';
+
 
 
 Mongo._devices = new Mongo.Collection("devices");
@@ -118,6 +120,22 @@ Meteor.methods({
     var ss = {};
     ss["3g_subnet"] = subnet;
     return createConfigsBatch3G(arr,ss)
+  },
+  backupDatabase : function(){
+    console.log("backup")
+    const bat = spawn('cmd.exe', ['/c', 'C:\\backup\\backup.bat']);
+
+    bat.stdout.on('data', (data) => {
+      console.log(data);
+    });
+
+    bat.stderr.on('data', (data) => {
+      console.log(data);
+    });
+
+    bat.on('exit', (code) => {
+      console.log(`Child exited with code ${code}`);
+    });
   }
   //FixNetwork : FixNetwork,
 })

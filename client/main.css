@@ -222,9 +222,18 @@ h1 {
     position: relative;
 }
 
-.pane{
+.pane-container{
   margin: 0px auto;
 }
+.pane{
+  display : inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  padding : 15px;
+  margin : 15px;
+  background-color: #fff;
+}
+
 
 #side_panel{
   width : 100%;
