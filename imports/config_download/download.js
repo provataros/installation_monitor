@@ -11,7 +11,10 @@ var mkdir = require('mkdirp');
 function exit(){
   console.log("Files saved.")
   console.log("Exiting...")
-  process.exit();
+  console.log('Press any key to exit');
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  process.stdin.on('data', process.exit.bind(process, 0));
 }
 
 var ddpclient = new DDPClient({
@@ -54,6 +57,7 @@ ddpclient.connect(function(error, wasReconnect) {
   var method = "getConfigs";
   if (process.argv[2]){
     method = "getConfigs3G";
+    console.log("3G mode")
   }
 
     ddpclient.call(
