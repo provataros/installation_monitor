@@ -62,10 +62,14 @@ Meteor.methods({
       }
       fields._id = 0;
       var f = Mongo._devices.findOne({_id : id },{fields : fields});
-      Mongo._history.insert({user : Meteor.user().username,id : id,date : moment().format("YYYYMMDDHHmmss"), data : {from : f,to : data}})
       data.updatedAt = moment().format("YYYYMMDDHHmmss");
       data.updatedFrom = Meteor.user().username;
-      return Mongo._devices.update( {_id : id },{$set : data},{upsert : true});
+      var result =  Mongo._devices.update( {_id : id },{$set : data},{upsert : true});
+      delete data.updatedAt;
+      delete data.updatedFrom;
+      console.log(result);
+      if (result)Mongo._history.insert({user : Meteor.user().username,id : id,date : moment().format("YYYYMMDDHHmmss"), data : {from : f,to : data}})
+      return result;
     }
     catch(err) {
       return {error : err}

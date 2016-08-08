@@ -251,7 +251,7 @@ Template.side_panel.events({
       else{
 
         Session.modal.yes = function(){
-          var result = Meteor.call("save",id,fields,function(error,result){
+          var result = Meteor.call("save",id,fields,function(err,res){
             if (result == 1){
               var str = "Succesfully updated : <br /><br />";
               $.each(fields,function(key,value){
@@ -260,7 +260,8 @@ Template.side_panel.events({
               Session.set("alert",{message : (str.substring(0,str.length))});;
             }
             else{
-              Session.set("alert",{message : ("An error has occured while updating : " + result.error.err)});;
+              console.log(err,res);
+              Session.set("alert",{message : ("An error has occured while updating : " + res.error.errmsg)});;
             }
           });
         }
