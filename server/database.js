@@ -106,7 +106,7 @@ Meteor.methods({
     return Mongo._devices.update({_id : id},{$push : {history : {user : Meteor.user().username,date : date,value : text}}});
   },
   getConfigs : function(){
-    var f = Mongo._devices.find({device_type : "ACIM", service_id : {$ne : ""}}).fetch();
+    var f = Mongo._devices.find({device_type : "ACIM", service_id : {"$exists" : true, "$ne" : ""}}).fetch();
     var arr = {};
     _.each(f,function(key,value){
       arr[key._id] = key;
@@ -114,7 +114,7 @@ Meteor.methods({
     return createConfigsBatch(arr)
   },
   getConfigs3G : function(subnet){
-    var f = Mongo._devices.find({device_type : "ACIM", service_id : {$ne : ""}}).fetch();
+    var f = Mongo._devices.find({device_type : "ACIM", service_id : {"$exists" : true, "$ne" : ""}}).fetch();
     var arr = {};
     _.each(f,function(key,value){
       arr[key._id] = key;
