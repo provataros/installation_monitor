@@ -1,1 +1,1 @@
-node.exe download.js
+node.exe lib.js

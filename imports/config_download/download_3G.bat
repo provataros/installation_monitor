@@ -1,1 +1,1 @@
-node.exe download.js 3G
+node.exe lib.js 3G
