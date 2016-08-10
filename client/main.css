@@ -230,7 +230,15 @@ h1 {
     top : 0px;
     position: relative;
 }
-
+#image-preview{
+  margin : 20px auto;
+  max-width : 500px;
+  max-height : 500px;
+}
+#image-preview img{
+  max-width : 500px;
+  max-height : 500px;
+}
 .pane-container{
   margin: 0px auto;
 }

@@ -1,0 +1,3 @@
+picture of lsam installation status (field)
+statistics (dashboard)
+map for info and details etc etc

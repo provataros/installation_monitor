@@ -7,6 +7,9 @@
     {{#if notes}}
       {{> notes}}
     {{/if}}
+    {{#if install_image}}
+      {{> install_image}}
+    {{/if}}
     {{#if popup}}
       {{> popup}}
     {{/if}}
@@ -138,6 +141,21 @@
       </table>
       <div id = "button-group">
         <button id = "ok">OK</button><button id="createNote">Create Note</button>
+      </div>
+    </div>
+  </div>
+  {{focus}}
+</template>
+
+<template name = "install_image">
+  <div class = "alert">
+    <div class ="alert-content">
+      <h2>Install Image</h2>
+      <input type="file" id="image" name="image" accept="image/*">
+      <div id = "image-preview"></div>
+      <div id = "button-group">
+        <button id="upload">Upload</button>
+        <button id = "ok">Back</button>
       </div>
     </div>
   </div>

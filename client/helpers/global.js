@@ -89,6 +89,9 @@ Template.registerHelper("getChangeHistory",function(id){
 Template.registerHelper("popup",function(){
   return Session.get("popup");
 })
+Template.registerHelper("install_image",function(){
+  return Session.get("install-image");
+})
 Template.registerHelper("notes",function(){
   return Session.get("notes");
 })

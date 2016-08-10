@@ -4,7 +4,7 @@
 </head>
 
 <body>
-
+  
   {{#with modal}}
     {{> confirm}}
   {{/with}}
@@ -87,6 +87,9 @@
       <option class = "{{lower this}}" {{selected_option this ../value}}> {{this}} </option>
     {{/each}}
   </select>
+  {{#if isSamTracking}}
+    <i class="fa fa-camera"></i>
+  {{/if}}
 </template>
 
 <template name = "text">

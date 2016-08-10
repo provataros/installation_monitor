@@ -363,3 +363,30 @@ Template.device.events({
   }
 })
 
+Template.install_image.events({
+  "change #image"(e,r){
+    console.log(e);
+    
+    if (e.target.files){
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('#image-preview').empty().append("<img src = '"+e.target.result+"'>");
+      }
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  },
+  "click #ok"(){
+    Session.set("install-image",undefined);
+  },
+  "click #upload"(){
+    Session.set("install-image",undefined);
+  }
+})
+
+
+Template.device.events({
+  "click .fa-camera"(){
+    console.log("asdasd");
+    Session.set("install-image","install-image");
+  }
+})

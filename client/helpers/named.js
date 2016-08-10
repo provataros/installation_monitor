@@ -17,7 +17,12 @@ Template.search_results.helpers({
   }
 })
 
-
+Template.dropdown.helpers({
+  isSamTracking : function(){
+    if (this.name == "sam_tracking")return true;
+    return false;
+  }
+})
 
 Template.date.onRendered(function(){
   var that = this;
