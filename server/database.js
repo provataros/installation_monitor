@@ -144,14 +144,10 @@ Meteor.methods({
     });
   },
   saveImage : function(id,data){
-    console.log(data,id)
     if (data && id){
-      console.log("sdfsd");
       var buffer = new Buffer(data,"base64")
-      console.log(process.cwd())
       var timestamp = moment().format("YYYYMMDDHHmmssSSS")
       var err = fs.writeFile(process.cwd()+"../../../../../../.images/"+timestamp+".png", buffer);
-      console.log(err);
       if (!err){
         var data = {};
         data.updatedAt = moment().format("YYYYMMDDHHmmss");
@@ -160,12 +156,11 @@ Meteor.methods({
         if (result)Mongo._history.insert({user : Meteor.user().username,id : id,date : moment().format("YYYYMMDDHHmmss"), data : {from : {image : "Added Image"},to : {image : timestamp}}})
       }
       else{
-        console.log(err);
+        //console.log(err);
       }
     }
   },
   getImages : function(data){
-    console.log(data);
     var images = []
     if (data){
       for (var i=0;i<data.length;i++){
