@@ -59,3 +59,21 @@ Template.searchDate.onRendered(function(){
     Session.set(id,date);
   });
 })
+
+Template.install_image.helpers({
+  getImages : function(){
+    console.log(this);
+    Meteor.call("getImages",this.image,function(error,result){
+      $("#previous-images").empty();
+      if (!result)return;
+      result.reverse();
+      for (var i=0;i<result.length;i++){
+        if (!result[i].error){
+          var image = new Image();
+          image.src = 'data:image/png;base64,'+result[i].image;
+          $("#previous-images").append(image);
+        }
+      }
+    })
+  }
+})

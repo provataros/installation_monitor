@@ -13,6 +13,7 @@ Mongo._lsams = new Mongo.Collection("lsams");
 Mongo._history = new Mongo.Collection("history");
 
 
+var fs = require('fs')
 
 
 
@@ -35,7 +36,7 @@ Meteor.methods({
   register_user : function(user,pass){
     if (user && pass){
       var result = Accounts.createUser({username : user,password : pass})
-      console.log(result)
+      console.log("User " + user + " created with ID : " +result)
       if (result)return true;
       return false;
     }
@@ -67,7 +68,6 @@ Meteor.methods({
       var result =  Mongo._devices.update( {_id : id },{$set : data},{upsert : true});
       delete data.updatedAt;
       delete data.updatedFrom;
-      console.log(result);
       if (result)Mongo._history.insert({user : Meteor.user().username,id : id,date : moment().format("YYYYMMDDHHmmss"), data : {from : f,to : data}})
       return result;
     }
@@ -142,6 +142,46 @@ Meteor.methods({
     bat.on('exit', (code) => {
       console.log(`Child exited with code ${code}`);
     });
+  },
+  saveImage : function(id,data){
+    console.log(data,id)
+    if (data && id){
+      console.log("sdfsd");
+      var buffer = new Buffer(data,"base64")
+      console.log(process.cwd())
+      var timestamp = moment().format("YYYYMMDDHHmmssSSS")
+      var err = fs.writeFile(process.cwd()+"../../../../../../.images/"+timestamp+".png", buffer);
+      console.log(err);
+      if (!err){
+        var data = {};
+        data.updatedAt = moment().format("YYYYMMDDHHmmss");
+        data.updatedFrom = Meteor.user().username;
+        var result =  Mongo._devices.update( {_id : id },{$set : data,$push : {image : {date : moment().format("YYYYMMDDHHMMss"), file : timestamp}}},{upsert : true});
+        if (result)Mongo._history.insert({user : Meteor.user().username,id : id,date : moment().format("YYYYMMDDHHmmss"), data : {from : {image : "Added Image"},to : {image : timestamp}}})
+      }
+      else{
+        console.log(err);
+      }
+    }
+  },
+  getImages : function(data){
+    console.log(data);
+    var images = []
+    if (data){
+      for (var i=0;i<data.length;i++){
+        try{
+          var bitmap = fs.readFileSync(process.cwd()+"../../../../../../.images/"+data[i].file+".png");
+          if (bitmap){
+            images.push({error:undefined,image : new Buffer(bitmap).toString('base64')})
+          }
+        }
+        catch(e){
+          images.push({error : true});
+        }
+        //return new Buffer(bitmap).toString('base64');
+      }
+    }
+    return images;
   }
   //FixNetwork : FixNetwork,
 })

@@ -366,8 +366,7 @@ Template.device.events({
 Template.install_image.events({
   "change #image"(e,r){
     console.log(e);
-    
-    if (e.target.files){
+    if (e.target.files && e.target.files[0]){
       var reader = new FileReader();
       reader.onload = function (e) {
         $('#image-preview').empty().append("<img src = '"+e.target.result+"'>");
@@ -376,17 +375,30 @@ Template.install_image.events({
     }
   },
   "click #ok"(){
+    console.log(this);
     Session.set("install-image",undefined);
   },
   "click #upload"(){
-    Session.set("install-image",undefined);
+    var img = $("#image")[0];
+    var that = this;
+    if (img && img.files && img.files[0]){
+      var fr = new FileReader();
+      fr.onload = function(e){       
+        var data = e.target.result.replace(/^data:image\/[a-zA-Z]{3,4};base64,/, "")
+        Meteor.call("saveImage",that._id,data,function(){
+          displayNotification("Image Uploaded","success");;
+          Session.set("install-image",undefined);
+        });  
+      }
+      fr.readAsDataURL(img.files[0]);
+    }
+    return;
   }
 })
 
 
 Template.device.events({
   "click .fa-camera"(){
-    console.log("asdasd");
     Session.set("install-image","install-image");
   }
 })

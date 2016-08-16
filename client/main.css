@@ -239,6 +239,11 @@ h1 {
   max-width : 500px;
   max-height : 500px;
 }
+#previous-images img{
+  max-width : 100%;
+  display : block;
+  margin : 20px auto;
+}
 .pane-container{
   margin: 0px auto;
 }
