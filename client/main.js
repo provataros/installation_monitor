@@ -87,6 +87,5 @@ Meteor.startup(() => {
   Session.set("displayColumns",JSON.parse(localStorage.getItem("displayColumns")))
   Session.set("config",JSON.parse(localStorage.getItem("config")));
   testConfigGeneration();
-  
-
+  GoogleMaps.load({ v: '3', key: 'AIzaSyDh8emWbWLB48ccOT_is8BMVDM26b3TH3k'});
 });

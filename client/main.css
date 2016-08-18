@@ -229,6 +229,8 @@ h1 {
     height : 100%;
     top : 0px;
     position: relative;
+    width : 100%;
+    box-sizing: border-box;
 }
 #image-preview{
   margin : 20px auto;
@@ -464,4 +466,14 @@ h1 {
 .type-error{
   background-color : darkred !important;
 }
-
+#transitmap {
+  width : 100%;
+  height : 100%;
+}
+#mapinfobox{
+  width : 300px;
+  height : 200px;
+  display : none;
+  position : absolute;
+  background-color : white;
+}
