@@ -9,6 +9,8 @@ import {createConfigsBatch} from "/client/lib/lib.js";
 import {createConfigsBatch3G} from "/client/lib/lib.js";
 import {createConfigs_3G} from "/client/lib/lib.js";
 import {displayNotification} from "/client/lib/lib.js";
+import {clear_query} from "/client/lib/lib.js";
+
 
 var modalyesfunc;
 var modalnofunc;
@@ -53,6 +55,7 @@ Template.login.events({
     }
     Meteor.loginWithPassword(user,pass,function(err,res){
       if (err){
+        console.log(err,res);
         Session.set("alert",{message : err.reason})
       }
       else{
@@ -67,6 +70,9 @@ Template.login.events({
 
 
 Template.search_bar.events({
+  "click #clear-button" : function(){
+    clear_query();
+  },
   "keypress .search_input" : function(event,target){
     var id = $(event.target).attr("id");
     var value = $(event.target).val()+String.fromCharCode(event.charCode);
@@ -326,11 +332,13 @@ Template.side_panel.events({
   "click #search" : function(){
     Session.set("menu","search");
   },
+  "click #map" : function(){
+    Session.set("menu","map");
+  },
   "click #settings" : function(){
     Session.set("settings","settings");
   }
 })
-
 Template.settings.events({
   "change input[type='checkbox']"(e,t){
     var id = (e.target.id);
@@ -383,12 +391,12 @@ Template.install_image.events({
     var that = this;
     if (img && img.files && img.files[0]){
       var fr = new FileReader();
-      fr.onload = function(e){       
+      fr.onload = function(e){
         var data = e.target.result.replace(/^data:image\/[a-zA-Z]{3,4};base64,/, "")
         Meteor.call("saveImage",that._id,data,function(){
           displayNotification("Image Uploaded","success");;
           Session.set("install-image",undefined);
-        });  
+        });
       }
       fr.readAsDataURL(img.files[0]);
     }
@@ -402,3 +410,4 @@ Template.device.events({
     Session.set("install-image","install-image");
   }
 })
+

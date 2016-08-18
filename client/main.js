@@ -41,7 +41,7 @@ Meteor.startup(() => {
   Meteor.subscribe("stations");
   Meteor.subscribe("history");
 
-  Session.set("menu","search");
+  Session.set("menu","map");
   Session.modal = {};
   Session.modal.no = function(){};
   Session.set("multiSelected",{})
@@ -87,6 +87,5 @@ Meteor.startup(() => {
   Session.set("displayColumns",JSON.parse(localStorage.getItem("displayColumns")))
   Session.set("config",JSON.parse(localStorage.getItem("config")));
   testConfigGeneration();
-  
-
+  GoogleMaps.load({ v: '3', key: 'AIzaSyDh8emWbWLB48ccOT_is8BMVDM26b3TH3k'});
 });

@@ -5,8 +5,10 @@ html,body{
   padding : 0px;
   margin : 0px;
   background-color: #f2f4f6;
-  width : 100%;
+  width : auto;
   height : 100%;
+  float : left;
+  min-width : 100%;
 }
 *{
   font-family: 'Roboto', sans-serif;
@@ -227,8 +229,10 @@ h1 {
 #side_panel,#content{
     display : inline-block;
     height : 100%;
+    width : 100%;
     top : 0px;
     position: relative;
+    box-sizing: border-box;
 }
 #image-preview{
   margin : 20px auto;
@@ -270,7 +274,10 @@ h1 {
 }
 #content{
   padding-top : 50px;
+  height : 100%;
   box-sizing: border-box;
+  float : left;
+  height : 100%
 }
 
 .menu-buttons{
@@ -464,4 +471,41 @@ h1 {
 .type-error{
   background-color : darkred !important;
 }
-
+.warning{
+  color : #e0aa5d !important;
+}
+.success{
+  color : seagreen !important;
+}
+.error{
+  color : darkred !important;
+}
+#transitmap {
+  width : 100%;
+  height : 100%;
+  position : relative;
+  box-sizing: border-box;
+}
+.infowindow{
+  padding : 10px;
+  box-sizing: border-box;
+}
+.infowindow table{
+  border-collapse: collapse;
+}
+.infowindow tr:hover{
+  background-color: lightblue !important;
+}
+.infowindow tr td{
+  padding : 5px;
+  box-sizing: border-box;
+  font-weight: bold;
+}
+.infowindow h3:hover{
+  font-weight: bold;
+}
+.infowindow h3{
+  cursor : pointer;
+  font-weight : 400;
+  padding : 5px;
+}

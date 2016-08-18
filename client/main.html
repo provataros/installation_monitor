@@ -20,6 +20,7 @@
         {{> search}}
         {{> settings}}
         {{> usb}}
+        {{> map}}
       {{/with}}
     </div>
   {{else}}
@@ -62,6 +63,9 @@
     <ul id = "app-menu" class = "menu-buttons">
           {{#unless isMenu "search"}}
             <li id = "search">Search</li>
+          {{/unless}}
+          {{#unless isMenu "map"}}
+            <li id = "map">Map</li>
           {{/unless}}
           {{#unless isMenu "settings"}}
             <li id = "settings">Settings</li>
