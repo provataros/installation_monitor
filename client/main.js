@@ -41,7 +41,7 @@ Meteor.startup(() => {
   Meteor.subscribe("stations");
   Meteor.subscribe("history");
 
-  Session.set("menu","search");
+  Session.set("menu","map");
   Session.modal = {};
   Session.modal.no = function(){};
   Session.set("multiSelected",{})

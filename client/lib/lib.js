@@ -17,6 +17,32 @@ export const displayNotification = function(message,type,time = 5000){
   },time)
 }
 
+export const clear_query = function(){
+  Tracker.nonreactive(function(){
+    Session.set("s_hwid",null);
+    Session.set("s_deid",null);
+    Session.set("s_said",null);
+    Session.set("s_lsam",null);
+    Session.set("s_device_type",null);
+    Session.set("s_agency",null);
+    Session.set("s_sub_agency",null);
+    Session.set("s_station_name",null);
+    Session.set("s_sw_status",null);
+    Session.set("s_hw_status",null);
+    Session.set("s_urgent",null);
+    Session.set("s_error",null);
+
+    Session.set("s_from_install_date",null);
+    Session.set("s_untl_install_date",null);
+
+    Session.set("s_from_schedule_date",null);
+    Session.set("s_untl_schedule_date",null);
+
+    Session.set("s_from_register_date",null);
+    Session.set("s_untl_register_date",null);
+  })
+}
+
 export const construct_query = function(){
   var hardware = Session.get("s_hwid");
   var device = Session.get("s_deid");

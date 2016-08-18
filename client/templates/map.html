@@ -3,16 +3,24 @@
         <div id="transitmap">
             {{> googleMap name="map" options=mapOptions}}
             {{addRoutes}}           
-            
-            <div id = "mapinfobox">
-                {{#with showStations}}
-                    {{> mapinfobox}} 
-                {{/with}}
-            </div>  
         </div> 
     {{/if}}
 </template>
 
-<template name = "mapinfobox">
-
+<template name = "infowindow">
+    <div class = "infowindow">
+        <h3>{{name}}</h3>
+        <table>
+            {{#each this}}
+                <tr>
+                    <td>
+                        <div class = "st_type">
+                            <input id = "devicetype" type = "hidden" value = "{{name}}">
+                            <input id = "stationname" type = "hidden" value = "{{../name}}">{{name}} : {{{hw}}}/{{{sw}}}/{{dcount}}
+                        </div>
+                    </td>
+                </tr>
+            {{/each}}
+        </table>
+    </div>
 </template>

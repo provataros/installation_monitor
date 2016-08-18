@@ -9,6 +9,8 @@ import {createConfigsBatch} from "/client/lib/lib.js";
 import {createConfigsBatch3G} from "/client/lib/lib.js";
 import {createConfigs_3G} from "/client/lib/lib.js";
 import {displayNotification} from "/client/lib/lib.js";
+import {clear_query} from "/client/lib/lib.js";
+
 
 var modalyesfunc;
 var modalnofunc;
@@ -68,6 +70,9 @@ Template.login.events({
 
 
 Template.search_bar.events({
+  "click #clear-button" : function(){
+    clear_query();
+  },
   "keypress .search_input" : function(event,target){
     var id = $(event.target).attr("id");
     var value = $(event.target).val()+String.fromCharCode(event.charCode);
@@ -405,3 +410,4 @@ Template.device.events({
     Session.set("install-image","install-image");
   }
 })
+
