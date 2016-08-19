@@ -136,7 +136,7 @@ Template.map.helpers({
           {
               "featureType": "transit.station",
               "stylers": [
-                  { "visibility": "on" }
+                  { "visibility": "off" }
               ]
           },
           {
@@ -152,6 +152,304 @@ Template.map.helpers({
   },
   addRoutes : function(){
     GoogleMaps.ready("map",function(){
+    
+      var stations_line4 = [
+          
+            {
+                name : "S.E.F. - Stadio Irinis Kai Filias",
+                lat : 37.94382522,
+                lng : 23.66399288
+            },
+
+            {
+                name : "Neo Faliro",
+                lat : 37.9444344,
+                lng : 23.6687994
+            },
+
+            {
+                name : "Moschato",
+                lat : 37.94416366,
+                lng : 23.67806911
+            },
+
+            {
+                name : "kalithea",
+                lat : 37.942573,
+                lng : 23.68416309
+            },
+
+            {
+                name : "Tzitzifies",
+                lat : 37.94088077,
+                lng : 23.68785381
+            },
+
+            {
+                name : "Delta Falirou",
+                lat : 37.93746234,
+                lng : 23.69218826
+            },
+
+            {
+                name : "Aghia Skepi",
+                lat : 37.93356988,
+                lng : 23.69360447
+            },
+
+            {
+                name : "Trokadero",
+                lat : 37.93113276,
+                lng : 23.68708134
+            },
+
+            {
+                name : "Parko Flisvou",
+                lat : 37.92778158,
+                lng : 23.68858337
+            },
+
+            {
+                name : "Flisvos",
+                lat : 37.92334697,
+                lng : 23.69296074
+            },
+
+            {
+                name : "Batis",
+                lat : 37.92148502,
+                lng : 23.69652271
+            },
+
+            {
+                name : "Edem",
+                lat : 37.91864124,
+                lng : 23.70077133
+            },
+
+            {
+                name : "Pikrodafni",
+                lat : 37.9158312,
+                lng : 23.70562077
+            },
+
+            {
+                name : "Marina Alimou",
+                lat : 37.91319034,
+                lng : 23.70858192
+            },
+
+            {
+                name : "Kalamaki",
+                lat : 37.90960134,
+                lng : 23.71308804
+            },
+
+            {
+                name : "Zefiros",
+                lat : 37.90652007,
+                lng : 23.71686459
+            },
+
+            {
+                name : "Loutra Alimou",
+                lat : 37.90238893,
+                lng : 23.71961117
+            },
+
+            {
+                name : "Elliniko",
+                lat : 37.89741094,
+                lng : 23.72029781
+            },
+
+            {
+                name : "1st Agiou Kosma",
+                lat : 37.89239875,
+                lng : 23.72205734
+            },
+
+            {
+                name : "2nd Agiou Kosma",
+                lat : 37.8907731,
+                lng : 23.72308731
+            },
+
+            {
+                name : "Agios Alexandros",
+                lat : 37.88508305,
+                lng : 23.72677803
+            },
+
+            {
+                name : "Ellinon Olimpionikon",
+                lat : 37.88098458,
+                lng : 23.72952461
+            },
+
+            {
+                name : "Kentro Istioploias",
+                lat : 37.87576802,
+                lng : 23.73188496
+            },
+
+            {
+                name : "Platia Vergoti",
+                lat : 37.87146578,
+                lng : 23.73497486
+            },
+
+            {
+                name : "Paralia Glyfadas",
+                lat : 37.86770534,
+                lng : 23.73862267
+            },
+
+            {
+                name : "Paleo Dimarhio",
+                lat : 37.86458844,
+                lng : 23.74338627
+            },
+
+            {
+                name : "Platia Katraki",
+                lat : 37.86347039,
+                lng : 23.74746323
+            },
+            
+            {
+                name : "Aggelou Metaxa",
+                lat : 37.86275889,
+                lng : 23.75115395
+            },
+
+            {
+                name : "Platia Esperidon",
+                lat : 37.86021777,
+                lng : 23.7541151
+            },
+
+            {
+                name : "Kolimvitirio",
+                lat : 37.85628735,
+                lng : 23.75428677
+            },
+
+            {
+                name : "Asklipiio Voulas",
+                lat : 37.84961191,
+                lng : 23.75235558
+            }
+      ]
+            var stations_line5 = [
+            {
+                name : "Mouson",
+                lat : 37.92199283,
+                lng : 23.69978428
+            },
+
+            {
+                name : "Panagitsa",
+                lat : 37.92547968,
+                lng : 23.70201588
+            },
+
+            {
+                name : "Amfitheas",
+                lat : 37.9283909,
+                lng : 23.706007
+            },
+
+            {
+                name : "Achilleos",
+                lat : 37.92988032,
+                lng : 23.70986938
+            },
+            
+            {
+                name : "Evangeliki Sxoli",
+                lat : 37.933096,
+                lng : 23.71077061
+            },
+            
+            {
+                name : "Medeas-Mykalis",
+                lat : 37.93692079,
+                lng : 23.71197224
+            },
+
+            {
+                name : "Aghia Paraskevi",
+                lat : 37.93989925,
+                lng : 23.71287346
+            },
+
+            {
+                name : "Megalou Alexandrou",
+                lat : 37.94297913,
+                lng : 23.71390343
+            },
+
+            {
+                name : "Aghias Fotinis",
+                lat : 37.94649882,
+                lng : 23.71497631
+            },
+
+            {
+                name : "Aigeou",
+                lat : 37.95008603,
+                lng : 23.71892452
+            },
+
+            {
+                name : "Baknana",
+                lat : 37.95438368,
+                lng : 23.72368813
+            },
+
+            {
+                name : "Neos Kosmos",
+                lat : 37.95780132,
+                lng : 23.72729301
+            },
+
+            {
+                name : "Kasomouli",
+                lat : 37.96030523,
+                lng : 23.72351646
+            },
+            
+            {
+                name : "Fix",
+                lat : 37.96460228,
+                lng : 23.72742176
+            },
+
+            {
+                name : "Vouliagmenis",
+                lat : 37.96656463,
+                lng : 23.73175621
+            },
+
+            {
+                name : "Zappio (To Syntagma)",
+                lat : 37.96859459,
+                lng : 23.73748541
+            },
+
+            {
+                name : "Zappio (To SEF/Voula)",
+                lat : 37.96960955,
+                lng : 23.73579025
+            },
+
+            {
+                name : "Syntagma",
+                lat : 37.97448116,
+                lng : 23.73527527
+            },
+      ]
       var stations_line3 = [
           {
               name : "Agia Marina",
@@ -537,7 +835,24 @@ Template.map.helpers({
         zIndex : 5,
         map : GoogleMaps.maps.map.instance,
       });
-
+    var line4 = new google.maps.Polyline({
+        path: stations_line4,
+        geodesic: true,
+        strokeColor: '#c940e0',
+        strokeOpacity: 1.0,
+        strokeWeight: 5,
+        zIndex : 5,
+        map : GoogleMaps.maps.map.instance,
+      });
+    var line5 = new google.maps.Polyline({
+        path: stations_line5,
+        geodesic: true,
+        strokeColor: '#c940e0',
+        strokeOpacity: 1.0,
+        strokeWeight: 5,
+        zIndex : 5,
+        map : GoogleMaps.maps.map.instance,
+      });
 
       var infowindow = new google.maps.InfoWindow({
       });
@@ -556,6 +871,12 @@ Template.map.helpers({
       }
       for (var i=0;i<stations_line3.length;i++){
           if (stations_line3[i].name)createCircle(stations_line3[i],infowindow);         
+      }
+      for (var i=0;i<stations_line4.length;i++){
+          if (stations_line4[i].name)createCircle(stations_line4[i],infowindow);         
+      }
+      for (var i=0;i<stations_line5.length;i++){
+          if (stations_line5[i].name)createCircle(stations_line5[i],infowindow);         
       }
     });
   },
