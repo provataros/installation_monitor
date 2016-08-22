@@ -38,6 +38,51 @@ function getStationInfo(name){
     return result
   }
 
+  function getAllStations(){
+      var obj = {};
+      
+      var now = Date.now();
+      var f = Mongo._devices.find({},{fields : {hw_status : 1,station_name : 1,device_type : 1,sw_status : 1}}).forEach(function(data){
+          obj[data.station_name]?obj[data.station_name].push(data):obj[data.station_name] = [data];
+      })
+      var result = {};
+      _.each(obj,function(f,a){
+        var types = {};
+        var type;
+        for (var i=0;i<f.length;i++){
+            type = f[i].device_type;
+            !types[type]?(types[type] = {name : type , data : [],hw : 0,sw : 0}):null;
+            types[type].data.push(f[i])
+            if (f[i].hw_status == "Done"){
+                types[type].hw++;
+            }
+            if (f[i].sw_status == "Done"){
+                types[type].sw++;
+            }
+        }
+        var status = 0;
+        var flag = true;
+        var flag2 = false;
+        var flag3 = false;
+        _.each(types,function(f){
+            flag3 = true;
+            if ((f.hw == f.sw) && (f.hw == f.data.length))flag = flag && true;
+            else flag = false;
+            if (f.hw > 0 || f.sw > 0 )flag2 = true;
+        });
+        if (flag2)status=2;
+        if ((flag == flag3) && (flag ==true))status = 1;
+        
+        f.data = types;
+        f.status = status;
+        for (var i=0;i<f.length;i++){
+            f[i] = null;
+        }
+         
+      })
+      return obj;
+  }
+
 Template.search_results.helpers({
   
   isUrgent : function(){
@@ -861,23 +906,27 @@ Template.map.helpers({
         Session.set("maplocation",null);
         infowindow.close();
         clear_query();
-        console.log(e.latLng.lat(),e.latLng.lng())
       });
+
+      var stuff = getAllStations();
+
+
       for (var i=0;i<stations_line1.length;i++){
-          if (stations_line1[i].name)createCircle(stations_line1[i],infowindow);         
+          if (stations_line1[i].name)createCircle(stations_line1[i],infowindow,stuff[stations_line1[i].name]);         
       }
       for (var i=0;i<stations_line2.length;i++){
-          if (stations_line2[i].name)createCircle(stations_line2[i],infowindow);         
+          if (stations_line2[i].name)createCircle(stations_line2[i],infowindow,stuff[stations_line2[i].name]);         
       }
       for (var i=0;i<stations_line3.length;i++){
-          if (stations_line3[i].name)createCircle(stations_line3[i],infowindow);         
+          if (stations_line3[i].name)createCircle(stations_line3[i],infowindow,stuff[stations_line3[i].name]);         
       }
       for (var i=0;i<stations_line4.length;i++){
-          if (stations_line4[i].name)createCircle(stations_line4[i],infowindow);         
+          if (stations_line4[i].name)createCircle(stations_line4[i],infowindow,stuff[stations_line4[i].name]);         
       }
       for (var i=0;i<stations_line5.length;i++){
-          if (stations_line5[i].name)createCircle(stations_line5[i],infowindow);         
+          if (stations_line5[i].name)createCircle(stations_line5[i],infowindow,stuff[stations_line5[i].name]);         
       }
+
     });
   },
   showStations : function(){
@@ -887,7 +936,8 @@ Template.map.helpers({
   }
 });
 
-function createCircle(center,infowindow){
+function createCircle(center,infowindow,status){
+   status = status?status.status:0;
   var cityCircle = new google.maps.Marker({
     map: GoogleMaps.maps.map.instance,
     position: center,
@@ -898,10 +948,11 @@ function createCircle(center,infowindow){
       path: google.maps.SymbolPath.CIRCLE,
       scale: 5,
       strokeWeight : 3,
-      fillColor : "#FFFFFF",
+      fillColor : status==1?"#00FF00":status==2?"#FFFF00":"#FFFFFF",
       fillOpacity : 1,
 
     },
+
   });
   google.maps.event.addListener(cityCircle, 'mouseover', function(e,r) {
     Session.set("maplocation",this.name);
@@ -920,8 +971,9 @@ function createCircle(center,infowindow){
       Session.set("selected_device",null)
     })
     
-    $(".infowindow .st_type").on("click",function(e){
+    $(".infowindow tr").on("click",function(e){
       e.stopPropagation();
+      e.target = $(this).find(".st_type")[0]
       var type = $(e.target).find("#devicetype").val();
       clear_query();
       Session.set("s_station_name",data.name);
