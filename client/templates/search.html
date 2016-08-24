@@ -179,7 +179,7 @@
 
 <template name = "search_side_panel">
   {{#if isMenu "search"}}
-    {{#with device}}
+    {{#with retail}}
       <li id = "back">Back</li>
       <li id = "save">Save</li>
       <li id = "reset">Reset</li>
@@ -197,7 +197,7 @@
       {{/unless}}
 
     {{/with}}
-    {{#unless device}}
+    {{#unless retail}}
       <li id = "new_acim">New</li>
       {{#with results}}
         <li id = "download">Download Excel</li>
@@ -211,7 +211,7 @@
 <template name = "search">
   {{#if isMenu "search"}}
     {{#if selected_device}}
-      {{> device}}
+      {{> retail}}
     {{else}}
       {{> search_bar}}
       {{> search_results}}

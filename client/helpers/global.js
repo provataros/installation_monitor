@@ -5,7 +5,7 @@ import {populateStations} from "/client/lib/lib.js"
 import {save_history} from "/client/lib/lib.js"
 import {construct_query} from "/client/lib/lib.js"
 
-Template.registerHelper("device",function(){
+Template.registerHelper("retail",function(){
   var id = Session.get("selected_device");
   if (id == "__new__"){
     //console.log("hahe");
@@ -34,47 +34,7 @@ Template.body.helpers({
   }
 })
 
-Template.confirm.events({
-  "click #yes"(){
-    Session.modal.yes();
-    Session.set("modal",undefined);
-  },
-  "click #no"(){
-    Session.modal.no();
-    Session.set("modal",undefined);
-  }
-})
 
-Template.alert.events({
-  "click #ok"(){
-    Session.set("alert",undefined);
-  },
-})
-
-Template.notes.events({
-  "click #ok"(){
-    Session.set("notes",undefined);
-  },
-})
-Template.history.events({
-  "click #ok"(){
-    Session.set("history",undefined);
-  },
-})
-Template.settings.events({
-  "click #ok"(){
-    Session.set("settings",undefined);
-  },
-})
-Template.popup.events({
-  "click #yes"(){
-    save_history($(".popup .date-input").val(),$(".popup #history-info").val(),this._id);
-    Session.set("popup",undefined);
-  },
-  "click #no"(){
-    Session.set("popup",undefined);
-  }
-})
 
 Template.registerHelper("menu",function(){
   return Session.get("menu");
@@ -89,17 +49,8 @@ Template.registerHelper("getChangeHistory",function(id){
 Template.registerHelper("popup",function(){
   return Session.get("popup");
 })
-Template.registerHelper("install_image",function(){
-  return Session.get("install-image");
-})
-Template.registerHelper("notes",function(){
-  return Session.get("notes");
-})
 Template.registerHelper("settings",function(){
   return Session.get("settings");
-})
-Template.registerHelper("history",function(){//TODO
-  return Session.get("history");
 })
 Template.registerHelper("alert",function(){
   return Session.get("alert");
@@ -127,14 +78,10 @@ Template.registerHelper("reverse",function(value){
   return $.merge([],value).reverse();
 })
 
-Template.registerHelper("displayColumn",function(col){
-  return (Session.get("displayColumns"))[col]
-})
-
-
 Template.registerHelper("evenrow",function(value){
   return value%2 === 0?"even":"odd";
 })
+
 Template.registerHelper("save_status",function(value){
   status[value.name] = value.value;
 })
@@ -154,6 +101,7 @@ Template.registerHelper("debug",function(value){
 Template.registerHelper("count",function(value){
   return value.count();
 })
+
 Template.registerHelper('toArray',function(obj,group){
     var result = [];
     for (var key in obj) {
@@ -162,24 +110,7 @@ Template.registerHelper('toArray',function(obj,group){
     }
     return result;
 });
-Template.registerHelper("results",function(){
-    var query = construct_query();
-    var sort = Session.get("sort");
-    if (sort){
-      obj = {};
-      obj[sort] = Session.get("sort_order");
-      sort = {sort : obj}
-    }
-    else{
-      sort = null;
-    }
-    if (query){
-      var f= sort?Mongo._devices.find(query,sort):Mongo._devices.find(query);
 
-      Session.set("multiSelected",{});
-      return f;
-    }
-})
 Template.registerHelper('keys',function(obj){
     var result = [];
     var f = obj.from;
@@ -217,13 +148,9 @@ Template.registerHelper('field_options',function(obj){
 Template.registerHelper('selected_option',function(n1,n2){
     return n1===n2?"selected":"";
 });
+
 Template.registerHelper('toObject',function(key,obj){
   return {name : key,value : obj[key]}
-});
-
-
-Template.registerHelper('populateStations',function(){
-  populateStations(this.sub_agency);
 });
 
 Template.registerHelper('lower', function(str) {
@@ -234,44 +161,10 @@ Template.registerHelper('fromSession', function(id) {
   return Session.get(id);
 });
 
-Template.registerHelper('fromSessionP', function(id) {
-  return Session.get("s_"+id);
-});
-
-Template.registerHelper('selected_type', function(id) {
-  return Session.get("s_device_type")===id?"selected":"";
-});
-
-Template.registerHelper('selected_sw_status', function(id) {
-  return Session.get("s_sw_status")===id?"selected":"";
-});
 Template.registerHelper('notification', function(id) {
   return Session.get("notification");
 });
 
-Template.registerHelper('selected_hw_status', function(id) {
-  return Session.get("s_hw_status")===id?"selected":"";
-});
-
-Template.registerHelper('isMultiSelected', function(id) {
-  return Session.get("multiSelected")[this._id]!=null?"multiSelected":"";
-});
-
-Template.registerHelper('multiSelectedCount', function(id) {
-  var f = Session.get("multiSelected");
-  var count=0;
-  for (i in f) {
-    if (f.hasOwnProperty(i)) {
-        count++;
-    }
-  }
-  return count;
-});
-
-
-Template.registerHelper('selected_agency', function(id) {
-  return Session.get("s_agency")===id?"selected":"";
-});
 
 Template.registerHelper('toDate', function(id) {
   return id?moment(id,"YYYYMMDD").format("DD/MM/YY"):""
