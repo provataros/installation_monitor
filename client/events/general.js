@@ -7,13 +7,13 @@ import {save_history} from "/client/lib/lib.js"
 Meteor.startup(function(){
   $(document).on('keydown', function (e) {
     if (e.ctrlKey && (e.key == "a" || e.key == "A")){
+      e.preventDefault();
       var f = Session.get("search_results");
       var dict = {};
       $.each(f,function(key,value){
         dict[value._id] = value;
       })
       Session.set("multiSelected",dict);
-      e.preventDefault();
     }
     if (e.keyCode == 27){
        Session.set("modal",undefined);
