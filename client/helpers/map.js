@@ -1,3 +1,85 @@
+import {clear_query} from "/client/lib/lib.js"
+import {construct_query} from "/client/lib/lib.js"
+
+
+
+function getStationInfo(name){
+  var f = Mongo._devices.find({station_name : name}).fetch();
+    var types = {};
+    var type;
+    for (var i=0;i<f.length;i++){
+      type = f[i].device_type;
+      !types[type]?(types[type] = {name : type , data : [],hw : 0,sw : 0}):null;
+      types[type].data.push(f[i])
+      if (f[i].hw_status == "Done"){
+        types[type].hw++;
+      }
+      if (f[i].sw_status == "Done"){
+        types[type].sw++;
+      }
+    }
+    var result = [];
+    _.each(types,function(key,value){
+      key.dcount = key.data.length;
+      if (key.hw==0)key.hw = "<label class = 'error'>"+key.hw+"</label>"
+      else if (key.hw==key.dcount)key.hw = "<label class = 'success'>"+key.hw+"</label>"
+      else key.hw = "<label class = 'warning'>"+key.hw+"</label>"
+      if (key.sw==0)key.sw = "<label class = 'error'>"+key.sw+"</label>"
+      else if (key.sw==key.dcount)key.sw = "<label class = 'success'>"+key.sw+"</label>"
+      else key.sw = "<label class = 'warning'>"+key.sw+"</label>"
+      result.push(key);
+    })
+    //console.log(result)
+    return result
+  }
+
+function getAllStations(){
+      var obj = {};
+      
+      var now = Date.now();
+      var f = Mongo._devices.find({},{fields : {hw_status : 1,station_name : 1,device_type : 1,sw_status : 1}}).forEach(function(data){
+          obj[data.station_name]?obj[data.station_name].push(data):obj[data.station_name] = [data];
+      })
+      var result = {};
+      _.each(obj,function(f,a){
+        var types = {};
+        var type;
+        for (var i=0;i<f.length;i++){
+            type = f[i].device_type;
+            !types[type]?(types[type] = {name : type , data : [],hw : 0,sw : 0}):null;
+            types[type].data.push(f[i])
+            if (f[i].hw_status == "Done"){
+                types[type].hw++;
+            }
+            if (f[i].sw_status == "Done"){
+                types[type].sw++;
+            }
+        }
+        var status = 0;
+        var flag = true;
+        var flag2 = false;
+        var flag3 = false;
+        _.each(types,function(f){
+            flag3 = true;
+            if ((f.hw == f.sw) && (f.hw == f.data.length))flag = flag && true;
+            else flag = false;
+            if (f.hw > 0 || f.sw > 0 )flag2 = true;
+        });
+        if (flag2)status=2;
+        if ((flag == flag3) && (flag ==true))status = 1;
+        
+        f.data = types;
+        f.status = status;
+        for (var i=0;i<f.length;i++){
+            f[i] = null;
+        }
+         
+      })
+      return obj;
+  }
+
+
+
 
 Template.map.helpers({
   mapOptions : function(){

@@ -129,6 +129,7 @@
       <table id = "search_results" width = "100%">
         <tr>
           {{#if displayColumn "no"}}<th class = "sort" id = "sort_no">No</th>{{/if}}
+          {{#if displayColumn "history"}}<th class = "sort" id = "sort_history">Notes</th>{{/if}}
           {{#if displayColumn "device_type"}}<th class = "sort" id = "sort_device_type">Device Type</th>{{/if}}
           {{#if displayColumn "updatedAt"}}<th class = "sort" id = "sort_updatedAt">Last Update</th>{{/if}}
           {{#if displayColumn "updatedFrom"}}<th class = "sort" id = "sort_updatedFrom">By</th>{{/if}}
@@ -152,6 +153,7 @@
         {{#each this}}
           <tr class = "device_item {{evenrow @index}} {{isUrgent}} {{isMultiSelected}}" >
             {{#if displayColumn "no"}}<td>{{@index}}</td>{{/if}}
+            {{#if displayColumn "history"}}<td>{{this.history.length}}</td>{{/if}}
             {{#if displayColumn "device_type"}}<td>{{device_type}}</td>{{/if}}
             {{#if displayColumn "updatedAt"}}<td>{{toDate2 updatedAt}}</td>{{/if}}
             {{#if displayColumn "updatedFrom"}}<td>{{updatedFrom}}</td>{{/if}}
@@ -253,6 +255,7 @@
               <tr><td><label for = "sw_status">sw_status </label></td><td><input type = "checkbox" id="sw_status" {{isVisible "sw_status"}}/></td></tr>
               <tr><td><label for = "ip">ip </label></td><td><input type = "checkbox" id="ip" {{isVisible "ip"}}/></td></tr>
               <tr><td><label for = "gateway">gateway </label></td><td><input type = "checkbox" id="gateway" {{isVisible "gateway"}}/></td></tr>
+              <tr><td><label for = "history">history </label></td><td><input type = "checkbox" id="history" {{isVisible "history"}}/></td></tr>
             </table>
           </div>
           <div class = "pane">
