@@ -155,7 +155,7 @@ Meteor.methods({
         var data = {};
         data.updatedAt = moment().format("YYYYMMDDHHmmss");
         data.updatedFrom = Meteor.user().username;
-        var result =  Mongo._devices.update( {_id : id },{$set : data,$push : {image : {date : moment().format("YYYYMMDDHHMMss"), file : timestamp}}},{upsert : true});
+        var result =  Mongo._devices.update( {_id : id },{$set : data,$push : {image : {date : moment().format("YYYYMMDDHHmmss"), file : timestamp}}},{upsert : true});
         if (result)Mongo._history.insert({user : Meteor.user().username,id : id,date : moment().format("YYYYMMDDHHmmss"), data : {from : {image : "Added Image"},to : {image : timestamp}}})
       }
       else{
@@ -184,10 +184,10 @@ Meteor.methods({
   //FixNetwork : FixNetwork,
 
   createQuickTaskPersonal : function(data){
-    Mongo._todo.insert({ user : Meteor.user().username,author : Meteor.user().username,task : data, status : "incomplete",type : "quick",created : moment().format("YYYYMMDDHHMMss")})
+    Mongo._todo.insert({ user : Meteor.user().username,author : Meteor.user().username,task : data, status : "incomplete",type : "quick",created : moment().format("YYYYMMDDHHmmssSSS")})
   },
   createQuickTaskTeam : function(data){
-    Mongo._todo.insert({ user : "___TEAM",author : Meteor.user().username,task : data, status : "incomplete",type : "quick",created : moment().format("YYYYMMDDHHMMss")})
+    Mongo._todo.insert({ user : "___TEAM",author : Meteor.user().username,task : data, status : "incomplete",type : "quick",created : moment().format("YYYYMMDDHHmmssSSS")})
   },
   completeQuickTask : function(id){
     Mongo._todo.update({_id : id},{$set : {status : "complete"}})
