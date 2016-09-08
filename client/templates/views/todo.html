@@ -12,20 +12,30 @@
     
     <div id = "todo_personal" class = "vert-col">
         <div class = "header_button" ><h1>Personal</h1><div class = "btnDiv">New...</div></div>
+        {{> new_task}}
+        <div class = "underline">In Progress</div>
         {{#each tasks}}
+            <div class = "task task-personal task-{{status}} task-{{type}}" >{{task}}</div>
+        {{/each}}
+        <div class = "underline">Completed</div>
+        {{#each completed}}
             <div class = "task task-personal task-{{status}} task-{{type}}" >{{task}}<div style = "float :right"><i class="fa fa-times" aria-hidden="true"></i></div></div>
         {{/each}}
-        {{> new_task}}
     </div>
 </template>
 
 <template name = "todo_team">
     <div id = "todo_team" class = "vert-col">
-        <div class = "header_button" ><h1>Team</h1><div class = "btnDiv">New...</div></div>
+        <div class = "header_button" ><h1>Team</h1><div class = "btnDiv">New...</div></div> 
+        {{> new_task}}
+        <div class = "underline">In Progress</div>
         {{#each tasks}}
+            <div class = "task task-team task-{{status}} task-{{type}}" >{{author}}:  {{task}}</div>
+        {{/each}}
+        <div class = "underline">Completed</div>
+        {{#each completed}}
             <div class = "task task-team task-{{status}} task-{{type}}" >{{author}}:  {{task}}<div style = "float :right">{{#if isOwn}}<i class="fa fa-times" aria-hidden="true"></i>{{/if}}</div></div>
         {{/each}}
-        {{> new_task}}
     </div>
 </template>
 

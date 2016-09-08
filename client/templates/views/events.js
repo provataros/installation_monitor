@@ -52,13 +52,19 @@ Template.view_todo.events({
 
 Template.todo_personal.helpers({
     tasks : function(){
-        return  Meteor.user() && Mongo._todo.find({"user" :  Meteor.user().username},{sort: {status: -1,created : 1}});
+        return  Meteor.user() && Mongo._todo.find({"user" :  Meteor.user().username,status : "incomplete"},{sort: {created : 1,status: -1}});
+    },
+    completed : function(){
+        return  Meteor.user() && Mongo._todo.find({"user" :  Meteor.user().username,status : "complete"},{sort: {created : 1,status: -1}});
     }
 })
 
 Template.todo_team.helpers({
     tasks : function(){
-        return  Meteor.user() && Mongo._todo.find({"user" : "___TEAM"},{sort: {status: -1,created : 1}});
+        return  Meteor.user() && Mongo._todo.find({"user" :  "___TEAM",status : "incomplete"},{sort: {created : 1,status: -1}});
+    },
+    completed : function(){
+        return  Meteor.user() && Mongo._todo.find({"user" : "___TEAM",status : "complete"},{sort: {created : 1,status: -1}});
     },
     isOwn : function(){
         return Meteor.user() && this.author == Meteor.user().username;

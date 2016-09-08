@@ -250,7 +250,7 @@ h1 {
   font-style : italic;
 }
 .task.task-incomplete{
-  font-weight : 500;
+  font-weight : 100;
 }
 .task:hover{
   background-color : lightblue;
@@ -264,6 +264,11 @@ h1 {
   flex-direction : row;
   flex-grow : 1;
   height : fit-content;
+}
+.underline {
+  margin : 15px;
+  border-bottom : 1px solid black;
+  padding-bottom : 10px;
 }
 /*************************************************************************************/
 
