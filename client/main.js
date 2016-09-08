@@ -40,6 +40,7 @@ Meteor.startup(() => {
   Meteor.subscribe("devices");
   Meteor.subscribe("stations");
   Meteor.subscribe("history");
+  Meteor.subscribe("todo");
 
   Session.set("menu","search");
   Session.modal = {};

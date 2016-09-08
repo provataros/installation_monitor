@@ -1,0 +1,34 @@
+<template name = "view_todo">
+    {{#if isMenu "tasks"}}
+        <div class = "tasks-panel">
+            {{> todo_personal}}
+            {{> todo_team}}
+        </div>
+    {{/if}}
+</template>
+
+
+<template name = "todo_personal">
+    
+    <div id = "todo_personal" class = "vert-col">
+        <div class = "header_button" ><h1>Personal</h1><div class = "btnDiv">New...</div></div>
+        {{#each tasks}}
+            <div class = "task task-personal task-{{status}} task-{{type}}" >{{task}}<div style = "float :right"><i class="fa fa-times" aria-hidden="true"></i></div></div>
+        {{/each}}
+        {{> new_task}}
+    </div>
+</template>
+
+<template name = "todo_team">
+    <div id = "todo_team" class = "vert-col">
+        <div class = "header_button" ><h1>Team</h1><div class = "btnDiv">New...</div></div>
+        {{#each tasks}}
+            <div class = "task task-team task-{{status}} task-{{type}}" >{{author}}:  {{task}}<div style = "float :right">{{#if isOwn}}<i class="fa fa-times" aria-hidden="true"></i>{{/if}}</div></div>
+        {{/each}}
+        {{> new_task}}
+    </div>
+</template>
+
+<template name = "new_task">
+    <input class ="createQuick" type = "text" />
+</template>

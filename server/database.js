@@ -11,12 +11,15 @@ Mongo._devices = new Mongo.Collection("devices");
 Mongo._stations = new Mongo.Collection("stations");
 Mongo._lsams = new Mongo.Collection("lsams");
 Mongo._history = new Mongo.Collection("history");
+Mongo._todo = new Mongo.Collection("todo");
 
 
 var fs = require('fs')
 
 
-
+Meteor.publish("todo",function(){
+  return Mongo._todo.find({});
+})
 Meteor.publish("devices",function(){
   return Mongo._devices.find({});
 })
@@ -177,6 +180,28 @@ Meteor.methods({
       }
     }
     return images;
-  }
+  },
   //FixNetwork : FixNetwork,
+
+  createQuickTaskPersonal : function(data){
+    Mongo._todo.insert({ user : Meteor.user().username,author : Meteor.user().username,task : data, status : "incomplete",type : "quick",created : moment().format("YYYYMMDDHHMMss")})
+  },
+  createQuickTaskTeam : function(data){
+    Mongo._todo.insert({ user : "___TEAM",author : Meteor.user().username,task : data, status : "incomplete",type : "quick",created : moment().format("YYYYMMDDHHMMss")})
+  },
+  completeQuickTask : function(id){
+    Mongo._todo.update({_id : id},{$set : {status : "complete"}})
+  },
+  enableQuickTask : function(id){
+    Mongo._todo.update({_id : id},{$set : {status : "incomplete"}})
+  },
+  completeQuickTaskTeam : function(id){
+    Mongo._todo.update({_id : id,author : Meteor.user().username},{$set : {status : "complete"}})
+  },
+  enableQuickTaskTeam : function(id){
+    Mongo._todo.update({_id : id,author : Meteor.user().username},{$set : {status : "incomplete"}})
+  },
+  deleteTask : function(id){
+    Mongo._todo.remove({_id : id})
+  }
 })
