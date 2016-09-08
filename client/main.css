@@ -217,6 +217,62 @@ h1 {
   background-color: #fff;
 }
 
+/*************************************************************************************/
+.tasks-panel{
+  box-sizing: border-box;
+  padding : 15px;
+  margin : 15px;
+  display : flex;
+
+}
+.tasks-panel input{
+  width : 100%;
+  margin-top : 25px;
+  height : 30px;
+  font-size : 16px;
+  font-style : italic;
+  padding-left : 10px;
+  box-sizing: border-box;
+  resize : none;
+}
+.header_button{
+  display : flex;
+}
+.header_button div{
+  margin-left : auto;
+}
+.task {
+  cursor : pointer;
+}
+.task.task-complete{
+  color : lightslategray;
+  text-decoration: line-through;
+  font-style : italic;
+}
+.task.task-incomplete{
+  font-weight : 500;
+}
+.task:hover{
+  background-color : lightblue;
+}
+
+.vert-col{
+  padding : 15px;
+  margin : 15px;
+  box-shadow: 2px 2px 5px #888888;
+  background-color: #fff;
+  flex-direction : row;
+  flex-grow : 1;
+  height : fit-content;
+}
+/*************************************************************************************/
+
+
+
+
+
+
+
 .device-field .fa.fa-times{
   color : black;
   font-weight: 100;

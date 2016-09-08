@@ -21,6 +21,7 @@
         {{> settings}}
         {{> usb}}
         {{> map}}
+        {{> view_todo}}
       {{/with}}
     </div>
   {{else}}
@@ -63,6 +64,9 @@
     <ul id = "app-menu" class = "menu-buttons">
           {{#unless isMenu "search"}}
             <li id = "search">Search</li>
+          {{/unless}}
+          {{#unless isMenu "tasks"}}
+            <li id = "tasks">Tasks</li>
           {{/unless}}
           {{#unless isMenu "map"}}
             <li id = "map">Map</li>
