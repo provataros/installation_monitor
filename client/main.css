@@ -250,7 +250,7 @@ h1 {
   font-style : italic;
 }
 .task.task-incomplete{
-  font-weight : 100;
+  /*font-weight : 100;*/
 }
 .task:hover{
   background-color : lightblue;
