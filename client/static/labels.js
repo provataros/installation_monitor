@@ -216,6 +216,12 @@ export const labels = {
   sw_version : {
 		name : "Software Version",
     group : "software",////////////////////////
+    type : "dropdown",
+    options : [
+      "",
+      "1.3.10.30773",
+      "1.3.2.14572",
+    ]
 	},
   install_date : {
 		name : "Installation Date",

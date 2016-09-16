@@ -75,6 +75,10 @@
       </select>
     </div>
     <div class = "search_div">
+      <label>Software Version</label>
+      <input class = "search_input"  type = "text" id = "s_sw_version" value = "{{fromSession 's_sw_version'}}">
+    </div>
+    <div class = "search_div">
       <label>Urgent</label>
       <input class = "search_input"  type = "checkbox" id = "s_urgent" {{isCheckedSession 's_urgent'}}>
     </div>
@@ -145,6 +149,7 @@
           {{#if displayColumn "sam_tracking"}}<th class = "sort" id = "sort_sam_tracking">SAM Location</th>{{/if}}
           {{#if displayColumn "hw_status"}}<th class = "sort" id = "sort_hw_status">H/W Status</th>{{/if}}
           {{#if displayColumn "sw_status"}}<th class = "sort" id = "sort_sw_status">S/W Status</th>{{/if}}
+          {{#if displayColumn "sw_version"}}<th class = "sort" id = "sort_sw_version">S/W Ver.</th>{{/if}}
           {{#if displayColumn "ip"}}<th class = "sort" id = "sort_ip">IP</th>{{/if}}
           {{#if displayColumn "gateway"}}<th class = "sort" id = "sort_gateway">Gateway</th>{{/if}}
         </tr>
@@ -168,6 +173,7 @@
             {{#if displayColumn "sam_tracking"}}<td>{{sam_tracking}}</td>{{/if}}
             {{#if displayColumn "hw_status"}}<td class = "{{lower hw_status}}">{{hw_status}}</td>{{/if}}
             {{#if displayColumn "sw_status"}}<td class = "{{lower sw_status}}">{{sw_status}}</td>{{/if}}
+            {{#if displayColumn "sw_version"}}<td>{{sw_version}}</td>{{/if}}
             {{#if displayColumn "ip"}}<td>{{ip}}</td>{{/if}}
             {{#if displayColumn "gateway"}}<td>{{gateway}}</td>{{/if}}
           </tr>
@@ -252,6 +258,7 @@
               <tr><td><label for = "hw_status">hw_status </label></td><td><input type = "checkbox" id="hw_status" {{isVisible "hw_status"}}/></td></tr>
               <tr><td><label for = "sw_status">sw_status </label></td><td><input type = "checkbox" id="sw_status" {{isVisible "sw_status"}}/></td></tr>
               <tr><td><label for = "ip">ip </label></td><td><input type = "checkbox" id="ip" {{isVisible "ip"}}/></td></tr>
+              <tr><td><label for = "sw_version">SW Version </label></td><td><input type = "checkbox" id="sw_version" {{isVisible "sw_version"}}/></td></tr>
               <tr><td><label for = "gateway">gateway </label></td><td><input type = "checkbox" id="gateway" {{isVisible "gateway"}}/></td></tr>
             </table>
           </div>

@@ -31,6 +31,7 @@ export const clear_query = function(){
     Session.set("s_hw_status",null);
     Session.set("s_urgent",null);
     Session.set("s_error",null);
+    Session.set("s_sw_version",null);
 
     Session.set("s_from_install_date",null);
     Session.set("s_untl_install_date",null);
@@ -56,6 +57,7 @@ export const construct_query = function(){
   var hw_status = Session.get("s_hw_status");
   var urgent = Session.get("s_urgent");
   var error = Session.get("s_error");
+  var sw_version = Session.get("s_sw_version");
 
   var from_install = Session.get("s_from_install_date")
   var until_install = Session.get("s_untl_install_date")
@@ -99,6 +101,10 @@ export const construct_query = function(){
   if (station_name){
     flag = true;
     query.station_name = {$regex: new RegExp(station_name, "i")};
+  }
+  if (sw_version){
+    flag = true;
+    query.sw_version = {$regex: new RegExp(sw_version, "i")};
   }
   if (sw_status){
     flag = true;
