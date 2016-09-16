@@ -177,8 +177,7 @@
   {{/with}}
 </template>
 
-<template name = "search_side_panel">
-  {{#if isMenu "search"}}
+<template name = "context_search">
     {{#with device}}
       <li id = "back">Back</li>
       <li id = "save">Save</li>
@@ -205,19 +204,9 @@
         <li id = "generate3g">Generate 3G</li>
       {{/with}}
     {{/unless}}
-  {{/if}}
 </template>
 
-<template name = "search">
-  {{#if isMenu "search"}}
-    {{#if selected_device}}
-      {{> device}}
-    {{else}}
-      {{> search_bar}}
-      {{> search_results}}
-    {{/if}}
-  {{/if}}
-</template>
+
 
 <template name="searchDate">
   <input type="hidden" id = "s_{{this}}" class = "search_input" value="{{fromSessionP this}}"/>

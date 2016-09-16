@@ -90,3 +90,22 @@ Meteor.startup(() => {
   testConfigGeneration();
   GoogleMaps.load({ v: '3', key: 'AIzaSyDh8emWbWLB48ccOT_is8BMVDM26b3TH3k'});
 });
+
+
+Template.dynamic_view.helpers({
+  selected_view : function(){
+    if (Session.get("menu")){
+      return "view_"+Session.get("menu");
+    }
+    return "view_tasks";
+  }
+})
+
+Template.side_panel.helpers({
+  context_menu : function(){
+    if (Session.get("menu")){
+      return "context_"+Session.get("menu");
+    }
+    return "context_none";
+  }
+})

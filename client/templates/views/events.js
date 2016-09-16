@@ -32,7 +32,7 @@ Template.todo_team.events({
     },
 })
 
-Template.view_todo.events({
+Template.view_tasks.events({
     "click .task-personal.task-quick.task-incomplete" : function(){
         Meteor.call("completeQuickTask",this._id);
     },

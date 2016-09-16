@@ -16,13 +16,7 @@
       {{> side_panel}}
     </div>
     <div id="content">
-      {{#with menu}}
-        {{> search}}
-        {{> settings}}
-        {{> usb}}
-        {{> map}}
-        {{> view_todo}}
-      {{/with}}
+      {{> dynamic_view}}
     </div>
   {{else}}
     {{#if isRegister}}
@@ -33,6 +27,12 @@
   {{/if}}
   {{> notification}}
 </body>
+
+
+<template name = "dynamic_view">
+  {{debug selected_view}}
+  {{> Template.dynamic template = selected_view }}
+</template>
 
 <template name="login">
   <div class = "midcenter">
@@ -56,30 +56,16 @@
 
 
 <template name = "side_panel">
-  {{#with menu}}
     <ul id = "context-menu" class = "menu-buttons">
-          {{> search_side_panel}}
-          {{> usb_side_panel}}
+      {{> Template.dynamic template = context_menu }}
     </ul>
     <ul id = "app-menu" class = "menu-buttons">
-          {{#unless isMenu "search"}}
-            <li id = "search">Search</li>
-          {{/unless}}
-          {{#unless isMenu "tasks"}}
-            <li id = "tasks">Tasks</li>
-          {{/unless}}
-          {{#unless isMenu "map"}}
-            <li id = "map">Map</li>
-          {{/unless}}
-          {{#unless isMenu "settings"}}
-            <li id = "settings">Settings</li>
-          {{/unless}}
-          <!--{{#unless isMenu "usb"}}
-            <li id = "usb">USB</li>
-          {{/unless}}-->
-          <li id = "logout">Logout ({{currentUser.username}})</li>
+      <li id = "search">Search</li>
+      <li id = "tasks">Tasks</li>
+      <li id = "map">Map</li>
+      <li id = "settings">Settings</li>
+      <li id = "logout">Logout ({{currentUser.username}})</li>
     </ul>
-  {{/with}}
 </template>
 
 

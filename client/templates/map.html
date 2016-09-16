@@ -1,10 +1,8 @@
 <template name = "map">
-    {{#if isMenu "map"}}
-        <div id="transitmap">
-            {{> googleMap name="map" options=mapOptions}}
-            {{addRoutes}}           
-        </div> 
-    {{/if}}
+    <div id="transitmap">
+        {{> googleMap name="map" options=mapOptions}}
+        {{addRoutes}}           
+    </div> 
 </template>
 
 <template name = "infowindow">
