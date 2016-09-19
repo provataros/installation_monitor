@@ -258,7 +258,7 @@ Template.side_panel.events({
 
         Session.modal.yes = function(){
           var result = Meteor.call("save",id,fields,function(err,res){
-            if (result == 1){
+            if (res == 1){
               var str = "Succesfully updated : <br /><br />";
               $.each(fields,function(key,value){
                 str += labels[key].name +'<br />';

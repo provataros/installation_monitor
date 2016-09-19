@@ -17,6 +17,7 @@ Mongo._devices = devices;
 Mongo._stations = stations;
 Mongo._usb = usb;
 Mongo._history = history;
+Mongo._labels = new Mongo.Collection("labels");;
 
 var status = {};
 
