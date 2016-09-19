@@ -1,7 +1,8 @@
 import {Mongo} from "meteor/mongo";
-function initlabels(){
+
+export const initlabels = function(){
     db={};
-    db.labels = new Mongo.Collection("labels");
+    db.labels = Mongo._labels;
     db.labels.insert({
         id : "hw_status",
         options : ["",
