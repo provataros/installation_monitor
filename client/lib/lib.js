@@ -70,84 +70,90 @@ export const construct_query = function(){
 
   var flag = false;
   var query = {};
-  if (hardware){
-    flag = true;
-    query.hw_id = {$regex: new RegExp(hardware, "i")};
-  }
-  if (device){
-    flag = true;
-    query.device_id = {$regex: new RegExp(device, "i")};
-  }
-  if (account){
-    flag = true;
-    query.service_id = {$regex: new RegExp(account, "i")};
-  }
-  if (lsam){
-    flag = true;
-    query.lsam_id = {$regex: new RegExp(lsam, "i")};
-  }
-  if (type){
-    flag = true;
-    query.device_type = type
-  }
-  if (agency){
-    flag = true;
-    query.agency = agency
-  }
-  if (sub_agency){
-    flag = true;
-    query.sub_agency = sub_agency
-  }
-  if (station_name){
-    flag = true;
-    query.station_name = {$regex: new RegExp(station_name, "i")};
-  }
-  if (sw_version){
-    flag = true;
-    query.sw_version = {$regex: new RegExp(sw_version, "i")};
-  }
-  if (sw_status){
-    flag = true;
-    query.sw_status = sw_status
-  }
-  if (hw_status){
-    flag = true;
-    query.hw_status = hw_status;
-  }
-  if (urgent=="true"){
-    flag = true;
-    query.urgent = "true";
-  }
-  if (error=="true"){
-    flag = true;
-    if (!(query.$or))query.$or = [];
-      query.$or.push(
-        { hw_error : "true"},
-        { sw_error : "true"},
-      );
-  }
-  if (from_install != undefined && until_install != undefined){
-    query.install_date = {
-      $gte : from_install,
-      $lte : until_install
+  try{
+    
+    if (hardware){
+      flag = true;
+      query.hw_id = {$regex: new RegExp(hardware, "i")};
     }
-    flag = true;
-  }
-  if (from_schedule != undefined && until_schedule != undefined){
-    query.schedule_date = {
-      $gte : from_schedule,
-      $lte : until_schedule
+    if (device){
+      flag = true;
+      query.device_id = {$regex: new RegExp(device, "i")};
     }
-    flag = true;
-  }
-  if (from_register != undefined && until_register != undefined){
-    query.register_date = {
-      $gte : from_register,
-      $lte : until_register
+    if (account){
+      flag = true;
+      query.service_id = {$regex: new RegExp(account, "i")};
     }
-    flag = true;
+    if (lsam){
+      flag = true;
+      query.lsam_id = {$regex: new RegExp(lsam, "i")};
+    }
+    if (type){
+      flag = true;
+      query.device_type = type
+    }
+    if (agency){
+      flag = true;
+      query.agency = agency
+    }
+    if (sub_agency){
+      flag = true;
+      query.sub_agency = sub_agency
+    }
+    if (station_name){
+      flag = true;
+      query.station_name = {$regex: new RegExp(station_name, "i")};
+    }
+    if (sw_version){
+      flag = true;
+      query.sw_version = {$regex: new RegExp(sw_version, "i")};
+    }
+    if (sw_status){
+      flag = true;
+      query.sw_status = sw_status
+    }
+    if (hw_status){
+      flag = true;
+      query.hw_status = hw_status;
+    }
+    if (urgent=="true"){
+      flag = true;
+      query.urgent = "true";
+    }
+    if (error=="true"){
+      flag = true;
+      if (!(query.$or))query.$or = [];
+        query.$or.push(
+          { hw_error : "true"},
+          { sw_error : "true"},
+        );
+    }
+    if (from_install != undefined && until_install != undefined){
+      query.install_date = {
+        $gte : from_install,
+        $lte : until_install
+      }
+      flag = true;
+    }
+    if (from_schedule != undefined && until_schedule != undefined){
+      query.schedule_date = {
+        $gte : from_schedule,
+        $lte : until_schedule
+      }
+      flag = true;
+    }
+    if (from_register != undefined && until_register != undefined){
+      query.register_date = {
+        $gte : from_register,
+        $lte : until_register
+      }
+      flag = true;
+    }
+    if (flag)return query;
   }
-  if (flag)return query;
+  catch(e){
+    console.log("Query regex error. All normal");
+  }
 }
 
 export const populateStations = function(agency){

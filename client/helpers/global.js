@@ -211,7 +211,11 @@ Template.registerHelper('field_type',function(obj){
 });
 
 Template.registerHelper('field_options',function(obj){
+  if (obj=="station_id" || obj == "station_name"){
     return labels[obj].options;
+  }
+  var f = Mongo._labels.findOne({id : obj})
+  return f?f.options:[];
 });
 
 Template.registerHelper('selected_option',function(n1,n2){

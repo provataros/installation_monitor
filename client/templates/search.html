@@ -1,3 +1,11 @@
+<template name = "dropdown_search">
+  <label>{{field_label name}}:</label>
+  <select class = "search_input" id = "s_{{name}}">
+    {{#each field_options name}}
+      <option class = "{{lower this}}" {{selected_option this ../value}}> {{this}} </option>
+    {{/each}}
+  </select>
+</template>
 
 <template name = "search_bar">
 
@@ -19,60 +27,23 @@
       <input class = "search_input"  type = "text" id = "s_lsam" value = "{{fromSession 's_lsam'}}">
     </div>
     <div class = "search_div">
-      <label>Device Type</label>
-      <select class = "search_input" id = "s_device_type">
-        <option></option>
-        <option {{selected_type "ACIM" }} value  = "ACIM">ACIM</option>
-        <option {{selected_type "TIT" }} value = "TIT">TIT</option>
-        <option {{selected_type "CIT" }} value = "CIT">CIT</option>
-        <option {{selected_type "PCRS" }} value = "PCRS">PCRS</option>
-        <option {{selected_type "PCRS for TIT" }} value = "PCRS for TIT">PCRS for TIT</option>
-        <option {{selected_type "PCRS for CIT" }} value = "PCRS for CIT">PCRS for CIT</option>
-        <option {{selected_type "PSCCS" }} value = "PSCCS">PSCCS</option>
-        <option {{selected_type "OVMC" }} value = "OVMC">OVMC</option>
-      </select>
+      {{> dropdown_search toObject "device_type" this}}
     </div>
     <div class = "search_div">
-      <label>Agency</label>
-      <select class = "search_input" id = "s_agency">
-        <option></option>
-        <option {{selected_agency "OASA" }} value = "OASA">OASA</option>
-        <option {{selected_agency "STASY" }} value = "STASY">STASY</option>
-        <option {{selected_agency "OSY" }} value = "OSY">OSY</option>
-        <option {{selected_agency "TRAINOSE" }} value = "TRAINOSE">TRAINOSE</option>
-      </select>
+      {{> dropdown_search toObject "agency" this}}
     </div>
     <div class = "search_div">
-      <label>Sub-Agency</label>
-      <select class = "search_input" id = "s_sub_agency">
-        <option></option>
-        <option {{selected_type "Tram" }} value  = "Tram">Tram</option>
-        <option {{selected_type "Metro" }} value = "Metro">Metro</option>
-        <option {{selected_type "Suburban" }} value = "Suburban">Suburban</option>
-        <option {{selected_type "Bus" }} value = "Bus">Bus</option>
-      </select>
+      {{> dropdown_search toObject "sub_agency" this}}
     </div>
     <div class = "search_div">
       <label>Station</label>
       <input class = "search_input"  type = "text" id = "s_station_name" value = "{{fromSession 's_station_name'}}">
     </div>
     <div class = "search_div">
-      <label>Hardware Status</label>
-      <select class = "search_input" id = "s_hw_status">
-        <option></option>
-        <option {{selected_hw_status "Not Done" }} value = "Not Done">Not Done</option>
-        <option {{selected_hw_status "Done" }} value = "Done">Done</option>
-      </select>
+      {{> dropdown_search toObject "hw_status" this}}
     </div>
     <div class = "search_div">
-      <label>Installation Status</label>
-      <select class = "search_input" id = "s_sw_status">
-        <option></option>
-        <option {{selected_sw_status "Operating System Update" }} value = "Operating System Update">Operating System Update</option>
-        <option {{selected_sw_status "Firmware Update" }} value = "Firmware Update">Firmware Update</option>
-        <option {{selected_sw_status "Testing" }} value = "Testing">Testing</option>
-        <option {{selected_sw_status "Done" }} value = "Done">Done</option>
-      </select>
+      {{> dropdown_search toObject "sw_status" this}}
     </div>
     <div class = "search_div">
       <label>Software Version</label>

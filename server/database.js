@@ -12,11 +12,14 @@ Mongo._stations = new Mongo.Collection("stations");
 Mongo._lsams = new Mongo.Collection("lsams");
 Mongo._history = new Mongo.Collection("history");
 Mongo._todo = new Mongo.Collection("todo");
+Mongo._labels = new Mongo.Collection("labels");
 
 
 var fs = require('fs')
 
-
+Meteor.publish("labels",function(){
+  return Mongo._labels.find({});
+})
 Meteor.publish("todo",function(){
   return Mongo._todo.find({});
 })
