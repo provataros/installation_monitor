@@ -51,13 +51,12 @@ export const createConfigsBatch = function(data){
     }
     catch(e){
       error = true;
+      zips[value.service_id] = {ok : false};
       console.log("Please check for missing/incorrect fields");
     }
   })
   if (!lflag)console.log("No devices selected.","heads-up")
-  if (!error && lflag){
-    return zips;
-  }
+  return zips;
 }
 
 export const createConfigsBatch3G = function(data,subnet){
@@ -86,14 +85,13 @@ export const createConfigsBatch3G = function(data,subnet){
     catch(e){
       error = true;
       console.log("Please check for missing/incorrect fields");
+      zips[value.service_id] = {ok : false};
     }
     start++;
   })
   
   if (!lflag)console.log("No devices selected.","heads-up",2000)
-  if (!error && lflag){
-    return zips;
-  }
+  return zips;
 }
 
 export const createConfigs = function(data,save=true){
