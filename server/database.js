@@ -5,7 +5,7 @@ import {createConfigsBatch} from "./lib.js"
 import {createConfigsBatch3G} from "./lib.js"
 import {spawn} from 'child_process';
 
-
+var Future = Npm.require('fibers/future');
 
 Mongo._devices = new Mongo.Collection("devices");
 Mongo._stations = new Mongo.Collection("stations");
@@ -134,21 +134,28 @@ Meteor.methods({
     return createConfigsBatch3G(arr,ss)
   },
   backupDatabase : function(){
-    console.log("backup")
-    const bat = spawn('cmd.exe', ['/c', 'C:\\backup\\backup.bat']);
 
-    bat.stdout.on('data', (data) => {
-      //console.log(data);
-    });
+      
+      var myFuture = new Future();
+      
+      console.log("backup")
+      const bat = spawn('cmd.exe', ['/c', 'C:\\backup\\backup.bat']);
 
-    bat.stderr.on('data', (data) => {
-      //console.log(data);
-    });
+      bat.stdout.on('data', (data) => {
+        //console.log(data);
+      });
 
-    bat.on('exit', (code) => {
-      console.log(`Child exited with code ${code}`);
-    });
+      bat.stderr.on('data', (data) => {
+        //console.log(data);
+      });
+      bat.on('exit', (code) => {
+        console.log(`Child exited with code ${code}`);    
+        myFuture.return("done");
+      });
+      
+      return myFuture.wait();
   },
+
   saveImage : function(id,data){
     if (data && id){
       var buffer = new Buffer(data,"base64")
@@ -206,5 +213,11 @@ Meteor.methods({
   },
   deleteTask : function(id){
     Mongo._todo.remove({_id : id})
+  },
+  importData : function(data){
+    _.each(data,function(value,key){
+        console.log({device_id : value.device_id},{$set : value})
+        Mongo._devices.update({device_id : value.device_id},{$set : value},{upsert : true})
+    })
   }
 })

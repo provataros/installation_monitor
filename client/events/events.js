@@ -335,6 +335,15 @@ Template.side_panel.events({
   "click #map" : function(){
     Session.set("menu","map");
   },
+  "click #stations" : function(){
+    Session.set("menu","stations");
+  },
+  "click #dashboard" : function(){
+    Session.set("menu","dashboard");
+  },
+  "click #importer" : function(){
+    Session.set("menu","importer");
+  },
   "click #settings" : function(){
     Session.set("settings","settings");
   }

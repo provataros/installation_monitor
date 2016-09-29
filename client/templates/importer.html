@@ -1,0 +1,61 @@
+<template name = "importer">
+    {{#if isMenu "importer"}}
+        {{init}}
+        <div id = "importer" style = "width : 100%;height : 100%;">
+            {{#with workbook}}
+                {{debug this}}
+                <select id = "import-ws">
+                    {{#each objectToPairs Sheets}}
+                        <option value="{{key}}">{{key}}</option>
+                    {{/each}}
+                </select>
+                From<input id="import-from"/> 
+                To<input id = "import-to"/>
+                
+                <button id="add-columns">+</button>
+                <button id="excel-search">Search</button>
+                {{> column_selector}}
+            {{/with}}
+            {{#unless workbook}}
+                <div class="vertical-div">Drag and drop a file</div>
+            {{/unless}}
+            {{> import_data}}
+        </div>
+    {{/if}}
+</template>
+
+
+<template name="import_data">
+    {{#with data}}
+        <table>
+            <tr>
+                {{#each columns}}
+                    <th>{{key}}</th>
+                {{/each}}
+            </tr>
+            {{#each data}}
+            <tr>
+                {{#each objectToPairs this}}
+                    <td style="padding-left : 5px;padding-right:5px ">{{value}}</td>
+                {{/each}}
+            </tr>
+            {{/each}}
+        </table>
+        <button>Update/Insert</button>
+    {{/with}}
+</template>
+
+<template name="column_selector">
+    {{#each columns}}
+        <div>
+            <input type="text" value = "{{value}}" id="input__{{@index}}"/>
+            <select id="column__{{@index}}">
+                {{#each objectToPairs fields}}
+                    <option {{isKey ../key }} value="{{key}}">{{value.name}}</option>
+                {{/each}}
+            </select>
+            <input id="checkbox__{{@index}}" type="checkbox" {{isChecked}}/><label >Date?</label>      
+            <button>-</button>  
+        </div>
+    {{/each}}
+</template>

@@ -55,39 +55,47 @@ ddpclient.connect(function(error, wasReconnect) {
 
   console.log("Connected");
   var method = "getConfigs";
+  var subnet = "40";
   if (process.argv[2]){
     method = "getConfigs3G";
-    console.log("3G mode")
+    console.log("3G mode");
+    if (process.argv[3]){
+      console.log("subnet changed to ."+process.argv[3]);
+      subnet = ""+process.argv[3];
+    }
   }
+  var prefix = "_real";
+  if (method=="getConfigs3G")prefix = "_"+subnet;
 
     ddpclient.call(
       method,             // name of Meteor Method being called
-      ["10.230.40"],            // parameters to send to Meteor Method
+      ["10.230."+subnet],            // parameters to send to Meteor Method
       function (err, result) {   // callback which returns the method call results
         if (!err){ 
           var root;
           root = __dirname;
-          rmdir(root+"/../Sync/ACIM",function(e,r){
+          rmdir(root+"/../Sync/ACIM"+prefix,function(e,r){
             if (e)console.log(e,r)
             else{
               var count1 = 0;
               var count2 = 0;
               var total = 0;
+              console.log(err);
               Object.keys(result).forEach(function(key) {
               var val = result[key];
               if (val.ok){
                 total++;
-                mkdir(root+"/../Sync/ACIM/"+key+"/IN",function(err){
+                mkdir(root+"/../Sync/ACIM"+prefix+"/"+key+"/IN",function(err){
                   if (err)console.log(err)
                   else{
-                    fs.writeFile(root+"/../Sync/ACIM/"+key+"/IN/sc001_"+key, val.data.file1, function(err) {
+                    fs.writeFile(root+"/../Sync/ACIM"+prefix+"/"+key+"/IN/sc001_"+key, val.data.file1, function(err) {
                       if(err) {
                           console.log(err);
                       }
                       count1++;
                       if ((count1 == total) && (count2 == total))exit();
                     }); 
-                    fs.writeFile(root+"/../Sync/ACIM/"+key+"/IN/sc002_"+key, val.data.file2, function(err) {
+                    fs.writeFile(root+"/../Sync/ACIM"+prefix+"/"+key+"/IN/sc002_"+key, val.data.file2, function(err) {
                       if(err) {
                           console.log(err);
                       }

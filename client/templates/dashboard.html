@@ -1,0 +1,121 @@
+<template name = "dashboard">
+    {{#if isMenu "dashbsdfadfoard"}}
+        <div class = "padded-container">
+            {{#with dashboardStatus "device_type" "ACIM"}}
+                {{> dashboardGeneral}}
+            {{/with}}
+            
+            {{#with dashboardStatus "sub_agency" "Tram"}}
+                {{> dashboardGeneral}}
+            {{/with}}
+        </div>
+    {{/if}}
+    {{#if isMenu "dashboard"}}
+
+
+        
+        {{#with readxlsx}}
+            {{>progressTable}}
+        {{/with}}
+
+
+    {{/if}}
+</template>
+
+
+
+
+
+
+
+<template name = "progressTable">
+    {{debug this}}
+    <table>
+        <tr>
+            <th>Total</th>
+            {{#each headers}}
+                <th>{{toDate this}}</th>
+            {{/each}}
+            
+        </tr>
+        {{#each data}}
+            <tr>
+                <td>{{cabling_start.total}}</td>
+                {{#each cabling_start.data}}
+                    <td>{{this}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td>{{cabling_end.total}}</td>
+                {{#each cabling_end.data}}
+                    <td>{{this}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td>{{equipment_installation_start.total}}</td>
+                {{#each equipment_installation_start.data}}
+                    <td>{{this}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td>{{equipment_installation_end.total}}</td>
+                {{#each equipment_installation_end.data}}
+                    <td>{{this}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <td>{{ic_confirm.total}}</td>
+                {{#each ic_confirm.data}}
+                    <td>{{this}}</td>
+                {{/each}}
+            </tr>
+        {{/each}}
+
+
+    </table>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<template name = "dashboardGeneral"> 
+    <h1>{{type}} Progress</h1>
+    <div>
+        Done : {{completed}}/{{total}} ({{totalpercent}}%)
+    </div>
+    <div>
+        Total Errors : {{total_error}}
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;Software : {{sw_error}} ({{total_sw_error_percent}}%)
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;Hardware : {{hw_error}} ({{total_hw_error_percent}}%)
+    </div>
+    <div>
+        <br />
+        {{#each makeArray sw_status}}
+            {{#if isFieldSet key}}
+                <div>{{key }} : {{value.val}} ({{value.percent}} %)</div>
+            {{/if}}
+        {{/each}}
+        Not set : {{sw_notset}} ({{sw_notset_percent}}%)
+    </div>
+
+    <div>
+        <br />
+        {{#each makeArray hw_status}}
+            {{#if isFieldSet key}}
+                <div>{{key }} : {{value.val}} ({{value.percent}} %)</div>
+            {{/if}}
+        {{/each}}
+        Not set : {{hw_notset}} ({{hw_notset_percent }}%)
+    </div>
+</template>

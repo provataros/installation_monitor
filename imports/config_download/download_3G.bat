@@ -1,1 +1,2 @@
-node.exe lib.js 3G
+node.exe lib.js 3G 45
+pause

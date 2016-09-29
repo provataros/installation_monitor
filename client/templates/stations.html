@@ -1,0 +1,12 @@
+<template name = "stations">
+    {{#if isMenu "stations"}}
+        {{#each stations}}
+            <div class = "station-box">
+                {{name}}
+                <br />
+                {{sub_agency}}
+                <br />
+            </div>
+        {{/each}}
+    {{/if}}
+</template>
