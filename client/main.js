@@ -13,11 +13,21 @@ var devices = new Mongo.Collection("devices");
 var stations = new Mongo.Collection("stations");
 var usb = new Mongo.Collection("usb");
 var history = new Mongo.Collection("history");
+
+Mongo._subs = {};
 Mongo._devices = devices;
 Mongo._stations = stations;
 Mongo._usb = usb;
 Mongo._history = history;
 Mongo._labels = new Mongo.Collection("labels");;
+
+
+Mongo._subs.devices = Meteor.subscribe("devices");
+Mongo._subs.stations = Meteor.subscribe("stations");
+Mongo._subs.history = Meteor.subscribe("history");
+Mongo._subs.todo = Meteor.subscribe("todo");
+
+
 
 var status = {};
 
@@ -36,12 +46,8 @@ $.fn.extend({
 
 Meteor.startup(() => {
   Object.keys(Session.keys).forEach(function(key){ Session.set(key, undefined); })
-  Session.keys = {}
+  Session.keys = {};
 
-  Meteor.subscribe("devices");
-  Meteor.subscribe("stations");
-  Meteor.subscribe("history");
-  Meteor.subscribe("todo");
 
   Session.set("menu","search");
   Session.modal = {};

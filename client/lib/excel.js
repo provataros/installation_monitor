@@ -129,3 +129,8 @@ export const saveXLSX = function(data){
 
   saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "SearchResults_"+moment().format("YYYYMMDD")+".xlsx")
 }
+
+
+export const readXLSX = function(){
+  
+}
