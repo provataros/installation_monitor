@@ -60,7 +60,7 @@ export var getStationInfo = function(name){
                 types[type].sw++;
             }
         }
-        var status = 0;
+        var status = 3;
         var flag = true;
         var flag2 = false;
         var flag3 = false;
@@ -224,7 +224,7 @@ Template.mapDisplay.helpers({
             },
 
             {
-                name : "kalithea",
+                name : "Kallithea",
                 lat : 37.942573,
                 lng : 23.68416309
             },
@@ -962,7 +962,7 @@ function createCircle(center,infowindow,status){
       path: google.maps.SymbolPath.CIRCLE,
       scale: 5,
       strokeWeight : 3,
-      fillColor : status==1?"#00FF00":status==2?"#ff9f31":"#FFFFFF",
+      fillColor : status==1?"#00FF00":status==2?"#ff9f31":status==3?"#ff0000":"#ffffff",
       fillOpacity : 1,
 
     },

@@ -87,7 +87,7 @@
     <h1>{{agency}}</h1>
     {{#each data}}
         <div><b>{{name}} : {{total}}</b></div>
-        &emsp;Installation : <span style="color : rgb({{severity hw_done_per}})">{{hw_done}}</span>/<span style="color : rgb({{severity sw_done_per}})">{{sw_done}}</span>&nbsp;&nbsp;(<span style="color : rgb({{severity hw_done_per}})">{{hw_done_per}}%</span>/<span style="color : rgb({{severity sw_done_per}})">{{sw_done_per}}%</span>)<br />
+        &emsp;Installation : <span style="color : rgb({{positive hw_done_per}})">{{hw_done}}</span>/<span style="color : rgb({{positive sw_done_per}})">{{sw_done}}</span>&nbsp;&nbsp;(<span style="color : rgb({{positive hw_done_per}})">{{hw_done_per}}%</span>/<span style="color : rgb({{positive sw_done_per}})">{{sw_done_per}}%</span>)<br />
         &emsp;Errors : <span style="color : rgb({{severity hw_errors_per}})">{{hw_errors}}</span>/<span style="color : rgb({{severity sw_errors_per}})">{{sw_errors}}</span>&nbsp;&nbsp;(<span style="color : rgb({{severity hw_errors_per}})">{{hw_errors_per}}%</span>/<span style="color : rgb({{severity sw_errors_per}})">{{sw_errors_per}}%</span>)
         <br />
     {{/each}}

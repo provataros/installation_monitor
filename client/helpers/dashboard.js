@@ -70,6 +70,9 @@ function compare(a,b) {
 Template.dashboardAgency.helpers({
     severity : function(val){
         return val==0?"0,80,0":""+Math.floor(100+val*155/100)+",0,0";
+    },
+    positive : function(val){
+        return val==100?"0,150,0":""+Math.floor(100+val*155/100)+",0,0";
     }
 })
 
@@ -156,13 +159,17 @@ var infowindow;
 function nextStation(){
     if (!Mongo._subs.stations.ready())return;
     var curr = Session.get("dashboard_station");
-    if (!curr || !curr.id)curr = Mongo._stations.findOne({id: {$gt: "0"},$or : 
-        [
-            {sub_agency : "Metro",line : "1"},
-            {sub_agency : "Tram"},
-        ]
-        
-    });
+    if (startup || !curr || !curr.id){
+        startup = false;
+        curr = Mongo._stations.findOne({id: {$gt: "0"},$or : 
+            [
+                {sub_agency : "Metro",line : "1"},
+                {sub_agency : "Tram"},
+            ]
+            
+        });
+    }
+
     var next = {};
     while(!next.id){
         next = Mongo._stations.findOne({id: {$gt: curr.id},$or : 
@@ -181,13 +188,23 @@ function nextStation(){
     Session.set("dashboard_station",next);
     
 }
-
-Meteor.startup(function(){
-    Meteor.setInterval(function(){
+var interval;
+var startup = false;
+Template.dashboardPanel.onRendered(function(){
+    startup = true;
+    interval = Meteor.setInterval(function(){
         nextStation();
-            //console.log(Mongo._stations.findOne({id : Session.get("dashboard_station")}));
+        console.log("tick");
     },5000);
 })
+Template.dashboardPanel.onDestroyed(function(){
+    Meteor.clearInterval(interval);
+    startup=false;
+    Session.set("dashboard_agency",null);
+    Session.set("dashboard_subagency",null);
+})
+//S.E.F. - Stadio Irinis Kai Filias
+
 
 
 Template.dashboard.helpers({
@@ -208,7 +225,7 @@ Template.dashboard.helpers({
         showLines : true,
         showCircles : true,
         mapTypeControl: false,
-        hoverEnabled : false,
+        hoverEnabled : true,
         draggableCursor:'default',
         styles: [
           {
