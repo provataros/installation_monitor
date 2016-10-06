@@ -8,7 +8,7 @@ import {labels} from "/client/static/labels.js"
 import {construct_query} from "/client/lib/lib.js"
 import {clear_query} from "/client/lib/lib.js"
 
-function getStationInfo(name){
+export var getStationInfo = function(name){
   var f = Mongo._devices.find({station_name : name}).fetch();
     var types = {};
     var type;
@@ -155,7 +155,7 @@ Template.install_image.helpers({
 })
 
 Template.map.helpers({
-  mapOptions : function(){
+    mapOptions : function(){
     if (GoogleMaps.loaded()) {
       // Map initialization options
       return {
@@ -195,6 +195,11 @@ Template.map.helpers({
     };
     }
   },
+})
+
+
+Template.mapDisplay.helpers({
+  
   addRoutes : function(){
     GoogleMaps.ready("map",function(){
     
@@ -851,82 +856,91 @@ Template.map.helpers({
               lng : 23.80831987,
           },
       ];
-      var line1 = new google.maps.Polyline({
-        path: stations_line1,
-        geodesic: true,
-        strokeColor: '#228822',
-        strokeOpacity: 1.0,
-        strokeWeight: 5,
-        zIndex : 5,
-        map : GoogleMaps.maps.map.instance,
-      });
+      //console.log(GoogleMaps);
+      if (GoogleMaps.maps.map.options.showLines){
+          
+            var line1 = new google.maps.Polyline({
+                path: stations_line1,
+                geodesic: true,
+                strokeColor: '#228822',
+                strokeOpacity: 1.0,
+                strokeWeight: 5,
+                zIndex : 5,
+                map : GoogleMaps.maps.map.instance,
+            });
 
 
-      var line2 = new google.maps.Polyline({
-        path: stations_line2,
-        geodesic: true,
-        strokeColor: '#cc281c',
-        strokeOpacity: 1.0,
-        strokeWeight: 5,
-        zIndex : 5,
-        map : GoogleMaps.maps.map.instance,
-      });
-      var line3 = new google.maps.Polyline({
-        path: stations_line3,
-        geodesic: true,
-        strokeColor: '#3591da',
-        strokeOpacity: 1.0,
-        strokeWeight: 5,
-        zIndex : 5,
-        map : GoogleMaps.maps.map.instance,
-      });
-    var line4 = new google.maps.Polyline({
-        path: stations_line4,
-        geodesic: true,
-        strokeColor: '#c940e0',
-        strokeOpacity: 1.0,
-        strokeWeight: 5,
-        zIndex : 5,
-        map : GoogleMaps.maps.map.instance,
-      });
-    var line5 = new google.maps.Polyline({
-        path: stations_line5,
-        geodesic: true,
-        strokeColor: '#c940e0',
-        strokeOpacity: 1.0,
-        strokeWeight: 5,
-        zIndex : 5,
-        map : GoogleMaps.maps.map.instance,
-      });
+            var line2 = new google.maps.Polyline({
+                path: stations_line2,
+                geodesic: true,
+                strokeColor: '#cc281c',
+                strokeOpacity: 1.0,
+                strokeWeight: 5,
+                zIndex : 5,
+                map : GoogleMaps.maps.map.instance,
+            });
+            var line3 = new google.maps.Polyline({
+                path: stations_line3,
+                geodesic: true,
+                strokeColor: '#3591da',
+                strokeOpacity: 1.0,
+                strokeWeight: 5,
+                zIndex : 5,
+                map : GoogleMaps.maps.map.instance,
+            });
+            var line4 = new google.maps.Polyline({
+                path: stations_line4,
+                geodesic: true,
+                strokeColor: '#c940e0',
+                strokeOpacity: 1.0,
+                strokeWeight: 5,
+                zIndex : 5,
+                map : GoogleMaps.maps.map.instance,
+            });
+            var line5 = new google.maps.Polyline({
+                path: stations_line5,
+                geodesic: true,
+                strokeColor: '#c940e0',
+                strokeOpacity: 1.0,
+                strokeWeight: 5,
+                zIndex : 5,
+                map : GoogleMaps.maps.map.instance,
+            });
 
-      var infowindow = new google.maps.InfoWindow({
-      });
-      
-      google.maps.event.addListener(GoogleMaps.maps.map.instance, 'click', function(e,r) {
-        Session.set("maplocation",null);
-        infowindow.close();
-        clear_query();
-      });
+            
+             }   
+            var infowindow = new google.maps.InfoWindow({
+            });
+            
+            
 
-      var stuff = getAllStations();
+            var stuff = getAllStations();
 
+            if (GoogleMaps.maps.map.options.showCircles){            
+                for (var i=0;i<stations_line1.length;i++){
+                    if (stations_line1[i].name)createCircle(stations_line1[i],infowindow,stuff[stations_line1[i].name]);         
+                }
+                for (var i=0;i<stations_line2.length;i++){
+                    if (stations_line2[i].name)createCircle(stations_line2[i],infowindow,stuff[stations_line2[i].name]);         
+                }
+                for (var i=0;i<stations_line3.length;i++){
+                    if (stations_line3[i].name)createCircle(stations_line3[i],infowindow,stuff[stations_line3[i].name]);         
+                }
+                for (var i=0;i<stations_line4.length;i++){
+                    if (stations_line4[i].name)createCircle(stations_line4[i],infowindow,stuff[stations_line4[i].name]);         
+                }
+                for (var i=0;i<stations_line5.length;i++){
+                    if (stations_line5[i].name)createCircle(stations_line5[i],infowindow,stuff[stations_line5[i].name]);         
+                }  
+            }
 
-      for (var i=0;i<stations_line1.length;i++){
-          if (stations_line1[i].name)createCircle(stations_line1[i],infowindow,stuff[stations_line1[i].name]);         
-      }
-      for (var i=0;i<stations_line2.length;i++){
-          if (stations_line2[i].name)createCircle(stations_line2[i],infowindow,stuff[stations_line2[i].name]);         
-      }
-      for (var i=0;i<stations_line3.length;i++){
-          if (stations_line3[i].name)createCircle(stations_line3[i],infowindow,stuff[stations_line3[i].name]);         
-      }
-      for (var i=0;i<stations_line4.length;i++){
-          if (stations_line4[i].name)createCircle(stations_line4[i],infowindow,stuff[stations_line4[i].name]);         
-      }
-      for (var i=0;i<stations_line5.length;i++){
-          if (stations_line5[i].name)createCircle(stations_line5[i],infowindow,stuff[stations_line5[i].name]);         
-      }
-
+        if (GoogleMaps.maps.map.options.hoverEnabled){
+        google.maps.event.addListener(GoogleMaps.maps.map.instance, 'click', function(e,r) {
+            Session.set("maplocation",null);
+            infowindow.close();
+            clear_query();
+        });
+        }
     });
   },
   showStations : function(){
@@ -948,40 +962,42 @@ function createCircle(center,infowindow,status){
       path: google.maps.SymbolPath.CIRCLE,
       scale: 5,
       strokeWeight : 3,
-      fillColor : status==1?"#00FF00":status==2?"#FFFF00":"#FFFFFF",
+      fillColor : status==1?"#00FF00":status==2?"#ff9f31":"#FFFFFF",
       fillOpacity : 1,
 
     },
 
   });
-  google.maps.event.addListener(cityCircle, 'mouseover', function(e,r) {
-    Session.set("maplocation",this.name);
-    infowindow.open(GoogleMaps.maps.map.instance);
-    infowindow.setPosition(this.position);
-    var data = getStationInfo(this.name);
-    data.name = this.name;
-    infowindow.setContent(Blaze.toHTMLWithData(Template.infowindow,data));   
-    
-    $(".infowindow").on("click",function(){
-      clear_query();
-      Session.set("s_station_name",data.name);
-      var query = construct_query();
-      var f = Mongo._devices.find(query);
-      Session.set("menu","search");
-      Session.set("selected_device",null)
-    })
-    
-    $(".infowindow tr").on("click",function(e){
-      e.stopPropagation();
-      e.target = $(this).find(".st_type")[0]
-      var type = $(e.target).find("#devicetype").val();
-      clear_query();
-      Session.set("s_station_name",data.name);
-      Session.set("s_device_type",type);
-      var query = construct_query();
-      var f = Mongo._devices.find(query);
-      Session.set("menu","search");
-      Session.set("selected_device",null)
-    })
-  });
+  if (GoogleMaps.maps.map.options.hoverEnabled){
+    google.maps.event.addListener(cityCircle, 'mouseover', function(e,r) {
+        Session.set("maplocation",this.name);
+        infowindow.open(GoogleMaps.maps.map.instance);
+        infowindow.setPosition(this.position);
+        var data = getStationInfo(this.name);
+        data.name = this.name;
+        infowindow.setContent(Blaze.toHTMLWithData(Template.infowindow,data));   
+        
+        $(".infowindow").on("click",function(){
+        clear_query();
+        Session.set("s_station_name",data.name);
+        var query = construct_query();
+        var f = Mongo._devices.find(query);
+        Session.set("menu","search");
+        Session.set("selected_device",null)
+        })
+        
+        $(".infowindow tr").on("click",function(e){
+        e.stopPropagation();
+        e.target = $(this).find(".st_type")[0]
+        var type = $(e.target).find("#devicetype").val();
+        clear_query();
+        Session.set("s_station_name",data.name);
+        Session.set("s_device_type",type);
+        var query = construct_query();
+        var f = Mongo._devices.find(query);
+        Session.set("menu","search");
+        Session.set("selected_device",null)
+        })
+    });
+  }
 }

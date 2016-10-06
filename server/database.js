@@ -110,7 +110,7 @@ Meteor.methods({
     }
   },
   resetAll : function(){
-    //Initialize();
+    Initialize();
   },
   insert_history : function(date,text,id){
     return Mongo._devices.update({_id : id},{$push : {history : {user : Meteor.user().username,date : date,value : text}}});
@@ -216,8 +216,8 @@ Meteor.methods({
   },
   importData : function(data){
     _.each(data,function(value,key){
-        console.log({device_id : value.device_id},{$set : value})
-        Mongo._devices.update({device_id : value.device_id},{$set : value},{upsert : true})
+        console.log({hw_id : value.hw_id},{$set : value})
+        Mongo._devices.update({hw_id : value.hw_id},{$set : value},{upsert : true})
     })
   }
 })

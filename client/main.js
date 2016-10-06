@@ -49,10 +49,11 @@ Meteor.startup(() => {
   Session.keys = {};
 
 
-  Session.set("menu","search");
+  Session.set("menu","dashboard");
   Session.modal = {};
   Session.modal.no = function(){};
   Session.set("multiSelected",{})
+  Session.set("dashboard_station",{})
 
   var displayColumns = localStorage.getItem("displayColumns")
   if (!displayColumns){

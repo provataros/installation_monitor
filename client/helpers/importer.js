@@ -156,6 +156,7 @@ Template.import_data.events({
         Session.modal.yes = function(){
             Meteor.call("backupDatabase",function(e,r){
                 if (r=="done"){
+                    console.log("Backup Done")
                     Meteor.call("importData",obj,function(){
                         displayNotification("Updated","success");
                     });
