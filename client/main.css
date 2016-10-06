@@ -584,6 +584,18 @@ h1 {
   margin : 25px;
   padding : 15px;
   box-sizing: border-box;
+  box-shadow: 2px 2px 5px #888888;
+  background-color : white;
+  font-size : 14px;
+}
+
+.padded-container-small{
+  margin : 25px;
+  padding : 15px;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 5px #888888;
+  background-color : white;
+  font-size : 14px;
 }
 
 .vertical-div{
@@ -593,4 +605,21 @@ h1 {
     text-align: center;
     font-size : 80px;
     color : darkgray;
+}
+
+#dashboardPanel{
+  width : 500px;
+  height : 100%;
+  padding : 30px;
+  padding-top : 80px;
+  position : absolute;
+  top : 0px;
+  z-index : 60;
+  box-sizing: border-box;
+}
+
+#dashboardInfo{
+  width : 100%;
+  height : 100%;
+  background-color : white;
 }

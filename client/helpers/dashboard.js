@@ -4,14 +4,107 @@ import { Mongo } from "meteor/mongo"
 import { Session } from 'meteor/session'
 import { labels } from "/client/static/labels.js";
 import {readXLSX} from "/client/lib/excel.js"
+import {getStationInfo} from "./named.js"
 
+Template.dashboardPanel.helpers({
+    nextStationId : function(){
+        if (!Mongo._subs.stations.ready())return;
+        return Session.get("dashboard_station").id;
+    },
+    station_name : function(){
+        if (!Mongo._subs.stations.ready())return;
+        return Session.get("dashboard_station").eng;
+    },
+    getAgency : function(){
+        if (!Mongo._subs.stations.ready())return;
+        return Session.get("dashboard_agency");
+    },
+    getSubagency : function(){
+        if (!Mongo._subs.stations.ready())return;
+        return Session.get("dashboard_subagency");
+    },
+    dashboardStatus : dashboardStatus,
+    dashboardDevice : dashboardDevice,
+    readxlsx : function(){
+        return Session.get("xlsx")
+    },
+    displayInfo : function(){
+        var next = Session.get("dashboard_station");
+        if (GoogleMaps.loaded() && (GoogleMaps.maps.map)) {
+            var pos = new google.maps.LatLng(next.lat, next.lng);
+            var map = GoogleMaps.maps.map.instance;
+            map.panTo(pos)
+            marker.setMap(null);
+            marker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                optimized: false,
+                zIndex : 9999999999
+            });
 
-Template.dashboard.helpers({
-    dashboardStatus : function(field,type){
+            return;
+            var data = {
+                field : "station_id",
+                type : Session.get("dashboard_station").id,
+                name : Session.get("dashboard_station").eng
+            }
+            var data = dashboardDevice("station_name",next.station_name);
+            data.name = next.eng;
+            infowindow.setContent(Blaze.toHTMLWithData(Template.dashboardAgency,data));   
+            infowindow.setPosition(pos);
+            
+            infowindow.open(map);
+        }
+    }
+    
+});
+
+function compare(a,b) {
+  if (a.name < b.name)
+    return -1;
+  if (a.name > b.name)
+    return 1;
+  return 0;
+}
+
+Template.dashboardAgency.helpers({
+    severity : function(val){
+        return val==0?"0,80,0":""+Math.floor(100+val*155/100)+",0,0";
+    }
+})
+
+function dashboardDevice(agency,type){
+    var devices = Mongo._devices.find({[agency] : type}).fetch();
+    var tmp = {};
+    var types = [];
+    _.each(devices,function(value,key){
+        if (!tmp[value.device_type]){
+            tmp[value.device_type] = true;
+            types.push({name : value.device_type});
+        }
+    })
+    types.sort(compare);
+    _.each(types,function(value,key){
+        //console.log(key,value);
+        types[key].total = Mongo._devices.find({[agency] : type, device_type : value.name}).count();
+        types[key].hw_done = Mongo._devices.find({[agency] : type, device_type : value.name,hw_status : "Done"}).count();
+        types[key].sw_done = Mongo._devices.find({[agency] : type, device_type : value.name,sw_status : "Done"}).count();
+        types[key].hw_errors = Mongo._devices.find({[agency] : type, device_type : value.name,hw_error : "true"}).count();
+        types[key].sw_errors = Mongo._devices.find({[agency] : type, device_type : value.name,sw_error : "true"}).count();
+        types[key].hw_done_per = Math.floor(Math.round((100*types[key].hw_done/types[key].total)));
+        types[key].sw_done_per = Math.floor(Math.round((100*types[key].sw_done/types[key].total)));
+        types[key].hw_errors_per = Math.floor(Math.round((100*types[key].hw_errors/types[key].total)));
+        types[key].sw_errors_per = Math.floor(Math.round((100*types[key].sw_errors/types[key].total)));
+    })
+    return {agency : type,data : types};
+}
+
+function dashboardStatus(field,type,name){
         if (!Mongo._subs.devices.ready())return;
         var now = Date.now();
         var f = {
             total : Mongo._devices.find({[field] : type}).count(),
+            title : name,
             hw_error : Mongo._devices.find({[field] : type,hw_error : "true"}).count(),
             sw_error : Mongo._devices.find({[field] : type,sw_error : "true"}).count(),
             completed : Mongo._devices.find({[field] : type,"hw_status" : "Done","sw_status" : "Done",hw_error  :{$not : "true"},sw_error : {$not : "true"}}).count(),
@@ -20,34 +113,28 @@ Template.dashboard.helpers({
             completed_withHWerror : Mongo._devices.find({[field] : type,"hw_status" : "Done","sw_status" : "Done",hw_error : "true"}).count(),
             sw_status : _.countBy(Mongo._devices.find({[field] : type},{fields:{sw_status : 1}}).fetch(),function(customer){return customer.sw_status}),
             hw_status : _.countBy(Mongo._devices.find({[field] : type},{fields:{hw_status : 1}}).fetch(),function(customer){return customer.hw_status}),
-            
         }
         f.total_error = f.hw_error + f.sw_error;
         f.sw_notset = f.sw_status[""]?f.sw_status[""]:0 + f.sw_status["undefined"]?f.sw_status["undefined"]:0;
         f.hw_notset = f.hw_status[""]?f.hw_status[""]:0 + f.hw_status["undefined"]?f.hw_status["undefined"]:0;
-        f.sw_notset_percent = Math.floor(Math.round((f.sw_notset/f.total)*100));
-        f.hw_notset_percent = Math.floor(Math.round((f.hw_notset/f.total)*100));
+        f.sw_notset_percent = Math.floor(Math.round((f.sw_notset/f.total)*100)) || 0;
+        f.hw_notset_percent = Math.floor(Math.round((f.hw_notset/f.total)*100)) || 0;
         f.total_error = f.hw_error + f.sw_error;
         f.type = type;
         f.totalpercent = Math.floor((f.completed/f.total)*100);
-        f.total_hw_error_percent = Math.floor(Math.round((f.hw_error/f.total_error)*100));
-        f.total_sw_error_percent = Math.floor(Math.round((f.sw_error/f.total_error)*100));
+        f.total_hw_error_percent = Math.floor(Math.round((f.hw_error/f.total_error)*100)) || 0;
+        f.total_sw_error_percent = Math.floor(Math.round((f.sw_error/f.total_error)*100)) || 0;
         _.each(f.sw_status,function(value,key){
-            f.sw_status[key] = {val : value,percent : Math.floor(Math.round((value/f.total)*100))};
+            f.sw_status[key] = {val : value,percent : Math.floor(Math.round((value/f.total)*100)) || 0};
         })
         _.each(f.hw_status,function(value,key){
-            f.hw_status[key] = {val : value,percent : Math.floor(Math.round((value/f.total)*100))};
+            f.hw_status[key] = {val : value,percent : Math.floor(Math.round((value/f.total)*100)) || 0};
         })
 
-        console.log(Date.now()-now + " ms")
+        //console.log(Date.now()-now + " ms")
 
         return f;
-    },
-    readxlsx : function(){
-        return Session.get("xlsx")
-    },
-    
-});
+    };
 
 Template.dashboardGeneral.helpers({
     makeArray : function(obj){
@@ -64,6 +151,98 @@ Template.dashboardGeneral.helpers({
         return true;
     }
 });
+var marker;
+var infowindow;
+function nextStation(){
+    if (!Mongo._subs.stations.ready())return;
+    var curr = Session.get("dashboard_station");
+    if (!curr || !curr.id)curr = Mongo._stations.findOne({id: {$gt: "0"},$or : 
+        [
+            {sub_agency : "Metro",line : "1"},
+            {sub_agency : "Tram"},
+        ]
+        
+    });
+    var next = {};
+    while(!next.id){
+        next = Mongo._stations.findOne({id: {$gt: curr.id},$or : 
+        [
+            {sub_agency : "Metro",line : "1"},
+            {sub_agency : "Tram"},
+        ]})
+        if (!next)next = Mongo._stations.findOne({id: {$gt: "0"},$or : 
+        [
+            {sub_agency : "Metro",line : "1"},
+            {sub_agency : "Tram"},
+        ]});
+    }
+    Session.set("dashboard_agency",next.agency);
+    Session.set("dashboard_subagency",next.sub_agency);
+    Session.set("dashboard_station",next);
+    
+}
+
+Meteor.startup(function(){
+    Meteor.setInterval(function(){
+        nextStation();
+            //console.log(Mongo._stations.findOne({id : Session.get("dashboard_station")}));
+    },5000);
+})
+
+
+Template.dashboard.helpers({
+    mapOptions : function(){
+    if (GoogleMaps.loaded()) {
+      // Map initialization options
+      
+    marker = new google.maps.Marker({
+        position : new google.maps.LatLng(0,0)
+    });
+    infowindow = new google.maps.InfoWindow({
+    });
+      return {
+        center: new google.maps.LatLng(37.961794, 23.720856),
+        zoom: 13,
+        minZoom: 11,
+        maxZoom: 19 ,
+        showLines : true,
+        showCircles : true,
+        mapTypeControl: false,
+        hoverEnabled : false,
+        draggableCursor:'default',
+        styles: [
+          {
+              "featureType": "poi",
+              "stylers": [
+                  { "visibility": "off" }
+              ]
+          },
+          {
+              "featureType": "transit.line",
+              "stylers": [
+                  { "visibility": "off" }
+              ]
+          },
+          {
+              "featureType": "transit.station",
+              "stylers": [
+                  { "visibility": "off" }
+              ]
+          },
+          {
+              "featureType": "road",
+              "elementType": "labels.icon",
+              "stylers": [
+                  { "visibility": "off" }
+              ]
+          }
+      ],
+    };
+    }
+  },
+})
+
+
 
 
 Template.progressTable.helpers({
