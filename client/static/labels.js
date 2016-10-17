@@ -73,6 +73,11 @@ export const labels = {
       type : "dropdown",
       options : []
     },
+    
+    nfc_key : {
+      name : "Keys Serial Number",
+      group : "hardware",
+    },
     device_type : {
       name : "Device Type",
       group : "hardware",

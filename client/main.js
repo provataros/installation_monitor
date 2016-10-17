@@ -49,7 +49,7 @@ Meteor.startup(() => {
   Session.keys = {};
 
 
-  Session.set("menu","dashboard");
+  Session.set("menu","search");
   Session.modal = {};
   Session.modal.no = function(){};
   Session.set("multiSelected",{})

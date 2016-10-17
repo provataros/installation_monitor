@@ -133,9 +133,19 @@ Meteor.methods({
     ss["3g_subnet"] = subnet;
     return createConfigsBatch3G(arr,ss)
   },
+  
+  getDeviceFromNFC : function(key){
+    var f = Mongo._devices.findOne({device_type : "ACIM", nfc_key : key});
+    return JSON.stringify(f);
+  },
+  getUserFromNFC : function(key){
+    var f = Mongo._users.findOne({username : "kangskim"});
+    console.log(f);
+    return JSON.stringify(f);
+  },
+
   backupDatabase : function(){
 
-      
       var myFuture = new Future();
       
       console.log("backup")
