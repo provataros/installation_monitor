@@ -1,4 +1,4 @@
-/*
+﻿/*
 db.keyvalues.insert(
   [
     {
@@ -146,7 +146,7 @@ export const stations = [
     { id : "01030", name : "Eirini", eng : "Eirini", agency : "STASY", sub_agency : "Metro", 
               lat : 38.04373976,
               lng : 23.78271818, line : "1" },
-    { id : "01030", name : "Neratziotissa", eng : "Neratziotissa", agency : "STASY", sub_agency : "Metro", 
+    { id : "01074", name : "Neratziotissa", eng : "Neratziotissa", agency : "STASY", sub_agency : "Metro", 
               lat : 38.04481705,
               lng : 23.79285961, line : "1" },
     { id : "01031", name : "Marousi", eng : "Marousi", agency : "STASY", sub_agency : "Metro", 
