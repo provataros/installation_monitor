@@ -836,7 +836,7 @@ Template.mapDisplay.helpers({
               lng : 23.78271818,
           },
           {
-              name : "NERATZIOTISSA",
+              name : "Neratziotissa",
               lat : 38.04481705,
               lng : 23.79285961,
           },
