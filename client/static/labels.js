@@ -169,6 +169,11 @@ export const labels = {
       group : "",////////////////////////
       type : "checkbox"
     },
+    keys_missing : {
+      name : "Keys missing?",
+      group : "",////////////////////////
+      type : "checkbox"
+    },
     keys_comments : {
       name : "Comments",
       group : "",////////////////////////
