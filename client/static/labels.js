@@ -75,8 +75,12 @@ export const labels = {
     },
     
     nfc_key : {
-      name : "Keys Serial Number",
-      group : "hardware",
+      name : "Keys Serial",
+      group : "keys",
+    },
+    alarm_key : {
+      name : "Alarm Serial",
+      group : "keys",
     },
     device_type : {
       name : "Device Type",
@@ -158,6 +162,15 @@ export const labels = {
     },
     operator_name : {
       name : "Operator Name",
+      group : "",////////////////////////
+    },
+    keys_delivered : {
+      name : "Keys Delivered",
+      group : "",////////////////////////
+      type : "checkbox"
+    },
+    keys_comments : {
+      name : "Comments",
       group : "",////////////////////////
     },
     operator_id : {
