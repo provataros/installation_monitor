@@ -13,12 +13,16 @@ Mongo._lsams = new Mongo.Collection("lsams");
 Mongo._history = new Mongo.Collection("history");
 Mongo._todo = new Mongo.Collection("todo");
 Mongo._labels = new Mongo.Collection("labels");
+Mongo._glossary = new Mongo.Collection("glossary");
 
 
 var fs = require('fs')
 
 Meteor.publish("labels",function(){
   return Mongo._labels.find({});
+})
+Meteor.publish("glossary",function(){
+  return Mongo._glossary.find({});
 })
 Meteor.publish("todo",function(){
   return Mongo._todo.find({});
@@ -229,5 +233,40 @@ Meteor.methods({
         console.log({hw_id : value.hw_id},{$set : value})
         Mongo._devices.update({hw_id : value.hw_id},{$set : value},{upsert : true})
     })
+  },
+  requestTranslation : function(data){
+    var f = Mongo._glossary.find({$or : [{search : data.text.toLowerCase()},{search : data.text.toLowerCase()}]}).fetch();
+    console.log(f);
+    if (f.length == 0){
+      Mongo._glossary.insert(data);
+      return "ok";
+    }
+    else return "exists";
+  },
+  createTerm : function(data){
+    var f = Mongo._glossary.find({$or : [
+      {searchtext : data.text.toLowerCase()},
+      {searchtr : data.text.toLowerCase()},
+      {searchtext : data.tr.toLowerCase()},
+      {searchtr : data.tr.toLowerCase()}
+      
+    ]}).fetch();
+    console.log(f);
+    if (f.length == 0){
+      Mongo._glossary.insert(data);
+      return "ok";
+    }
+    else return "exists";
+  },
+  translate : function(data){
+    Mongo._glossary.update({_id : data._id},data);
+    return "ok";
+  },
+  saveTranslation : function(data){
+    Mongo._glossary.update({_id : data._id},data);
+    return "ok";
+  },
+  deleteTerm(data){
+    Mongo._glossary.remove(data);
   }
 })

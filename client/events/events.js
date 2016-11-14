@@ -144,6 +144,7 @@ Template.dropdown.events({
 Meteor.startup(function(){
   $(document).on('keydown', function (e) {
     if (e.ctrlKey && (e.key == "a" || e.key == "A")){
+      if (Session.get("menu")!="search")return;
       var f = Session.get("search_results");
       var dict = {};
       $.each(f,function(key,value){
@@ -331,6 +332,9 @@ Template.side_panel.events({
   },
   "click #search" : function(){
     Session.set("menu","search");
+  },
+  "click #glossary" : function(){
+    Session.set("menu","glossary");
   },
   "click #map" : function(){
     Session.set("menu","map");

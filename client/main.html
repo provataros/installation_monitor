@@ -22,9 +22,9 @@
         {{> usb}}
         {{> map}}
         {{> view_todo}}
-        {{> stations}}
         {{> dashboard}}
         {{> importer}}
+        {{> glossary}}
       {{/with}}
     </div>
   {{else}}
@@ -65,6 +65,9 @@
           {{> usb_side_panel}}
     </ul>
     <ul id = "app-menu" class = "menu-buttons">
+          {{#unless isMenu "glossary"}}
+            <li id = "glossary">Glossary</li>
+          {{/unless}}
           {{#unless isMenu "search"}}
             <li id = "search">Search</li>
           {{/unless}}
@@ -76,9 +79,6 @@
           {{/unless}}
           {{#unless isMenu "settings"}}
             <li id = "settings">Settings</li>
-          {{/unless}}
-          {{#unless isMenu "stations"}}
-            <li id = "stations">Stations</li>
           {{/unless}}
           {{#unless isMenu "dashboard"}}
             <li id = "dashboard">Dashboard</li>

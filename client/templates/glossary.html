@@ -1,0 +1,63 @@
+<template name = "glossary">
+    {{#if isMenu "glossary"}}
+        {{> createTerm}}
+    {{/if}}
+</template>
+
+
+<template name="createTerm">
+    <div style = "position : relative; height : 100%; overflow : auto;">
+        <div id = "glossary-left" class = "glossary_panel">
+            <div id = "glossary_panel" style = "width : 100%">
+                <h2>Terms</h2>
+                {{> translation_terms}}
+            </div>
+            <div id = "glossary_panel" style = "width : 100%">
+                <h2>Requests</h2>
+                {{> translation_requests}}
+            </div>
+        </div>
+        <div id = "glossary-right">
+            <div id = "findTerm"  class = "glossary_panel">
+                <h2>Search</h2>
+                <input id = "searchTerm"/>
+            </div>
+            <div id = "createTerm" class = "glossary_panel">
+                <h2>Create Term</h2>
+                <textarea id = "trtext" type = "text" placeholder = "English phrase"></textarea>
+                <textarea id = "trtr" type = "text" placeholder = "Greek Translation"></textarea>
+                
+                <div class = "divButton noselect">Submit</div>
+            </div>
+            <div id = "requestTranslation"  class = "glossary_panel">
+                <h2>Request Translation</h2>
+                <textarea type = "text" placeholder = "Input your request"></textarea>
+                <div class = "divButton noselect">Submit</div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name = "translation_requests">
+    {{#each translation_requests}}
+        <div class = "tr-request">
+            <i  class="fa fa-pencil edit"></i>{{text}} : 
+            <div class = "inline tr">{{tr}}</div>
+            <div style = "display : inline-block;display : none;" class = "inputcontrols">
+                <input placeholder = "Translation" value = "{{tr}}">
+                <i class = "fa fa-check  submit "></i>
+            </div>
+        </div>
+    {{/each}}
+</template>
+<template name = "translation_terms">
+    {{#each translation_terms}}
+        <div class = "tr-term">
+            <i class = "fa fa-pencil edit"></i>
+            <i class = "fa fa-check save hidden react"></i>
+            <div class = "edit-inputs react hidden"><input class = "trtext" value = "{{text}}">&emsp;:&emsp;<input class = "trtr" value = "{{tr}}"><i class = "fa fa-close delete"></i></div>
+            <b class="term react2">{{text}}&emsp;:&emsp;</b>
+            <div class = "react2">{{tr}}</div>
+        </div>
+    {{/each}}
+</template>
