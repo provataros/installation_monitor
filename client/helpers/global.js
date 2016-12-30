@@ -288,3 +288,8 @@ Template.registerHelper('toDate2', function(id) {
 Template.registerHelper('args', function(a,b,c,d,e) {
   return arguments
 });
+
+Template.registerHelper('getUserName', function(id) {
+  if (!id)return "" ;
+  return Accounts.users.findOne({_id : id}).username
+});

@@ -1,0 +1,131 @@
+importPackage( Packages.org.eclipse.birt.report.model.api ); 
+importPackage(Packages.org.eclipse.birt.chart.model.data.impl);
+importPackage(Packages.org.eclipse.birt.chart.model.component.impl);
+importPackage(Packages.org.eclipse.birt.chart.model.type.impl);
+importPackage(Packages.org.eclipse.birt.chart.model.attribute);
+
+
+
+elementFactory = reportContext.getDesignHandle().getElementFactory(); 
+var tableNumber; 
+var tableName; 
+var tableCount; 
+var cht = reportContext.getDesignHandle().findElement("chart"); 
+var colbinds = cht.getColumnBindings( ); 
+log(vars["report"]);
+var report = vars["report"];
+LOG(report.table)
+
+
+
+
+var fff= report.sql.fields;
+LOG(fff);
+LOG(fff.length);
+/*for (var i=0;i<fff.length;i++){
+	var cs2 = StructureFactory.createComputedColumn( ); 
+	cs2.setName("FIELD"+i); 
+	cs2.setExpression( 'dataSetRow["FIELD'+i+'"]' ); 
+	colbinds.addItem( cs2 ); 
+}
+*/
+var ggg= report.sql.groups;
+/*for (var i=0;i<ggg.length;i++){
+	var cs2 = StructureFactory.createComputedColumn( ); 
+	cs2.setName("GRP"+i); 
+	cs2.setExpression( 'dataSetRow["GRP'+i+'"]' ); 
+	colbinds.addItem( cs2 ); 
+}*/
+//Chart must be named
+mychart = cht.getReportItem().getProperty( "chart.instance" );
+
+
+//Get the x axis
+xAxis = mychart.getAxes().get(0);
+log (xAxis.getSeriesDefinitions().get(0));
+//Get the first y axis
+yAxis1 = xAxis.getAssociatedAxes().get(0);
+
+//alternate the series label position of each new series
+alternate_label_position = false;
+
+
+
+log(cht.getColumnBindings().getItems().size());
+var defs = yAxis1.getSeriesDefinitions();
+log(defs.size());
+for (var j=0;j<defs.size();j++){
+
+	var dd = defs.get(j).getSeries().get(0).getDataDefinition().get(0).getDefinition().match('row\\["([A-Z_]*)"]')[1];
+	var flag = false;
+	for( i=0; i < fff.length; i++){ 
+		if (dd == fff[i]){
+			flag = true;
+			break;
+		}
+	}
+	if (!flag){
+		log(dd + " for remove");
+		defs.remove(j);
+		j=-1;
+	}
+}
+
+cht.removedUnusedColumnBindings();
+for (var i=0;i<cht.getColumnBindings().getItems().size();i++){
+	log(cht.getColumnBindings().getItems()[i].getName());
+}
+
+
+
+/*
+for( i=0; i < fff.length; i++){ 
+	log("----- |"+i);
+//create a new series definition for each new series
+	var sdNew = SeriesDefinitionImpl.createDefault();
+	//create a new series for each parameter selection
+	var ls = BarSeriesImpl.createDefault();
+	ls.setVisible(true);
+	//ls.getLabel().setVisible(true);
+	//ls.setSeriesIdentifier(report.fields[fff[i]].label);
+	//Create the query. The row value must correlate with the data set row value
+	var qry = QueryImpl.create('row["FIELD'+i+'"]' );
+	ls.getDataDefinition().add(qry);
+	//Add the new series definition to the first y axis
+	
+	var grouping = sdNew.getGrouping( );
+	grouping.getAggregateExpression();
+	grouping.setEnabled( true );
+	grouping.setAggregateExpression( "Sum" ); // Set Count aggregation. 
+	
+	yAxis1.getSeriesDefinitions().add( sdNew );
+	sdNew.getSeries().add( ls );
+	log(sdNew.getSeries().get(0).isVisible());
+}	*/
+/*
+for (var i=0;i<ggg.length;i++){
+	var seCategory = SeriesImpl.create( );
+	
+	// Set category expression.
+	seCategory.getDataDefinition( ).add( QueryImpl.create( 'row["GRP'+i+'"]' ) );
+	
+	var sdX = SeriesDefinitionImpl.create( );
+	sdX.getSeriesPalette( ).shift( 0 );
+	sdX.setSorting(SortOption.ASCENDING_LITERAL);
+	// Set default grouping.
+	var grouping = sdX.getGrouping( );
+	grouping.getAggregateExpression();
+	grouping.setEnabled( true );
+	grouping.setGroupType( DataType.TEXT_LITERAL );
+	grouping.setGroupingInterval( 1 );
+	grouping.setGroupingUnit( GroupingUnitType.STRING_LITERAL );
+	grouping.setAggregateExpression( "First" ); // Set Count aggregation. 
+	
+	xAxis.getSeriesDefinitions( ).add( sdX );
+	sdX.getSeries( ).add( seCategory );
+}
+
+xAxis.getSeriesDefinitions().remove(0)*/
+//yAxis1.getSeriesDefinitions().remove(0)
+
+

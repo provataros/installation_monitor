@@ -1,0 +1,11 @@
+.team-tab{
+    background-color : #dcdcdc;
+    box-sizing : border-box;
+    padding : 5px 15px;
+    border-bottom : none;
+    display : inline-block;
+    cursor : pointer;
+}
+.team-tab.active{
+    background-color : white;
+}

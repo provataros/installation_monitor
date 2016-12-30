@@ -1,0 +1,33 @@
+<template name = "teams">
+    {{#if isMenu "teams"}}
+       <div class="vert-col">
+            <h1>Create a Team</h1>
+            <input type = "text" id = "team_name_create"><button id = "team_button_create">Create</button>
+            <h1>My Teams</h1>
+            {{> myteams}}
+       </div>
+    {{/if}}
+</template>
+
+<template name = "myteams">
+    {{#with ownTeams}}
+        {{#each this}}
+            <div class="team-tab {{isSelectedTeam}}">{{name}}</div>
+        {{/each}}
+        {{#unless this}}
+            <div>You are not in a team</div>
+        {{/unless}}
+        {{> showSelectedTeam}}
+    {{/with}}
+</template>
+
+<template name = "showSelectedTeam">
+    {{#with selectedTeam}}
+        <div>
+            Name : {{name}} <br>
+            Creator : {{getUserName creator}} <br>
+            Members : {{#each members}} {{getUserName this}} {{/each}}<br>
+            <input id = "team_member_name" type = "text"><button id = "team_member_add">Add</button>
+        </div>
+    {{/with}}
+</template>

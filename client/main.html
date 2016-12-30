@@ -25,6 +25,7 @@
         {{> dashboard}}
         {{> importer}}
         {{> glossary}}
+        {{> teams}}
       {{/with}}
     </div>
   {{else}}
@@ -85,6 +86,9 @@
           {{/unless}}
           {{#unless isMenu "importer"}}
             <li id = "importer">Import</li>
+          {{/unless}}
+          {{#unless isMenu "teams"}}
+            <li id = "teams">Teams</li>
           {{/unless}}
           <!--{{#unless isMenu "usb"}}
             <li id = "usb">USB</li>

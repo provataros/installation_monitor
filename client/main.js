@@ -21,6 +21,7 @@ Mongo._stations = stations;
 Mongo._usb = usb;
 Mongo._history = history;
 Mongo._labels = new Mongo.Collection("labels");;
+Mongo._teams = new Mongo.Collection("teams");;
 Mongo._glossary = glossary;
 
 Mongo._subs.devices = Meteor.subscribe("devices");
@@ -28,6 +29,8 @@ Mongo._subs.stations = Meteor.subscribe("stations");
 Mongo._subs.history = Meteor.subscribe("history");
 Mongo._subs.todo = Meteor.subscribe("todo");
 Mongo._subs.glossary = Meteor.subscribe("glossary");
+Mongo._subs.teams = Meteor.subscribe("teams");
+Mongo._subs.users = Meteor.subscribe("usernames");
 
 
 
@@ -51,7 +54,7 @@ Meteor.startup(() => {
   Session.keys = {};
 
 
-  Session.set("menu","search");
+  Session.set("menu","teams");
   Session.modal = {};
   Session.modal.no = function(){};
   Session.set("multiSelected",{})

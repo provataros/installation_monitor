@@ -2,3 +2,10 @@
 db.devices.distinct("hw_id").length;
 db.devices.find().count();
 db.devices.createIndex({hw_id : 1},{unique : true});
+
+db.glossary.createIndex(
+   {
+     text: "text",
+     tr: "text"
+   }
+ )

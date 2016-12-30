@@ -4,6 +4,7 @@ import {FixNetwork} from "/server/init"
 import {createConfigsBatch} from "./lib.js"
 import {createConfigsBatch3G} from "./lib.js"
 import {spawn} from 'child_process';
+import { Session } from 'meteor/session'
 
 var Future = Npm.require('fibers/future');
 
@@ -14,7 +15,7 @@ Mongo._history = new Mongo.Collection("history");
 Mongo._todo = new Mongo.Collection("todo");
 Mongo._labels = new Mongo.Collection("labels");
 Mongo._glossary = new Mongo.Collection("glossary");
-
+Mongo._teams = new Mongo.Collection("teams");
 
 var fs = require('fs')
 
@@ -36,8 +37,15 @@ Meteor.publish("stations",function(){
 Meteor.publish("history",function(){
   return Mongo._history.find({});
 })
+Meteor.publish("teams",function(){
+  return Mongo._teams.find({});
+})
 Meteor.startup(function(){
 })
+Meteor.publish("usernames", function () {
+    return Meteor.users.find({},
+        {fields: {'_id': 1, 'username': 1}});
+});
 
 Meteor.methods({
   find : function(){
@@ -268,5 +276,33 @@ Meteor.methods({
   },
   deleteTerm(data){
     Mongo._glossary.remove(data);
-  }
+  },
+  create_team : function(team){
+    var f = Mongo._teams.findOne({name : team.name});
+    if (f)return "exists";
+
+    Mongo._teams.insert(team);
+    return "success";
+  },
+
+  add_team_member : function(team,username){
+    var name = Accounts.users.findOne({"username" : username});
+    if (!team)return "failed";
+    if (!name)return "failed";
+
+    var f = Mongo._teams.findOne({_id : team});
+    var index = f.members.indexOf(name._id);
+    
+    if (index == -1){
+      Mongo._teams.update({_id : team},{$push : {members : name._id}});
+      return "success";
+    }
+    else{
+      return "already in group";
+    }
+  },
+
+
+
+
 })
